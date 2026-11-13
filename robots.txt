@@ -1,4 +1,7 @@
+# Consignes pour les moteurs de recherche : tout le site peut être exploré, sauf les modes
+# d'emploi (GUIDE et README), qui ne sont pas destinés aux visiteurs.
 User-agent: *
-Allow: /
+Disallow: /GUIDE
+Disallow: /README
 
 Sitemap: https://hypnose-roulleau.fr/sitemap.xml

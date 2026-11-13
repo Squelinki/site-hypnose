@@ -2,9 +2,9 @@
 
 Site statique (HTML, CSS, un peu de JavaScript), sans outil de construction : chaque page est un fichier `.html` que l'on peut modifier directement.
 
-- **Adresse prévue :** https://hypnose-roulleau.fr
-- **Hébergement prévu :** GitHub Pages (gratuit)
-- **Mode d'emploi complet (publication, nom de domaine, modifications) :** voir [GUIDE.md](GUIDE.md)
+- **Adresse :** https://hypnose-roulleau.fr
+- **Hébergement :** GitHub Pages (gratuit)
+- **Mode d'emploi complet (publication, nom de domaine, référencement, modifications) :** voir [GUIDE.md](GUIDE.md)
 
 | Fichier | Page |
 |---|---|
@@ -18,3 +18,5 @@ Site statique (HTML, CSS, un peu de JavaScript), sans outil de construction : ch
 | `404.html` | Page « introuvable » |
 
 Apparence et animations : `assets/css/style.css` · Scripts : `assets/js/main.js` · Photos : `assets/img/` (portrait `caroline-roulleau.jpg`, image de partage `partage.jpg`) · Polices : `assets/fonts/` (licence SIL OFL 1.1 incluse).
+
+Référencement : `sitemap.xml` (plan du site), `robots.txt` (consignes aux moteurs de recherche) · Nom de domaine : `CNAME` (à ne pas supprimer) · Icônes : `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`.

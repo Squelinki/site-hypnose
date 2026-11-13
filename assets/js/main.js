@@ -18,7 +18,7 @@
     '.sec .wrap > .disclaimer', '.sec .wrap > .link-more', '.wrap > .callout', '.band .wrap > *',
     '.intro-grid > *', '.about-grid > *', '.breathe-grid > *', '.contact-grid > *',
     '.cards > li', '.steps > li', '.methods > li', '.facts > *', '.timeline > li',
-    '.faq-list > details', '.more-group', '.cta-box'
+    '.faq-list > details', '.more-group', '.cta-box', '.avis-head > *', '.avis-scroll', '.avis-note'
   ].join(',');
 
   function reduceMotion() {
