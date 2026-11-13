@@ -71,17 +71,21 @@
   </div>
 </section>
 
-<!-- ============ ANNONCE TEMPORAIRE : MOIS SANS TABAC ============
-     Ce bloc s'affiche jusqu'à la date indiquée dans data-jusqu-au (incluse, heure de Paris), puis se masque tout seul.
-     · Pour changer la date de fin : modifiez data-jusqu-au="AAAA-MM-JJ" (par exemple 2026-12-31 pour fin décembre).
+<!-- ============ ANNONCE ANNUELLE : MOIS SANS TABAC ============
+     Ce bloc s'affiche tout seul chaque année du 1er au 30 novembre (heure de Paris), puis se masque
+     jusqu'au mois de novembre suivant. Rien à faire d'une année sur l'autre : l'année du surtitre se met à jour seule.
+     · Pour changer la période : modifiez les deux dates de la ligne <section … juste en dessous
+       (data-affiche-du = début, data-affiche-au = fin, format JJ/MM, dates incluses).
+       Exemple : mettre 15/10 à la place de 01/11 pour l'afficher dès la mi-octobre.
+     · Si le tarif change, modifiez-le ci-dessous (il figure aussi dans la page Tarifs & contact).
      · Pour le retirer définitivement : supprimez tout, de ce commentaire jusqu'à « FIN DE L'ANNONCE » inclus,
        puis l'image assets/img/mois-sans-tabac-caroline-roulleau.jpg.
-     · Pour une autre annonce plus tard : copiez ce bloc en entier, puis changez la date, l'image et les textes. -->
-<section class="sec sec--sauge" id="mois-sans-tabac" aria-labelledby="t-mst" data-jusqu-au="2026-11-30" hidden>
+     · Pour une autre annonce : copiez ce bloc en entier, puis changez l'id, les dates, l'image et les textes. -->
+<section class="sec sec--sauge" id="mois-sans-tabac" aria-labelledby="t-mst" data-affiche-du="01/11" data-affiche-au="30/11" hidden>
   <div class="wrap about-grid">
     <img src="assets/img/mois-sans-tabac-caroline-roulleau.jpg" alt="Visuel « En novembre, on arrête ensemble ! » : Caroline Roulleau, hypnothérapeute ericksonienne et praticienne PNL, avec le logo du Mois sans tabac" width="880" height="880" loading="lazy" decoding="async" style="justify-self:center;width:100%;max-width:440px;border-radius:var(--arrondi);box-shadow:0 30px 50px -30px rgba(76,102,80,.55)">
     <div>
-      <p class="eyebrow">Mois sans tabac · novembre 2026</p>
+      <p class="eyebrow">Mois sans tabac · novembre <span data-annee>2026</span></p>
       <h2 class="h2" id="t-mst">Arrêter de fumer <span class="nw">avec l'hypnose</span></h2>
       <p class="about-text">Du 1<sup>er</sup> au 30 novembre, le Mois sans tabac invite les fumeurs à relever un défi collectif : arrêter de fumer pendant 30&nbsp;jours. Un cap décisif, puisque d'après Santé publique France, 30&nbsp;jours sans tabac multiplient par cinq les chances d'arrêter durablement.</p>
       <p class="about-text">L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble, nous travaillons sur l'envie de fumer, sur les habitudes et les émotions qui l'accompagnent, et sur votre motivation.</p>
@@ -98,10 +102,28 @@
   </div>
 </section>
 <script>
-  /* Affiche l'annonce ci-dessus tant que sa date de fin (data-jusqu-au) n'est pas passée, heure de Paris */
+  /* Affiche l'annonce ci-dessus chaque année entre data-affiche-du et data-affiche-au (inclus), selon la date du jour à Paris */
   (function (annonce) {
-    var fin = Date.parse(annonce.getAttribute('data-jusqu-au') + 'T23:59:59+01:00');
-    if (Date.now() <= fin) { annonce.hidden = false; }
+    var maintenant = new Date();
+    var jour = maintenant.getDate(), mois = maintenant.getMonth() + 1, annee = maintenant.getFullYear();
+    try {   /* date du jour à Paris, quel que soit le fuseau horaire du visiteur */
+      new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', day: 'numeric', month: 'numeric', year: 'numeric' })
+        .formatToParts(maintenant).forEach(function (p) {
+          if (p.type === 'day') { jour = Number(p.value); }
+          if (p.type === 'month') { mois = Number(p.value); }
+          if (p.type === 'year') { annee = Number(p.value); }
+        });
+    } catch (e) { /* navigateur ancien : date de l'appareil du visiteur */ }
+    function jourDeLAnnee(jjmm) { var p = jjmm.split('/'); return Number(p[1]) * 100 + Number(p[0]); }   /* "30/11" → 1130 */
+    var aujourdhui = mois * 100 + jour;
+    var du = jourDeLAnnee(annonce.getAttribute('data-affiche-du'));
+    var au = jourDeLAnnee(annonce.getAttribute('data-affiche-au'));
+    var visible = du <= au ? (aujourdhui >= du && aujourdhui <= au)    /* période dans l'année, ex. 01/11 → 30/11 */
+                           : (aujourdhui >= du || aujourdhui <= au);   /* période à cheval sur deux années, ex. 15/12 → 15/01 */
+    if (visible) {
+      [].forEach.call(annonce.querySelectorAll('[data-annee]'), function (el) { el.textContent = annee; });
+      annonce.hidden = false;
+    }
   })(document.currentScript.previousElementSibling);
 </script>
 <!-- ============ FIN DE L'ANNONCE : MOIS SANS TABAC ============ -->
