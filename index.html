@@ -71,6 +71,41 @@
   </div>
 </section>
 
+<!-- ============ ANNONCE TEMPORAIRE : MOIS SANS TABAC ============
+     Ce bloc s'affiche jusqu'à la date indiquée dans data-jusqu-au (incluse, heure de Paris), puis se masque tout seul.
+     · Pour changer la date de fin : modifiez data-jusqu-au="AAAA-MM-JJ" (par exemple 2026-12-31 pour fin décembre).
+     · Pour le retirer définitivement : supprimez tout, de ce commentaire jusqu'à « FIN DE L'ANNONCE » inclus,
+       puis l'image assets/img/mois-sans-tabac-caroline-roulleau.jpg.
+     · Pour une autre annonce plus tard : copiez ce bloc en entier, puis changez la date, l'image et les textes. -->
+<section class="sec sec--sauge" id="mois-sans-tabac" aria-labelledby="t-mst" data-jusqu-au="2026-11-30" hidden>
+  <div class="wrap about-grid">
+    <img src="assets/img/mois-sans-tabac-caroline-roulleau.jpg" alt="Visuel « En novembre, on arrête ensemble ! » : Caroline Roulleau, hypnothérapeute ericksonienne et praticienne PNL, avec le logo du Mois sans tabac" width="880" height="880" loading="lazy" decoding="async" style="justify-self:center;width:100%;max-width:440px;border-radius:var(--arrondi);box-shadow:0 30px 50px -30px rgba(76,102,80,.55)">
+    <div>
+      <p class="eyebrow">Mois sans tabac · novembre 2026</p>
+      <h2 class="h2" id="t-mst">Arrêter de fumer <span class="nw">avec l'hypnose</span></h2>
+      <p class="about-text">Du 1<sup>er</sup> au 30 novembre, le Mois sans tabac invite les fumeurs à relever un défi collectif : arrêter de fumer pendant 30&nbsp;jours. Un cap décisif, puisque d'après Santé publique France, 30&nbsp;jours sans tabac multiplient par cinq les chances d'arrêter durablement.</p>
+      <p class="about-text">L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble, nous travaillons sur l'envie de fumer, sur les habitudes et les émotions qui l'accompagnent, et sur votre motivation.</p>
+      <ul class="diplomas">
+        <li>Consultation « arrêt du tabac » : 200&nbsp;€</li>
+        <li>Au cabinet, 30 rue de Chaillot, Paris 16e</li>
+        <li><span>Du lundi au vendredi, de 9&nbsp;h à 19&nbsp;h, sur <span class="nw">rendez-vous</span></span></li>
+      </ul>
+      <div class="actions">
+        <a class="btn btn-primary" href="contact.html#rendez-vous"><span>Prendre <span class="nw">rendez-vous</span></span></a>
+        <a class="btn btn-ghost" href="tel:+33769850619"><svg class="ico-s" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l2 5-2.4 1.5a11 11 0 0 0 5.4 5.4L15 13.5l5 2V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>07 69 85 06 19</a>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  /* Affiche l'annonce ci-dessus tant que sa date de fin (data-jusqu-au) n'est pas passée, heure de Paris */
+  (function (annonce) {
+    var fin = Date.parse(annonce.getAttribute('data-jusqu-au') + 'T23:59:59+01:00');
+    if (Date.now() <= fin) { annonce.hidden = false; }
+  })(document.currentScript.previousElementSibling);
+</script>
+<!-- ============ FIN DE L'ANNONCE : MOIS SANS TABAC ============ -->
+
 <section class="sec sec--creme" aria-label="Présentation">
   <div class="wrap intro-grid">
     <p class="intro-quote">Sentez-vous libre de vous sentir de mieux en mieux, de jour en jour, et à tous points de vue !</p>
