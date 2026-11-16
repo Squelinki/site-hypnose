@@ -73,9 +73,11 @@ content:
               multiple: true
               values:
                 - name: guirlande
-                  label: Guirlande lumineuse (sous le menu)
+                  label: Guirlande lumineuse (sous le menu, vague de lumière au clic)
                 - name: neige
-                  label: Neige
+                  label: Neige (en haut des pages)
+                - name: flocons
+                  label: Neige sur tout le site (légère)
                 - name: paillettes
                   label: Paillettes dorées
                 - name: petales
@@ -92,6 +94,20 @@ content:
                   label: Cloche de Pâques (sème des œufs au clic)
                 - name: lune
                   label: Lune et étoiles (s'endort au clic)
+                - name: notes
+                  label: Notes de musique
+                - name: galette
+                  label: Galette des rois (jeu de la fève au clic)
+                - name: crepe
+                  label: Crêpe de la Chandeleur (à faire sauter au clic)
+                - name: poisson
+                  label: Poisson d'avril (se décolle au clic)
+                - name: glace
+                  label: Glace de l'été (une boule de plus à chaque clic)
+                - name: rentree
+                  label: Ardoise de la rentrée (bonnes résolutions au clic)
+                - name: avent
+                  label: Calendrier de l'Avent (le conseil du jour au clic, du 1er au 24 décembre)
           - name: bandeau
             label: Bandeau en haut de toutes les pages (facultatif)
             type: string
@@ -318,6 +334,17 @@ content:
             label: Réponse
             type: text
             required: true
+
+  - name: avent
+    label: Calendrier de l'Avent
+    type: file
+    path: contenu/calendrier-avent.yml
+    fields:
+      - name: conseils
+        label: "Conseils du jour (1er au 24 décembre, dans l'ordre)"
+        type: string
+        list: true
+        description: "Le premier s'affiche le 1er décembre, le deuxième le 2, etc., quand on ouvre le paquet cadeau de la décoration « Calendrier de l'Avent ». Une phrase courte par jour (deux lignes au plus)."
 
   - name: lectures
     label: Lectures et émissions
