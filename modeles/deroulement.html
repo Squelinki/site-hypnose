@@ -1,0 +1,44 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- set c = pages.deroulement -%}
+<!-- ============ DÉROULEMENT D'UNE SÉANCE ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap">
+    <h1 id="titre"><span class="eyebrow">{{ c.surtitre|texte }}</span> {{ c.titre|titre }}</h1>
+    <p class="lead">{{ c.introduction|texte }}</p>
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-label="Les étapes de la séance">
+  <div class="wrap">
+    <ol class="timeline">
+{%- for e in c.etapes %}
+      <li>
+        <span class="step-num" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+        <div>
+          <h2>{{ e.titre|texte }}</h2>
+{{ e.texte|paragraphes(indent=10) }}
+        </div>
+      </li>
+{%- endfor %}
+    </ol>
+
+    <div class="callout">
+      <h2>{{ c.precision_titre|texte }}</h2>
+{{ c.precision_texte|paragraphes(indent=6) }}
+    </div>
+
+    <div class="facts">
+      <div class="fact">
+        <span class="ico">{{ icone('horloge') }}</span>
+        <h3>Durée</h3>
+{{ c.duree_texte|paragraphes(indent=8) }}
+      </div>
+      <div class="fact">
+        <span class="ico">{{ icone('calendrier') }}</span>
+        <h3>Nombre de séances</h3>
+{{ c.nombre_texte|paragraphes(indent=8) }}
+      </div>
+    </div>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

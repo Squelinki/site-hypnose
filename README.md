@@ -1,22 +1,18 @@
 # Site de Caroline Roulleau – Hypnothérapeute à Paris 16e
 
-Site statique (HTML, CSS, un peu de JavaScript), sans outil de construction : chaque page est un fichier `.html` que l'on peut modifier directement.
-
 - **Adresse :** https://hypnose-roulleau.fr
-- **Hébergement :** GitHub Pages (gratuit)
-- **Mode d'emploi complet (publication, nom de domaine, référencement, modifications) :** voir [GUIDE.md](GUIDE.md)
+- **Hébergement :** GitHub Pages (gratuit), publication automatique par GitHub Actions
+- **Modifier les textes, tarifs, avis, annonces :** CMS en ligne https://app.pagescms.org (gratuit)
+- **Mode d'emploi complet (mise en place, CMS, annonces et décorations, référencement) :** [GUIDE.md](GUIDE.md)
 
-| Fichier | Page |
+| Dossier ou fichier | Rôle |
 |---|---|
-| `index.html` | Accueil |
-| `l-hypnose-c-est-quoi.html` | L'hypnose, c'est quoi ? |
-| `indications.html` | Indications |
-| `deroulement-d-une-seance.html` | Déroulement d'une séance |
-| `qui-suis-je.html` | Qui suis-je ? |
-| `contact.html` | Tarifs & contact (avec formulaire) |
-| `mentions-legales.html` | Mentions légales et confidentialité |
-| `404.html` | Page « introuvable » |
+| `contenu/` | Textes et réglages du site (modifiés par le CMS) |
+| `modeles/` | Mise en page des pages (HTML) |
+| `assets/` | Styles, scripts, polices (licence SIL OFL 1.1 incluse) et images |
+| `construire.py` | Fabrique le site dans `_site/` à partir de `contenu/` et `modeles/` |
+| `.pages.yml` | Configuration du CMS |
+| `.github/workflows/publier-le-site.yml` | Publication automatique à chaque modification |
+| `CNAME`, `robots.txt`, `favicon.*`, `apple-touch-icon.png` | Nom de domaine, consignes aux moteurs de recherche, icônes |
 
-Apparence et animations : `assets/css/style.css` · Scripts : `assets/js/main.js` · Photos : `assets/img/` (portrait `caroline-roulleau.jpg`, image de partage `partage.jpg`) · Polices : `assets/fonts/` (licence SIL OFL 1.1 incluse).
-
-Référencement : `sitemap.xml` (plan du site), `robots.txt` (consignes aux moteurs de recherche) · Nom de domaine : `CNAME` (à ne pas supprimer) · Icônes : `favicon.ico`, `favicon.svg`, `apple-touch-icon.png`.
+Pages publiées : `index.html` (accueil), `l-hypnose-c-est-quoi.html`, `indications.html`, `deroulement-d-une-seance.html`, `qui-suis-je.html`, `contact.html` (tarifs et formulaire), `mentions-legales.html`, `404.html`.

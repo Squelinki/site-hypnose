@@ -18,7 +18,8 @@
     '.sec .wrap > .disclaimer', '.sec .wrap > .link-more', '.wrap > .callout', '.band .wrap > *',
     '.intro-grid > *', '.about-grid > *', '.breathe-grid > *', '.contact-grid > *',
     '.cards > li', '.steps > li', '.methods > li', '.facts > *', '.timeline > li',
-    '.faq-list > details', '.more-group', '.cta-box', '.avis-head > *', '.avis-scroll', '.avis-note'
+    '.faq-list > details', '.more-group', '.cta-box', '.avis-head > *', '.avis-scroll', '.avis-note',
+    '.encart-seul > *'
   ].join(',');
 
   function reduceMotion() {
@@ -135,6 +136,8 @@
     var form = root.querySelector('[data-contact-form]');
     if (form) {
       var status = form.querySelector('.form-status');
+      var email = form.getAttribute('data-email') || EMAIL;          /* réglés dans le CMS (Infos pratiques) */
+      var telephone = form.getAttribute('data-telephone') || TELEPHONE;
       form.addEventListener('submit', function (e) {
         e.preventDefault();
         var data = new FormData(form);
@@ -149,7 +152,7 @@
           var corps = (data.get('message') || '') +
                       (dispos ? '\n\nMes disponibilités : ' + dispos : '') +
                       '\n\n' + nom + '\n' + (data.get('email') || '') + '\n' + (data.get('telephone') || '');
-          window.location.href = 'mailto:' + EMAIL +
+          window.location.href = 'mailto:' + email +
             '?subject=' + encodeURIComponent('Demande de rendez-vous – ' + nom) +
             '&body=' + encodeURIComponent(corps);
           status.textContent = 'Votre messagerie s’ouvre avec votre message prêt à envoyer.';
@@ -167,8 +170,8 @@
             status.textContent = 'Merci, votre message a bien été envoyé ! Je vous réponds rapidement.';
           })
           .catch(function () {
-            status.textContent = "L'envoi n'a pas fonctionné. Appelez-moi au " + TELEPHONE +
-                                 ' ou écrivez à ' + EMAIL + '.';
+            status.textContent = "L'envoi n'a pas fonctionné. Appelez-moi au " + telephone +
+                                 ' ou écrivez à ' + email + '.';
           })
           .then(function () { submit.disabled = false; });
       });

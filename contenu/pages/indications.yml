@@ -1,0 +1,53 @@
+seo_titre: "Indications de l'hypnose : stress, tabac, sommeil… | Paris 16e"
+seo_description: "Stress, anxiété, confiance en soi, arrêt du tabac, phobies, sommeil, deuil, examens : dans quels cas l'hypnose peut vous accompagner. Cabinet à Paris 16e."
+surtitre: "Indications de l'hypnose"
+titre: "Pourquoi choisir *l'hypnose ?*"
+introduction: "L'hypnose peut vous accompagner dans de nombreuses situations de la vie. N'hésitez pas à me contacter si votre difficulté ne figure pas sur cette liste : nous en discuterons ensemble."
+categories:
+  - titre: "Être bien dans sa tête"
+    icone: soleil
+    resume: "Confiance et estime de soi, stress, anxiété, panique, gestion des émotions, blessures profondes, tristesse…"
+    liste:
+      - "Confiance et estime de soi"
+      - "Stress, anxiété, panique"
+      - "Gestion des émotions"
+      - "Blessures profondes"
+      - "Tristesse, mélancolie"
+  - titre: "Être bien dans son corps"
+    icone: feuille
+    resume: "Retrouver son poids de forme, gestion de la douleur, allergies, maladies de la peau…"
+    liste:
+      - "Retrouver son poids de forme idéal"
+      - "Gestion de la douleur"
+      - "Allergies"
+      - "Maladies de la peau"
+  - titre: "Changer de comportement"
+    icone: fleches
+    resume: "Arrêter de fumer, peurs, phobies, troubles du sommeil ou du comportement alimentaire, addictions…"
+    liste:
+      - "Arrêter de fumer"
+      - "Peurs, angoisses, phobies"
+      - "Troubles du comportement alimentaire"
+      - "Troubles du sommeil"
+      - "Troubles compulsifs"
+      - "Conduites addictives"
+  - titre: "Surmonter une épreuve"
+    icone: montagne
+    resume: "Rupture, divorce, accident, traumatisme, deuil, changement d'emploi, retraite…"
+    liste:
+      - "Rupture, divorce, accident"
+      - "Traumatisme"
+      - "Deuil"
+      - "Soutien psychologique des maladies graves"
+      - "Changement d'emploi, chômage, retraite"
+  - titre: "Être coaché et réussir"
+    icone: etoile
+    resume: "Trac, prise de parole, concentration, décision importante, préparation aux examens…"
+    liste:
+      - "Trac, prise de parole en public"
+      - "Décupler ses capacités d'apprentissage, concentration"
+      - "Prise de décision importante, dilemme"
+      - "Dépasser ses limites psychologiques et physiques"
+      - "Préparation aux examens"
+encadre_titre: "Et plus encore !"
+encadre_texte: "Votre difficulté ne figure pas sur cette liste ? Contactez-moi, nous en discuterons ensemble."

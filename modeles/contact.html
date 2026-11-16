@@ -1,0 +1,69 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- set c = pages.contact -%}
+<!-- ============ TARIFS & CONTACT ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap">
+    <h1 id="titre"><span class="eyebrow">{{ c.surtitre|texte }}</span> {{ c.titre|titre }}</h1>
+    <p class="lead">{{ c.introduction|texte|lien_telephone }}</p>
+  </div>
+</section>
+
+<section class="sec sec--creme" id="rendez-vous" aria-label="Informations pratiques et formulaire">
+  <div class="wrap contact-grid">
+    <div>
+      <div class="infos">
+        <div>
+          <p class="info-k">Adresse</p>
+          <p class="info-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p>
+          <p class="small"><a href="{{ infos.plan_osm }}" target="_blank" rel="noopener">Voir sur le plan</a> · <a href="{{ infos.plan_google }}" target="_blank" rel="noopener">Itinéraire</a></p>
+        </div>
+        <div>
+          <p class="info-k">Accès</p>
+          <p class="info-v">{{ infos.acces|texte }}</p>
+{%- if infos.acces_detail %}
+          <p class="small">{{ infos.acces_detail|texte }}</p>
+{%- endif %}
+        </div>
+        <div>
+          <p class="info-k">Horaires</p>
+          <p class="info-v">{{ infos.horaires_texte }}<br>Sur rendez-vous uniquement</p>
+        </div>
+        <div>
+          <p class="info-k">Me joindre</p>
+          <p class="info-v"><a href="tel:{{ infos.tel }}">{{ infos.telephone }}</a><br><a href="mailto:{{ infos.email }}">{{ infos.email }}</a></p>
+          <p class="small social-links">{% for r in infos.reseaux %}<a href="{{ r.url }}" target="_blank" rel="noopener">{{ icone(r.icone) }}{{ r.nom }}<span class="sr-only"> (nouvel onglet)</span></a>{% endfor %}</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        <h2>Tarifs</h2>
+        <ul class="price-list">
+{%- for t in infos.tarifs %}
+          <li><span>{{ t.intitule|texte }}{% if t.precision %}<br><span class="small">{{ t.precision|texte }}</span>{% endif %}</span><strong>{{ t.prix_texte }}</strong></li>
+{%- endfor %}
+        </ul>
+        <p class="small" style="margin-top:16px"><strong>Moyens de paiement :</strong> {{ infos.paiement_phrase }}</p>
+{%- if infos.remboursement %}
+        <p class="small">{{ infos.remboursement|texte }}</p>
+{%- endif %}
+      </div>
+    </div>
+
+    <!-- FORMULAIRE : relié à Formspree (adresse réglable dans le CMS, « Infos pratiques »). Les messages arrivent
+         dans la boîte mail du compte Formspree. Le champ caché « subject » règle l'objet du mail : Formspree y
+         remplace la variable entre doubles accolades par le nom saisi dans le formulaire. -->
+    <form class="contact-form" id="formulaire" action="{{ infos.formulaire }}" method="post" data-contact-form data-email="{{ infos.email }}" data-telephone="{{ infos.telephone }}">
+      <input type="hidden" name="subject" value="Demande de rendez-vous – {{ '{{ nom }}' }}">
+      <h2 class="h2" style="font-size:30px;margin:0">Envoyer un message</h2>
+      <div class="field"><label for="nom">Nom et prénom</label><input id="nom" name="nom" type="text" autocomplete="name" required></div>
+      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required></div>
+      <div class="field"><label for="telephone">Téléphone <span>(facultatif)</span></label><input id="telephone" name="telephone" type="tel" autocomplete="tel"></div>
+      <div class="field"><label for="dispos">Vos disponibilités <span>(facultatif)</span></label><input id="dispos" name="disponibilites" type="text" placeholder="Par exemple&nbsp;: jeudi après 17&nbsp;h"></div>
+      <div class="field"><label for="message">Votre message</label><textarea id="message" name="message" rows="5" required></textarea></div>
+      <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <p class="form-note">Inutile de détailler ici des informations de santé : nous en parlerons de vive voix. Vos coordonnées servent uniquement à vous répondre (voir <a href="mentions-legales.html#donnees">confidentialité</a>).</p>
+      <button class="btn btn-primary" type="submit">Envoyer le message</button>
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>

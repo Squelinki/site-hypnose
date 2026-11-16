@@ -1,0 +1,34 @@
+seo_titre: "Hypnose à Paris 16e – Caroline Roulleau, hypnothérapeute"
+seo_description: "Caroline Roulleau, hypnothérapeute à Paris 16e. Hypnose ericksonienne et PNL : stress, confiance en soi, sommeil, arrêt du tabac, phobies… Sur rendez-vous."
+haut:
+  surtitre: "Hypnose ericksonienne · PNL · Paris 16e"
+  titre: |
+    Un voyage *au cœur*
+    de vous-même
+  texte: "Grâce à l'hypnose thérapeutique, je vous propose de vous accompagner vers la partie de vous la plus lucide, celle qui connaît même les choses oubliées, et ainsi vous aider à retrouver bonheur, apaisement, santé…"
+  citation: "Il est temps de vivre la vie que tu t'es imaginée"
+  citation_auteur: "Henry James"
+presentation:
+  phrase: "Sentez-vous libre de vous sentir de mieux en mieux, de jour en jour, et à tous points de vue !"
+  texte: |
+    Au cours de ces séances, je vous guiderai dans un calme tellement profond, agréable à vivre, qui devient un cheminement vers ce que vous cherchez vraiment : un voyage au cœur de vous-même !
+    Vous découvrirez alors des ressources inattendues afin de booster votre inconscient, cette autre facette de votre personnalité, pour devenir ou redevenir la meilleure version de vous-même.
+indications:
+  surtitre: "Indications"
+  titre: "Pourquoi choisir l'hypnose ?"
+  texte: "Et si votre difficulté ne figure pas dans cette liste, contactez-moi : nous en discuterons ensemble."
+hypnose:
+  texte: "L'hypnose n'est pas une forme de sommeil. C'est avant tout un état naturel et spontané, comparable à celui que l'on connaît lorsque l'on somnole dans un train en continuant à percevoir ce qui se passe autour."
+seance:
+  surtitre: "Déroulement d'une séance"
+  titre: "Installez-vous confortablement… et laissez faire"
+  note: "Une séance dure de 1 à 2 heures selon son type ; la première est souvent plus longue. Comptez en moyenne de 2 à 10 séances."
+qui:
+  texte: "Après une première vie dans l'univers des chiffres et de la comptabilité, au sein d'un grand groupe industriel du CAC 40, j'ai éprouvé le besoin de me pencher sur l'humain, sa relation à l'autre et son épanouissement personnel. Je me suis donc naturellement tournée vers l'hypnose."
+  diplomes_titre: "Diplômée de l'Institut Français d'Hypnose Ericksonienne (IFHE)"
+  diplomes:
+    - "Hypnose ericksonienne et Nouvelle Hypnose"
+    - "PNL (programmation neuro-linguistique)"
+    - "Hypnose classique"
+contact:
+  texte: "Pour toute demande d'information ou prise de rendez-vous, appelez-moi ou envoyez-moi un message : je vous répondrai rapidement."

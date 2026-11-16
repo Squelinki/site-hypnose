@@ -1,0 +1,31 @@
+{%- set c = pages.qui -%}
+<!-- ============ QUI SUIS-JE ? ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap page-hero-grid">
+    <div>
+      <p class="eyebrow">{{ c.surtitre|texte }}</p>
+      <h1 id="titre">{{ c.titre|titre }}</h1>
+      <p class="role">{{ c.metier|texte }}</p>
+{{ c.presentation|paragraphes('about-text', indent=6) }}
+    </div>
+    <!-- PHOTO : assets/img/caroline-roulleau.jpg (portrait vertical, format 4:5) -->
+    <div class="photo"><img src="assets/img/caroline-roulleau.jpg" alt="Caroline Roulleau, hypnothérapeute à Paris 16e" width="540" height="675" fetchpriority="high"></div>
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-labelledby="t-form">
+  <div class="wrap">
+    <div class="prose">
+      <h2 id="t-form">{{ c.formation_titre|texte }}</h2>
+      <p>{{ c.formation_texte|texte }}</p>
+      <ul class="diplomas">
+{%- for d in c.diplomes %}
+        <li>{{ d|texte }}</li>
+{%- endfor %}
+      </ul>
+      <h2>{{ c.ethique_titre|texte }}</h2>
+      <p class="ethic">{{ c.ethique|texte }}</p>
+    </div>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

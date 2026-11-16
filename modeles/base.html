@@ -1,0 +1,111 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- from "morceaux/annonces.html" import bandeau with context -%}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>{% include "morceaux/date.js" %}</script>
+  <title>{{ seo_titre|brut }}</title>
+  <meta name="description" content="{{ seo_description|attr }}">
+{% if noindex %}  <meta name="robots" content="noindex">
+{% else %}  <meta name="robots" content="max-image-preview:large">
+  <link rel="canonical" href="{{ adresse_page }}">
+{% endif %}{% if fichier == 'index.html' %}  <!-- GOOGLE SEARCH CONSOLE : si Google vous demande d'ajouter une « balise HTML » pour valider le site,
+       collez-la juste sous ce commentaire, dans modeles/base.html (inutile si vous validez par le DNS, voir GUIDE.md) -->
+{% endif %}  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Caroline Roulleau – Hypnothérapeute">
+  <meta property="og:title" content="{{ seo_titre|attr }}">
+  <meta property="og:description" content="{{ seo_description|attr }}">
+  <meta property="og:url" content="{{ adresse_page }}">
+  <meta property="og:image" content="{{ site_url }}/assets/img/partage.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Caroline Roulleau, hypnothérapeute à Paris 16e">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#F6F1EA">
+  <link rel="icon" href="{{ root }}favicon.ico" sizes="32x32">
+  <link rel="icon" href="{{ root }}favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ root }}apple-touch-icon.png">
+  <link rel="preload" href="{{ root }}assets/fonts/gelasio-regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="preload" href="{{ root }}assets/fonts/rubik-regular.woff" as="font" type="font/woff" crossorigin>
+  <link rel="stylesheet" href="{{ root }}assets/css/style.css">
+{% if jsonld %}  <script type="application/ld+json">{{ jsonld }}</script>
+{% endif %}</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+{% for a in annonces if a.bandeau %}
+{{ bandeau(a) }}
+{%- endfor %}
+
+<!-- ============ EN-TÊTE (identique sur toutes les pages) ============ -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{ root }}index.html"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></a>
+    <nav class="nav" id="menu" aria-label="Menu principal">
+      <a href="{{ root }}l-hypnose-c-est-quoi.html"{% if page == 'hypnose' %} aria-current="page"{% endif %}>L'hypnose</a>
+      <a href="{{ root }}indications.html"{% if page == 'indications' %} aria-current="page"{% endif %}>Indications</a>
+      <a href="{{ root }}deroulement-d-une-seance.html"{% if page == 'deroulement' %} aria-current="page"{% endif %}>Déroulement</a>
+      <a href="{{ root }}qui-suis-je.html"{% if page == 'qui' %} aria-current="page"{% endif %}>Qui suis-je ?</a>
+      <a href="{{ root }}contact.html"{% if page == 'contact' %} aria-current="page"{% endif %}>Tarifs &amp; contact</a>
+    </nav>
+    <a class="btn btn-primary btn-sm header-cta" href="{{ root }}contact.html#rendez-vous">Prendre rendez-vous</a>
+    <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="contenu">
+{{ content }}
+</main>
+
+<!-- ============ PIED DE PAGE (identique sur toutes les pages) ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <p class="brand-name">Caroline Roulleau</p>
+        <p class="brand-sub">Hypnose ericksonienne · Nouvelle Hypnose · PNL</p>
+        <p class="foot-note">L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
+        <div class="foot-social">
+{%- for r in infos.reseaux %}
+          <a href="{{ r.url }}" target="_blank" rel="noopener" title="{{ r.nom }}">{{ icone(r.icone) }}<span class="sr-only">{{ r.nom }} (nouvel onglet)</span></a>
+{%- endfor %}
+        </div>
+      </div>
+      <div>
+        <p class="foot-title">Cabinet</p>
+        <p>{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p>
+        <p><a href="tel:{{ infos.tel }}">{{ infos.telephone }}</a><br><a href="mailto:{{ infos.email }}">{{ infos.email }}</a></p>
+        <p>{{ infos.horaires_texte }}, sur rendez-vous</p>
+      </div>
+      <div>
+        <p class="foot-title">Le site</p>
+        <nav class="foot-links" aria-label="Liens du pied de page">
+          <a href="{{ root }}l-hypnose-c-est-quoi.html">L'hypnose, c'est quoi ?</a>
+          <a href="{{ root }}indications.html">Indications</a>
+          <a href="{{ root }}deroulement-d-une-seance.html">Déroulement d'une séance</a>
+          <a href="{{ root }}qui-suis-je.html">Qui suis-je ?</a>
+          <a href="{{ root }}contact.html">Tarifs &amp; contact</a>
+        </nav>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© {{ annee }} Caroline Roulleau</span>
+      <a href="{{ root }}mentions-legales.html">Mentions légales et confidentialité</a>
+    </div>
+  </div>
+</footer>
+
+<nav class="mobile-bar" aria-label="Contact rapide">
+  <a class="btn btn-primary" href="tel:{{ infos.tel }}">Appeler</a>
+  <a class="btn btn-ghost" href="{{ root }}contact.html#formulaire">Écrire</a>
+</nav>
+
+<script src="{{ root }}assets/js/main.js" defer></script>
+{%- if decorations %}
+<script type="application/json" id="decorations">{{ decorations }}</script>
+<script src="{{ root }}assets/js/decorations.js" defer></script>
+{%- endif %}
+</body>
+</html>

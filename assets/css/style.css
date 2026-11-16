@@ -245,6 +245,7 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .avis-score-txt .small { margin-top: 2px; }
 .avis-fb { display: inline-block; margin-top: 8px; font-size: 14.5px; color: var(--sauge-profonde); text-decoration: none; border-bottom: 1px solid currentColor; }
 .avis-fb:hover { color: var(--encre); }
+.avis-fb + .avis-fb { display: table; margin-top: 6px; }   /* lien « Laisser un avis Google » sous celui de Facebook */
 .avis-scroll { margin-top: 44px; }
 .avis-list { list-style: none; margin: 0; padding: 0; columns: 3; column-gap: 18px; }
 .avis-list > li { break-inside: avoid; padding-bottom: 18px; }
@@ -427,6 +428,193 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   .avis-hint { display: block; margin-top: 14px; font-size: 13.5px; color: var(--gris); }
 }
 
+/* 20 bis. ANNONCES ET DÉCORATIONS SAISONNIÈRES ----------------------------
+   Bandeau en haut des pages, encart de la page d'accueil et décorations
+   (guirlande, neige, paillettes, pétales, muguet, soleil, feuilles, cœurs,
+   cloche de Pâques, lune et étoiles), avec leurs petites surprises au clic.
+   Les périodes et les textes se règlent dans le CMS : cette section n'a pas besoin d'être modifiée. */
+[hidden] { display: none !important; }
+
+.bandeau { background: var(--sauge-profonde); color: var(--lin); font-size: 14.5px; line-height: 1.45; text-align: center; }
+.bandeau p { display: flex; align-items: center; justify-content: center; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
+.bandeau svg { width: 16px; height: 16px; flex: none; color: #F0DCCB; }
+.bandeau a { color: #fff; text-decoration: underline; text-decoration-color: rgba(255,255,255,.45); text-underline-offset: 3px; }
+.bandeau a:hover { text-decoration-color: currentColor; }
+.bandeau + .bandeau { border-top: 1px solid rgba(246,241,234,.18); }
+
+.encart h2 { text-wrap: balance; }
+.encart-img { justify-self: center; width: 100%; max-width: 440px; border-radius: var(--arrondi); box-shadow: 0 30px 50px -30px rgba(76,102,80,.55); }
+.encart-seul { display: grid; grid-template-columns: .9fr 1.1fr; gap: 72px; align-items: start; }
+.encart-seul .h2 { margin-bottom: 0; }
+.encart-seul .about-text:first-child { margin-top: 0; }
+
+:root {   /* formes des décorations (dessins d'une seule couleur) */
+  --f-flocon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M12 2 9.6 4.4M12 2l2.4 2.4M12 22l-2.4-2.4M12 22l2.4-2.4M3.3 7l.9 3.3M3.3 7l3.3-.9M20.7 17l-3.3.9M20.7 17l-.9-3.3M3.3 17l3.3.9M3.3 17l.9-3.3M20.7 7l-3.3-.9M20.7 7l-.9 3.3'/%3E%3C/svg%3E");
+  --f-petale: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5C6.5 6 4.5 12.5 7.5 18.5c1.6 3.2 7.4 3.2 9 0 3-6-1-12.6-4.5-17z'/%3E%3C/svg%3E");
+  --f-feuille: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 21c0-9.5 6.5-17 18-18 0 11.5-7.5 18-17 18'/%3E%3Cpath d='M3 21 9 15' stroke='black' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E");
+  --f-etoile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0c.9 6.6 4.5 10.2 12 12-7.5 1.8-11.1 5.4-12 12-.9-6.6-4.5-10.2-12-12C7.5 10.2 11.1 6.6 12 0z'/%3E%3C/svg%3E");
+  --f-coeur: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21s-7.5-4.6-9.6-9.2C.9 8 3 4 6.8 4c2.2 0 3.6 1.2 5.2 3 1.6-1.8 3-3 5.2-3 3.8 0 5.9 4 4.4 7.8C19.5 16.4 12 21 12 21z'/%3E%3C/svg%3E");
+  --f-clochette: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-6 -6 12 12'%3E%3Cpath d='M-5 0C-5-5.8 5-5.8 5 0v2.4l-1.6 1.8-1.7-1.4L0 4.4l-1.7-1.6-1.7 1.4L-5 2.4z'/%3E%3C/svg%3E");
+}
+
+.deco { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.a-deco .page-hero { position: relative; }
+.a-deco :is(.hero, .page-hero) > .wrap { position: relative; z-index: 1; }
+
+/* Neige, pétales, feuilles : chaque élément descend dans une colonne invisible haute comme la zone */
+.deco .p { position: absolute; top: 0; left: var(--x); width: var(--s); height: 100%; transform: translateY(var(--y)); }
+.deco .p i { position: absolute; left: 0; bottom: 0; width: var(--s); height: var(--s); background: var(--c); opacity: var(--o);
+  -webkit-mask: var(--forme) center / contain no-repeat; mask: var(--forme) center / contain no-repeat; }
+.deco-neige .p i { --forme: none; border-radius: 50%; background: radial-gradient(circle, #fff 0 45%, rgba(255,255,255,0) 72%);
+  filter: drop-shadow(0 0 1.5px rgba(76,102,80,.45)); }
+.deco-neige .p.flocon i { --forme: var(--f-flocon); border-radius: 0; background: #fff; }
+.deco-petales .p i { --forme: var(--f-petale); }
+.deco-feuilles .p i { --forme: var(--f-feuille); }
+.deco-paillettes .p, .deco-etoiles .p { top: var(--yy); height: var(--s); transform: none; }
+.deco-paillettes .p i { filter: drop-shadow(0 0 3px rgba(233,185,73,.55)); --forme: var(--f-etoile); }
+
+.deco-coeurs .p i { --forme: var(--f-coeur); }
+
+/* Étoiles de la Journée du sommeil, sur un ciel du soir très doux */
+.deco-etoiles::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 86% 0, rgba(148,170,203,.3), rgba(148,170,203,0) 58%); }
+.deco-etoiles .p i { --forme: var(--f-etoile); }
+.deco-etoiles .p.point i { --forme: none; border-radius: 50%; }
+
+/* Objets à cliquer : muguet, cloche de Pâques, lune. Sur l'accueil, ils se posent sur la photo ; ailleurs, dans un coin du haut de page */
+.deco.deco-objet { inset: auto; overflow: visible; z-index: 3; }
+.deco-bouton { display: block; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: 22px; background: none; color: inherit;
+  cursor: pointer; pointer-events: auto; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.deco-bouton:focus-visible { outline: 2px solid var(--sauge-profonde); outline-offset: 3px; }
+.deco-bouton svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.deco-bulle { position: absolute; z-index: 4; width: max-content; max-width: 228px; margin: 0; padding: 10px 14px; border-radius: 14px;
+  background: var(--creme); color: var(--encre); font-size: 13.5px; line-height: 1.45; text-align: left; text-wrap: pretty;
+  box-shadow: 0 16px 34px -16px rgba(47,43,38,.5), 0 0 0 1px rgba(76,102,80,.1); opacity: 0; transform: translateY(6px) scale(.96); pointer-events: none; }
+.deco-bulle.vue { opacity: 1; transform: none; }
+.deco-bulle b { color: var(--sauge-profonde); }
+.deco-bulle::after { content: ""; position: absolute; width: 11px; height: 11px; background: inherit; transform: rotate(45deg); }
+
+/* Muguet du 1er mai : brin de 13 clochettes au pied de la photo ; les clochettes s'allument une à une */
+.deco.deco-muguet { inset: auto -26px -22px auto; width: 172px; height: 226px; }
+.page-hero > .deco.deco-muguet { inset: auto 4% 0 auto; width: 120px; height: 158px; z-index: 2; }
+.deco-muguet svg { transform-origin: 50% 100%; filter: drop-shadow(0 10px 12px rgba(76,102,80,.25)); }
+.deco-muguet .halo, .deco-muguet .or { opacity: 0; }
+.deco-muguet .cl.on .halo { opacity: .9; }
+.deco-muguet .cl.on .or { opacity: 1; }
+.deco-muguet .deco-bulle { right: 12px; bottom: calc(100% - 12px); }
+.deco-muguet .deco-bulle::after { right: 40px; bottom: -5px; }
+
+/* Cloche de Pâques ailée, en haut de la photo */
+.deco.deco-cloches { top: -18px; left: -12px; width: 130px; height: 130px; }
+.deco-cloches svg { filter: drop-shadow(0 12px 12px rgba(76,102,80,.2)); }
+.deco-cloches .deco-bulle { left: 8px; top: calc(100% - 6px); }
+.deco-cloches .deco-bulle::after { left: 42px; top: -5px; }
+
+/* Lune de la Journée du sommeil, en haut de la photo */
+.deco.deco-lune { top: -26px; right: -16px; width: 130px; height: 130px; }
+.deco-lune .zz { font: italic 13px/1 var(--police-titres); fill: #8C84B4; opacity: .75; }
+.deco-lune .z2 { font-size: 10px; }
+.deco-lune .deco-bulle { right: 8px; top: calc(100% - 8px); }
+.deco-lune .deco-bulle::after { right: 36px; top: -5px; }
+
+/* Ailleurs que sur l'accueil : cloche et lune dans le coin du haut de page */
+.page-hero > .deco.deco-cloches, .page-hero > .deco.deco-lune { top: 12px; left: auto; right: 5%; width: 84px; height: 84px; z-index: 2; }
+.page-hero > .deco-cloches .deco-bulle { left: auto; right: 6px; }
+.page-hero > .deco-cloches .deco-bulle::after { left: auto; right: 34px; }
+
+/* Envols (gerbes, œufs, notes, pluie de muguet) : calque au-dessus de la page, qui ne gêne aucun clic */
+.deco-envol { position: fixed; inset: 0; z-index: 60; overflow: hidden; pointer-events: none; }
+.envol { position: absolute; width: var(--s); height: var(--s); margin: calc(var(--s) / -2) 0 0 calc(var(--s) / -2); will-change: transform, opacity; }
+.envol b { display: block; width: 100%; height: 100%; background: var(--c); -webkit-mask: var(--forme) center / contain no-repeat; mask: var(--forme) center / contain no-repeat; }
+.f-flocon { --forme: var(--f-flocon); filter: drop-shadow(0 0 1.5px rgba(76,102,80,.6)); }
+.f-etoile { --forme: var(--f-etoile); }
+.f-petale { --forme: var(--f-petale); }
+.f-feuille { --forme: var(--f-feuille); }
+.f-coeur { --forme: var(--f-coeur); }
+.f-clochette b { -webkit-mask: none; mask: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-7 -11.5 14 17'%3E%3Cpath d='M.4-4.2q.3-3.6-2.2-6.4' fill='none' stroke='%236B8B58' stroke-width='1.1' stroke-linecap='round'/%3E%3Cpath d='M-5 0C-5-5.8 5-5.8 5 0v2.4l-1.6 1.8-1.7-1.4L0 4.4l-1.7-1.6-1.7 1.4L-5 2.4z' fill='%23fff' stroke='%2393AE86' stroke-width='.75'/%3E%3C/svg%3E") center / contain no-repeat; filter: drop-shadow(0 3px 4px rgba(76,102,80,.28)); }
+.f-oeuf { width: calc(var(--s) * .78); margin-left: calc(var(--s) * -.39); }
+.f-oeuf b { -webkit-mask: none; mask: none; border-radius: 50% 50% 50% 50% / 60% 60% 42% 42%;
+  background: radial-gradient(circle at 32% 26%, rgba(255,255,255,.75) 0 2px, rgba(255,255,255,0) 3.5px),
+    linear-gradient(var(--c) 0 36%, rgba(255,255,255,.85) 36% 44%, var(--c) 44% 57%, rgba(255,255,255,.6) 57% 62%, var(--c) 62%);
+  box-shadow: inset -3px -4px 6px rgba(47,43,38,.16), 0 3px 5px -2px rgba(47,43,38,.3); }
+.f-note b, .f-z b { width: auto; height: auto; -webkit-mask: none; mask: none; background: none; color: var(--sauge-profonde); font: 400 var(--s)/1 var(--police-titres); white-space: nowrap; }
+.f-z b { font-style: italic; color: #8C84B4; }
+
+/* Soleil d'été */
+.deco-soleil i, .deco-soleil::before { content: ""; position: absolute; top: -280px; right: -220px; width: 760px; height: 760px; border-radius: 50%; }
+.deco-soleil::before { background: radial-gradient(circle, rgba(244,196,112,.5) 0, rgba(244,196,112,.2) 30%, rgba(244,196,112,0) 64%); }
+.deco-soleil i { background: repeating-conic-gradient(rgba(236,178,84,.2) 0 4deg, rgba(236,178,84,0) 4deg 15deg);
+  -webkit-mask: radial-gradient(circle, transparent 0 14%, #000 24%, transparent 62%); mask: radial-gradient(circle, transparent 0 14%, #000 24%, transparent 62%); }
+
+/* Guirlande lumineuse sous l'en-tête (un clic sur une ampoule, en haut de page : vague de lumière) */
+.deco.deco-guirlande { inset: calc(100% - 4px) 0 auto 0; height: 36px; z-index: 1; }
+.deco-guirlande svg { display: block; }
+.deco-guirlande .h { opacity: .3; }
+.deco-guirlande .l { pointer-events: auto; cursor: pointer; }
+.is-scrolled .deco-guirlande .l { pointer-events: none; }
+.nav-open .deco-guirlande { display: none; }
+
+@media (max-width: 900px) {
+  .bandeau { font-size: 13.5px; }
+  .bandeau p { padding-top: 9px; padding-bottom: 9px; }
+  .deco-soleil i, .deco-soleil::before { top: -200px; right: -200px; width: 520px; height: 520px; }
+  .deco.deco-guirlande { height: 26px; }
+  .deco.deco-muguet { width: 124px; height: 163px; right: -10px; bottom: -18px; }
+  .deco.deco-cloches { width: 98px; height: 98px; top: -20px; left: -8px; }
+  .deco.deco-lune { width: 98px; height: 98px; top: -26px; right: -12px; }
+  .page-hero > .deco.deco-objet { display: none; }
+  .deco-bulle { max-width: 205px; font-size: 13px; }
+  .a-guirlande .hero-grid { padding-top: 30px; }
+  .encart-seul { grid-template-columns: 1fr; gap: 18px; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes deco-chute { from { transform: translateY(-100%); } to { transform: translateY(var(--s)); } }
+  @keyframes deco-balance { from { translate: calc(var(--a) * -1) 0; rotate: calc(var(--t) * -1); } to { translate: var(--a) 0; rotate: var(--t); } }
+  @keyframes deco-scintille { 0%, 100% { scale: .35; opacity: .25; } 50% { scale: 1; opacity: var(--o); rotate: 45deg; } }
+  @keyframes deco-luit { 0%, 100% { scale: .6; opacity: .4; } 50% { scale: 1; opacity: var(--o); } }
+  @keyframes deco-tourne { to { rotate: 360deg; } }
+  @keyframes deco-ampoule { from { opacity: .38; } to { opacity: 1; } }
+  @keyframes deco-brise { from { rotate: -2.5deg; } to { rotate: 2.5deg; } }
+  @keyframes deco-clochette { from { rotate: -8deg; } to { rotate: 8deg; } }
+  @keyframes deco-tinte { from { rotate: -20deg; } to { rotate: 20deg; } }
+  @keyframes deco-pop { 0%, 100% { scale: 1; } 40% { scale: 1.5; } }
+  @keyframes deco-halo { from { opacity: .45; } to { opacity: 1; } }
+  @keyframes deco-flotte { from { translate: 0 -5px; } to { translate: 0 5px; } }
+  @keyframes deco-oscille { from { rotate: -5deg; } to { rotate: 5deg; } }
+  @keyframes deco-aile { from { rotate: 10deg; } to { rotate: -14deg; } }
+  @keyframes deco-sonne { 0%, 100% { rotate: 0deg; } 15% { rotate: 24deg; } 35% { rotate: -20deg; } 55% { rotate: 13deg; } 75% { rotate: -7deg; } }
+  @keyframes deco-battant { 0%, 100% { translate: 0 0; } 15% { translate: -9px 0; } 35% { translate: 8px 0; } 55% { translate: -5px 0; } 75% { translate: 3px 0; } }
+  @keyframes deco-berce { from { rotate: -6deg; } to { rotate: 4deg; } }
+  @keyframes deco-berce-fort { 0%, 100% { rotate: 0deg; } 30% { rotate: -16deg; } 65% { rotate: 10deg; } }
+  @keyframes deco-zz { 0% { opacity: 0; translate: 0 6px; } 30% { opacity: .9; } 100% { opacity: 0; translate: 6px -12px; } }
+  @keyframes deco-vague { to { opacity: .95; scale: 1.8; } }
+  .deco .p { animation: deco-chute var(--d) linear var(--r) infinite; }
+  .deco .p i { animation: deco-balance calc(var(--d) / 3) ease-in-out var(--r) infinite alternate; }
+  .deco-paillettes .p, .deco-etoiles .p { animation: none; }
+  .deco-paillettes .p i { animation: deco-scintille var(--d) ease-in-out var(--r) infinite; }
+  .deco-etoiles .p i { animation: deco-luit var(--d) ease-in-out var(--r) infinite; }
+  .deco-soleil i { animation: deco-tourne 160s linear infinite; }
+  .deco-guirlande .l { animation: deco-ampoule var(--d) ease-in-out var(--r) infinite alternate; }
+  .deco-guirlande.vague .h { transform-box: fill-box; transform-origin: center; animation: deco-vague .42s ease-out var(--v) 2 alternate both; }
+  .deco-coeurs .p { animation-direction: reverse; }
+  .deco-bulle { transition: opacity .25s ease, transform .25s ease; }
+  .deco-muguet svg { animation: deco-brise 6s ease-in-out infinite alternate; }
+  .deco-muguet .cl { transform-box: fill-box; transform-origin: 50% 0; animation: deco-clochette 2.8s ease-in-out infinite alternate; }
+  .deco-muguet .halo, .deco-muguet .or { transition: opacity .35s ease; }
+  .deco-muguet.sonne .cl { animation: deco-tinte .24s ease-in-out 4 alternate; }
+  .deco-muguet .cl.pop .or { transform-box: fill-box; transform-origin: 50% 30%; animation: deco-pop .6s ease-out; }
+  .deco-muguet.fete .cl.on .halo { animation: deco-halo .8s ease-in-out infinite alternate; }
+  .deco-cloches .vol { animation: deco-flotte 3.2s ease-in-out infinite alternate; }
+  .deco-cloches .corps { transform-box: view-box; transform-origin: 60px 22px; animation: deco-oscille 2.6s ease-in-out infinite alternate; }
+  .deco-cloches .aile { transform-box: fill-box; transform-origin: 100% 55%; animation: deco-aile 1.2s ease-in-out infinite alternate; }
+  .deco-cloches.sonne .corps { animation: deco-sonne 1.3s ease-out; }
+  .deco-cloches.sonne .battant { animation: deco-battant 1.3s ease-out; }
+  .deco-lune .astre { transform-box: view-box; transform-origin: 47px 50px; animation: deco-berce 5s ease-in-out infinite alternate; }
+  .deco-lune.berce .astre { animation: deco-berce-fort 1.6s ease-in-out; }
+  .deco-lune .zz { animation: deco-zz 4s ease-out infinite; }
+  .deco-lune .z2 { animation-delay: 1.3s; }
+}
+
 /* 21. ANIMATIONS --------------------------------------------------------------
    Toutes discrètes, et automatiquement coupées si l'appareil du visiteur
    demande de réduire les animations. Pour les supprimer complètement,
@@ -487,7 +675,7 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 
 /* 23. IMPRESSION ------------------------------------------------------------ */
 @media print {
-  .site-header, .mobile-bar, .skip, .breathe-stage, .breathe-controls, .cta-band { display: none !important; }
+  .site-header, .mobile-bar, .skip, .breathe-stage, .breathe-controls, .cta-band, .bandeau, .deco, .deco-envol { display: none !important; }
   body { background: #fff; }
   .band { background: none; color: var(--encre); }
   .reveal-on .rv { opacity: 1 !important; animation: none !important; }

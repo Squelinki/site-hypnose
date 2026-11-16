@@ -1,0 +1,30 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- set c = pages.indications -%}
+<!-- ============ INDICATIONS ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap">
+    <h1 id="titre"><span class="eyebrow">{{ c.surtitre|texte }}</span> {{ c.titre|titre }}</h1>
+    <p class="lead">{{ c.introduction|texte }}</p>
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-label="Liste des indications">
+  <div class="wrap">
+    <ul class="cards cards-lg">
+{%- for cat in c.categories %}
+      <li class="card">
+        <span class="ico">{{ icone(cat.icone) }}</span>
+        <h2>{{ cat.titre|texte }}</h2>
+        <ul class="checklist">{% for x in cat.liste %}<li>{{ x|texte }}</li>{% endfor %}</ul>
+      </li>
+{%- endfor %}
+      <li class="card card--accent">
+        <h2>{{ c.encadre_titre|texte }}</h2>
+        <p>{{ c.encadre_texte|texte }}</p>
+        <a class="btn" href="contact.html#rendez-vous">Me contacter</a>
+      </li>
+    </ul>
+    <p class="disclaimer">{{ icone('info') }}<span><strong>Attention :</strong> l'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</span></p>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

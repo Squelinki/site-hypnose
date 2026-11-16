@@ -1,0 +1,52 @@
+{#- Annonces saisonnières : bandeau en haut de toutes les pages et encart sur la page d'accueil.
+    Le contenu et les dates se règlent dans contenu/annonces.yml (ou dans le CMS : « Annonces et décorations »).
+    Chaque bloc est caché par défaut ; le petit script qui le suit l'affiche seulement pendant sa période. -#}
+{%- from "morceaux/icones.html" import icone -%}
+
+{%- macro bandeau(a) -%}
+<div class="bandeau" data-affiche-du="{{ a.du }}" data-affiche-au="{{ a.au }}" hidden>
+  <p class="wrap">{{ icone('etincelle') }}{% if a.bandeau_lien %}<a href="{{ a.bandeau_lien|lien }}">{{ a.bandeau|texte|annee }}&nbsp;<span class="arr" aria-hidden="true">→</span></a>{% else %}<span>{{ a.bandeau|texte|annee }}</span>{% endif %}</p>
+</div>
+<script>CR.montrer(document.currentScript.previousElementSibling)</script>
+{%- endmacro -%}
+
+{%- macro encart(a) -%}
+{%- set e = a.encart -%}
+<!-- ============ ANNONCE : {{ a.nom|upper }} (période : {{ a.du_texte }} → {{ a.au_texte }}, chaque année) ============ -->
+<section class="sec sec--sauge encart" id="{{ a.id }}" aria-labelledby="t-{{ a.id }}" data-affiche-du="{{ a.du }}" data-affiche-au="{{ a.au }}" hidden>
+  <div class="wrap {{ 'about-grid' if e.image else 'encart-seul' }}">
+{%- if e.image %}
+    <img class="encart-img" src="{{ e.image|lien }}" alt="{{ e.image_alt|attr }}"{{ e.image|dimensions }} loading="lazy" decoding="async">
+{%- endif %}
+    <div>
+{%- if e.surtitre %}
+      <p class="eyebrow">{{ e.surtitre|texte|annee }}</p>
+{%- endif %}
+      <h2 class="h2" id="t-{{ a.id }}">{{ e.titre|titre|annee }}</h2>
+{%- if not e.image %}
+    </div>
+    <div>
+{%- endif %}
+{{ e.texte|paragraphes('about-text', indent=6, annonce=True) }}
+{%- if e.points %}
+      <ul class="diplomas">
+{%- for p in e.points %}
+        <li>{{ p|texte(annonce=True) }}</li>
+{%- endfor %}
+      </ul>
+{%- endif %}
+{%- if e.bouton or e.bouton_telephone %}
+      <div class="actions">
+{%- if e.bouton %}
+        <a class="btn btn-primary" href="{{ (e.bouton_lien or 'contact.html#rendez-vous')|lien }}">{{ e.bouton|texte }}</a>
+{%- endif %}
+{%- if e.bouton_telephone %}
+        <a class="btn btn-ghost" href="tel:{{ infos.tel }}">{{ icone('telephone') }}{{ infos.telephone }}</a>
+{%- endif %}
+      </div>
+{%- endif %}
+    </div>
+  </div>
+</section>
+<script>CR.montrer(document.currentScript.previousElementSibling)</script>
+{%- endmacro -%}

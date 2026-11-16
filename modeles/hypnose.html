@@ -1,0 +1,36 @@
+{%- set c = pages.hypnose -%}
+<!-- ============ L'HYPNOSE, C'EST QUOI ? ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap">
+    <p class="eyebrow">{{ c.surtitre|texte }}</p>
+    <h1 id="titre">{{ c.titre|titre }}</h1>
+    <p class="lead">{{ c.introduction|texte }}</p>
+  </div>
+</section>
+
+<section class="band" aria-label="Citation de {{ c.citation_auteur|attr }}">
+  <div class="wrap">
+    <blockquote>« {{ c.citation|texte }} »</blockquote>
+    <cite>{{ c.citation_auteur|texte }}</cite>
+  </div>
+</section>
+
+<section class="sec sec--creme">
+  <div class="wrap">
+    <div class="prose">
+{%- for s in c.sections %}
+{%- if not loop.first %}
+{% endif %}
+      <h2>{{ s.titre|texte }}</h2>
+{{ s.texte|paragraphes(indent=6) }}
+{%- endfor %}
+    </div>
+    <ul class="methods">
+{%- for m in c.methodes %}
+      <li><h3>{{ m.titre|texte }}</h3><p>{{ m.texte|texte }}</p></li>
+{%- endfor %}
+    </ul>
+    <a class="link-more" href="index.html#plus-loin">Émissions et articles pour aller plus loin <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

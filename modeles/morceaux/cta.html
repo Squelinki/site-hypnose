@@ -1,0 +1,14 @@
+<section class="cta-band" aria-label="Prendre rendez-vous">
+  <div class="wrap">
+    <div class="cta-box">
+      <div>
+        <h2>Envie d'en parler ?</h2>
+        <p>{{ infos.horaires_texte }}, sur rendez-vous · {{ infos.adresse|texte }}, {{ infos.quartier|texte }}</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="contact.html#rendez-vous">Prendre rendez-vous</a>
+        <a class="btn btn-ghost" href="tel:{{ infos.tel }}">{{ infos.telephone }}</a>
+      </div>
+    </div>
+  </div>
+</section>

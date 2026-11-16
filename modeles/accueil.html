@@ -1,0 +1,197 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- from "morceaux/annonces.html" import encart with context -%}
+{%- set c = pages.accueil -%}
+<!-- ============ ACCUEIL ============ -->
+<section class="hero" aria-labelledby="titre">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <h1 id="titre"><span class="eyebrow">{{ c.haut.surtitre|texte }}</span> {{ c.haut.titre|titre(insecable=True) }}</h1>
+      <p class="lead">{{ c.haut.texte|texte }}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="contact.html#rendez-vous">Prendre rendez-vous</a>
+        <a class="btn btn-ghost" href="tel:{{ infos.tel }}">{{ icone('telephone') }}{{ infos.telephone }}</a>
+      </div>
+      <p class="meta"><span>{{ infos.horaires_court }} · <span class="nw">sur rendez-vous</span></span></p>
+      <p class="meta meta-avis"><a href="#temoignages">{{ icone('avis') }}{{ avis.pourcentage }}&nbsp;% de recommandations · {{ avis.recommandations }}&nbsp;avis&nbsp;Facebook</a></p>
+    </div>
+    <div class="hero-visual">
+      <!-- PHOTO : assets/img/caroline-roulleau.jpg (portrait vertical, format 4:5) -->
+      <div class="arch"><img src="assets/img/caroline-roulleau.jpg" alt="Caroline Roulleau, hypnothérapeute à Paris 16e" width="540" height="675" fetchpriority="high"></div>
+      <figure class="quote-card"><blockquote>« {{ c.haut.citation|texte }} »</blockquote><figcaption>{{ c.haut.citation_auteur|texte }}</figcaption></figure>
+    </div>
+  </div>
+</section>
+{% for a in annonces if a.encart.afficher %}
+{{ encart(a) }}
+{% endfor %}
+<section class="sec sec--creme" aria-label="Présentation">
+  <div class="wrap intro-grid">
+    <p class="intro-quote">{{ c.presentation.phrase|texte }}</p>
+    <div class="intro-text">
+{{ c.presentation.texte|paragraphes(indent=6) }}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="indications" aria-labelledby="t-ind">
+  <div class="wrap">
+    <p class="eyebrow">{{ c.indications.surtitre|texte }}</p>
+    <h2 class="h2" id="t-ind">{{ c.indications.titre|titre }}</h2>
+    <p class="lead2">{{ c.indications.texte|texte }}</p>
+    <ul class="cards">
+{%- for cat in pages.indications.categories %}
+      <li class="card"><span class="ico">{{ icone(cat.icone) }}</span><h3>{{ cat.titre|texte }}</h3><p>{{ cat.resume|texte }}</p></li>
+{%- endfor %}
+    </ul>
+    <p class="disclaimer">{{ icone('info') }}L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
+    <a class="link-more" href="indications.html">Voir toutes les indications <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="t-hyp">
+  <div class="wrap">
+    <p class="eyebrow" id="t-hyp">L'hypnose, c'est quoi ?</p>
+    <blockquote>« {{ pages.hypnose.citation|texte }} »</blockquote>
+    <cite>{{ pages.hypnose.citation_auteur|texte }}</cite>
+    <p class="band-text">{{ c.hypnose.texte|texte }}</p>
+    <a class="link-more" href="l-hypnose-c-est-quoi.html">Découvrir l'hypnose <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="sec" id="seance" aria-labelledby="t-sea">
+  <div class="wrap">
+    <p class="eyebrow">{{ c.seance.surtitre|texte }}</p>
+    <h2 class="h2" id="t-sea">{{ c.seance.titre|titre }}</h2>
+    <ol class="steps">
+{%- for e in pages.deroulement.etapes %}
+      <li class="step"><span class="step-num" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span><h3>{{ e.titre|texte }}</h3><p>{{ e.resume|texte }}</p></li>
+{%- endfor %}
+    </ol>
+    <p class="note">{{ icone('horloge') }}{{ c.seance.note|texte }}</p>
+    <a class="link-more" href="deroulement-d-une-seance.html">Tout savoir sur le déroulement <span class="arr" aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-labelledby="t-qui">
+  <div class="wrap about-grid">
+    <div class="avatar"><img src="assets/img/caroline-roulleau.jpg" alt="" width="540" height="675" loading="lazy" decoding="async"></div>
+    <div>
+      <p class="eyebrow">Qui suis-je ?</p>
+      <h2 class="h2" id="t-qui">Caroline Roulleau</h2>
+      <p class="role">{{ pages.qui.metier|texte }}</p>
+      <p class="about-text">{{ c.qui.texte|texte }}</p>
+      <p class="diplomas-title">{{ c.qui.diplomes_titre|texte }}</p>
+      <ul class="diplomas">
+{%- for d in c.qui.diplomes %}
+        <li>{{ d|texte }}</li>
+{%- endfor %}
+      </ul>
+      <p class="ethic">{{ pages.qui.ethique|texte }}</p>
+      <a class="link-more" href="qui-suis-je.html">Mon parcours <span class="arr" aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--sauge" id="temoignages" aria-labelledby="t-avis">
+  <div class="wrap">
+    <div class="avis-head">
+      <div>
+        <p class="eyebrow">Témoignages</p>
+        <h2 class="h2" id="t-avis">Ils me recommandent</h2>
+      </div>
+      <div class="avis-score">
+        <p class="avis-pct">{{ avis.pourcentage }}&nbsp;%</p>
+        <div class="avis-score-txt">
+          <p>de recommandations</p>
+          <p class="small">sur {{ avis.recommandations }} avis</p>
+          <a class="avis-fb" href="{{ avis.lien }}" target="_blank" rel="noopener">Voir sur Facebook<span class="sr-only"> (nouvel onglet)</span>&nbsp;<span class="arr" aria-hidden="true">→</span></a>
+{%- if infos.fiche_google %}
+          <a class="avis-fb" href="{{ infos.fiche_google|attr }}" target="_blank" rel="noopener">Laisser un avis Google<span class="sr-only"> (nouvel onglet)</span>&nbsp;<span class="arr" aria-hidden="true">→</span></a>
+{%- endif %}
+        </div>
+      </div>
+    </div>
+    <div class="avis-scroll" role="region" tabindex="0" aria-label="Avis publiés sur Facebook">
+    <ul class="avis-list" role="list">
+{%- for x in avis.liste %}
+      <li><figure class="avis"><blockquote>{{ x.texte|texte }}</blockquote><figcaption><span class="avis-nom{{ ' nw' if '-' in x.nom }}">{{ x.nom|texte }}</span> <time datetime="{{ x.date_iso }}">{{ x.date_texte }}</time></figcaption></figure></li>
+{%- endfor %}
+    </ul>
+    </div>
+    <p class="avis-hint" aria-hidden="true">Faites glisser pour lire les autres avis <span class="arr">→</span></p>
+    <p class="avis-note">Avis publiés par leurs auteurs sur ma page Facebook et reproduits ici sans sélection, du plus récent au plus ancien{% if avis.sans_commentaire %} ; {{ avis.sans_commentaire }} autre{{ 's' if avis.sans_commentaire > 1 }} personne{{ 's' if avis.sans_commentaire > 1 }} m'{{ 'ont' if avis.sans_commentaire > 1 else 'a' }} recommandée sans commentaire{% endif %}. Noms abrégés, orthographe corrigée. Avis non vérifiés (<a href="mentions-legales.html#avis">en savoir plus</a>).</p>
+  </div>
+</section>
+
+<section class="sec" id="respiration" data-breathe aria-labelledby="t-resp">
+  <div class="wrap breathe-grid">
+    <div>
+      <p class="eyebrow">Exercice · La cohérence cardiaque</p>
+      <h2 class="h2" id="t-resp">Respirez avec le cercle</h2>
+      <p class="lead2">Inspirez pendant que le cercle s'agrandit, expirez pendant qu'il se resserre : 5 secondes chacun. Vous sentirez en très peu de temps une relaxation intense et un bien-être général.</p>
+      <div class="breathe-controls">
+        <button class="btn btn-primary breathe-btn" type="button" aria-pressed="false">Commencer l'exercice</button>
+        <p class="breathe-timer" aria-live="polite">5 minutes, à interrompre quand vous voulez</p>
+      </div>
+    </div>
+    <div class="breathe-stage" aria-hidden="true">
+      <span class="ring"></span><span class="ring r2"></span>
+      <span class="breathe-orb"></span>
+      <span class="breathe-label"><span class="in">Inspirez</span><span class="out">Expirez</span></span>
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--creme" id="faq" aria-labelledby="t-faq">
+  <div class="wrap">
+    <p class="eyebrow">Questions fréquentes</p>
+    <h2 class="h2" id="t-faq">Vos questions</h2>
+    <div class="faq-list">
+{%- for q in faq.questions %}
+      <details{{ ' open' if loop.first }}><summary>{{ q.question|texte }}</summary><p>{{ q.reponse|texte }}</p></details>
+{%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="plus-loin" aria-labelledby="t-pl">
+  <div class="wrap">
+    <p class="eyebrow">Pour aller plus loin</p>
+    <h2 class="h2" id="t-pl">Lectures et émissions</h2>
+    <p class="lead2">{{ lectures.introduction|texte }}</p>
+    <div class="reading">
+{%- for groupe in lectures.groupes %}
+      <div class="more-group">
+        <h3 class="more-head">{{ icone(groupe.type) }}{{ groupe.titre }}</h3>
+        <ul class="more-list">
+{%- for l in groupe.liens %}
+          <li><a class="more-item" href="{{ l.lien }}" target="_blank" rel="noopener"><span class="more-src">{{ l.meta }}</span><span class="more-title">{{ l.titre|texte }}</span><span class="more-desc">{{ l.description|texte }}</span><span class="more-go">{{ groupe.verbe }}<span class="sr-only"> (nouvel onglet)</span> <span class="arr" aria-hidden="true">→</span></span></a></li>
+{%- endfor %}
+        </ul>
+      </div>
+{%- endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-labelledby="t-con">
+  <div class="wrap">
+    <p class="eyebrow">Tarifs &amp; contact</p>
+    <h2 class="h2" id="t-con">Prendre rendez-vous</h2>
+    <p class="lead2">{{ c.contact.texte|texte }}</p>
+    <div class="contact-grid">
+      <div class="infos">
+        <div><p class="info-k">Adresse</p><p class="info-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p><p class="small">{{ infos.acces|texte }}</p></div>
+        <div><p class="info-k">Horaires</p><p class="info-v">{{ infos.horaires_texte }}<br>Sur rendez-vous uniquement</p></div>
+        <div><p class="info-k">Tarifs</p><p class="info-v">{% for t in infos.tarifs %}{{ t.intitule_court|texte }} : {{ t.prix_texte }}{{ '<br>' if not loop.last }}{% endfor %}</p>{% if infos.duree_seance %}<p class="small">{{ infos.duree_seance|texte }}</p>{% endif %}</div>
+        <div><p class="info-k">Paiement</p><p class="info-v">{{ infos.paiement|texte }}</p>{% if infos.paiement_precision %}<p class="small">{{ infos.paiement_precision|texte }}</p>{% endif %}</div>
+      </div>
+      <div class="contact-card">
+        <h3>Une question ?</h3>
+        <p>Appelez-moi ou écrivez-moi, je vous réponds rapidement.</p>
+        <a class="btn btn-primary" href="tel:{{ infos.tel }}">Appeler le {{ infos.telephone }}</a>
+        <a class="btn btn-ghost" href="contact.html#formulaire">Envoyer un message</a>
+      </div>
+    </div>
+  </div>
+</section>
