@@ -1,14 +1,22 @@
 /* ==========================================================================
    Caroline Roulleau – Décorations saisonnières
-   Guirlande lumineuse, neige, paillettes, pétales, muguet, soleil, feuilles
-   d'automne, cœurs, cloche de Pâques, lune et étoiles.
+   Guirlande lumineuse, neige (en haut des pages ou sur tout le site),
+   paillettes, pétales, muguet, soleil, feuilles d'automne, cœurs, notes de
+   musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe de la
+   Chandeleur, poisson d'avril, glace de l'été, ardoise de la rentrée, calendrier de l'Avent.
    Les périodes se choisissent dans le CMS (« Annonces et décorations ») :
    ce fichier n'a pas besoin d'être modifié.
 
    Petites surprises au clic :
+   - la galette des rois : on sert les parts une à une, jusqu'à trouver la fève ;
+   - la crêpe de la Chandeleur : on la fait sauter ;
+   - le poisson d'avril : il se décolle et s'enfuit ;
    - le muguet : jeu des 13 clochettes (un brin à 13 clochettes porte bonheur) ;
    - la cloche de Pâques : elle sonne et sème des œufs ;
+   - la glace de l'été : une boule de plus à chaque clic, jusqu'à la cerise ;
    - la lune (Journée du sommeil) : elle s'endort ;
+   - l'ardoise de la rentrée : elle écrit de bonnes résolutions et lance des avions en papier ;
+   - le calendrier de l'Avent : chaque jour, une case s'ouvre sur un petit conseil bien-être ;
    - les ampoules de la guirlande : une vague de lumière ;
    - la photo de l'accueil (et de « Qui suis-je ? ») : une gerbe aux couleurs du moment.
    Le reste est purement décoratif : ignoré par les lecteurs d'écran, sans
@@ -26,19 +34,26 @@
     coeurs: ['#E59AA3', '#D9777F', '#F1BCC2', '#C9734F', '#EDA7AE'],
     etoiles: ['#D2B05C', '#B1A0CE', '#94AACB', '#E0C47E'],
     soleil: ['#F0C46A', '#E9A94F', '#F6D88E'],
-    oeufs: ['#E8A0AC', '#9FC3A0', '#EFCB66', '#A9B8E0', '#E9AE86', '#C7B0DD']
+    oeufs: ['#E8A0AC', '#9FC3A0', '#EFCB66', '#A9B8E0', '#E9AE86', '#C7B0DD'],
+    notes: ['#4C6650', '#C8734F', '#C99A3E', '#7D6A9E', '#5E8199'],
+    pieces: ['#E9BE58'],
+    poissons: ['#8FB7D0', '#B9D4E6', '#F0B49A', '#A8CFA8', '#F2D58A'],
+    rentree: ['#FFFFFF']
   };
   /* nombre d'éléments sur grand écran (environ deux fois moins sur téléphone) */
-  var NOMBRE = { neige: 28, petales: 20, feuilles: 12, paillettes: 22, coeurs: 14, etoiles: 18 };
+  var NOMBRE = { neige: 28, petales: 20, feuilles: 12, paillettes: 22, coeurs: 14, etoiles: 18, notes: 14, flocons: 30 };
   /* forme et couleurs de la gerbe qui jaillit quand on clique sur la photo */
   var GERBES = {
     guirlande: ['etoile', 'guirlande'], neige: ['flocon', 'neige'], paillettes: ['etoile', 'paillettes'],
     petales: ['petale', 'petales'], feuilles: ['feuille', 'feuilles'], coeurs: ['coeur', 'coeurs'],
-    soleil: ['etoile', 'soleil'], lune: ['etoile', 'etoiles'], muguet: ['clochette', 'neige'], cloches: ['oeuf', 'oeufs']
+    soleil: ['etoile', 'soleil'], lune: ['etoile', 'etoiles'], muguet: ['clochette', 'neige'], cloches: ['oeuf', 'oeufs'],
+    flocons: ['flocon', 'neige'], notes: ['croche', 'notes'], galette: ['etoile', 'paillettes'], crepe: ['piece', 'pieces'],
+    poisson: ['poissonnet', 'poissons'], rentree: ['avion', 'rentree'], avent: ['etoile', 'guirlande'], glace: ['etoile', 'soleil']
   };
   /* pesanteur (px/s²) et freinage de l'air pour chaque forme */
   var PHYSIQUE = { flocon: [150, 0.985], etoile: [480, 0.975], petale: [170, 0.975], feuille: [190, 0.975],
-                   coeur: [-140, 0.975], clochette: [420, 0.98], oeuf: [1300, 0.995] };
+                   coeur: [-140, 0.975], clochette: [420, 0.98], oeuf: [1300, 0.995], piece: [900, 0.99],
+                   poissonnet: [240, 0.975], croche: [-120, 0.975], avion: [80, 0.99] };
   var actifs = [];   /* décorations du moment */
 
   function hasard(min, max) { return min + Math.random() * (max - min); }
@@ -47,6 +62,7 @@
   function calme() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function zone(root) { return root.querySelector('.hero') || root.querySelector('.page-hero'); }
   function fr(t) { return String(t).replace(/ ([?!:;»])/g, '\u00a0$1').replace(/« /g, '«\u00a0'); }
+  function echappe(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
   function boite(type) {
     var b = document.createElement('div');
     b.className = 'deco deco-' + type;
@@ -80,6 +96,9 @@
         s = hasard(14, 22); d = hasard(12, 22);
       } else if (type === 'coeurs') {
         s = hasard(10, 20); d = hasard(14, 24);
+      } else if (type === 'notes') {
+        s = hasard(16, 26); d = hasard(12, 20);
+        if (i % 2) { classe += ' n2'; }
       } else if (type === 'etoiles') {
         s = hasard(9, 17); d = hasard(3.6, 7.5);
         if (i % 3 === 0) { classe += ' point'; s = hasard(3.5, 5.5); }
@@ -95,6 +114,23 @@
     }
     b.innerHTML = html;
     z.insertBefore(b, z.firstChild);
+  }
+
+  /* Neige sur tout le site : quelques flocons légers qui tombent devant toute la page, sous l'en-tête.
+     Rien chez les visiteurs qui demandent de réduire les animations (des flocons immobiles gêneraient la lecture). */
+  function flocons(root) {
+    if (calme()) { return; }
+    var b = boite('flocons');
+    var n = Math.round(NOMBRE.flocons * (petitEcran() ? 0.5 : 1)), html = '';
+    for (var i = 0; i < n; i++) {
+      var s = hasard(5, 11), d = hasard(13, 26), classe = 'p';
+      if (i % 4 === 0) { classe += ' flocon'; s += 6; }
+      html += '<span class="' + classe + '" style="--x:' + hasard(0, 98).toFixed(1) + '%;--s:' + s.toFixed(1) + 'px;' +
+        '--d:' + d.toFixed(1) + 's;--r:' + (-hasard(0, d)).toFixed(1) + 's;--y:' + (-hasard(8, 92)).toFixed(0) + '%;' +
+        '--a:' + hasard(8, 26).toFixed(0) + 'px;--t:' + hasard(10, 70).toFixed(0) + 'deg;--o:' + hasard(0.5, 0.9).toFixed(2) + '"><i></i></span>';
+    }
+    b.innerHTML = html;
+    document.body.appendChild(b);   /* calque fixe : devant toute la page, quelle que soit la zone décorée */
   }
 
   /* ---------------------------------------------------------------------
@@ -119,6 +155,7 @@
     var images = [], x = 0, y = 0, r = 0, vx = o.vx || 0, vy = o.vy || 0, vr = o.vr || 0, dt = 1 / 60;
     var n = Math.max(3, Math.round(o.duree / 1000 * 60)), fondu = o.fondu || 0.65, e = o.echelle || [1, 1], b = o.balance;
     for (var k = 0; k <= n; k++) {
+      if (o.aligne) { r = Math.atan2(vy, vx) * 180 / Math.PI; }   /* le nez de l'avion suit sa trajectoire */
       if (k % 3 === 0 || k === n) {
         var p = k / n, bx = b ? b[0] * Math.sin(b[1] * k * dt + b[2]) : 0;
         images.push({
@@ -154,10 +191,10 @@
   /* gerbe : jaillit d'un point, en éventail vers le haut */
   function gerbe(x, y, formes, n) {
     for (var i = 0; i < n; i++) {
-      var f = formes[i % formes.length], ph = PHYSIQUE[f[0]] || [400, 0.98];
-      var angle = hasard(-165, -15) * Math.PI / 180, v = hasard(150, 380);
-      envol(f[0], x, y, { couleur: choix(PALETTES[f[1]]), taille: hasard(11, 19), vx: Math.cos(angle) * v, vy: Math.sin(angle) * v,
-        g: ph[0], frein: ph[1], vr: hasard(-260, 260), duree: hasard(1200, 1800) });
+      var f = formes[i % formes.length], ph = PHYSIQUE[f[0]] || [400, 0.98], avion = f[0] === 'avion';
+      var angle = hasard(-165, -15) * Math.PI / 180, v = hasard(150, 380) * (avion ? 1.3 : 1);
+      envol(f[0], x, y, { couleur: choix(PALETTES[f[1]]), taille: hasard(11, 19) * (avion ? 1.5 : 1), vx: Math.cos(angle) * v, vy: Math.sin(angle) * v,
+        g: ph[0], frein: ph[1], vr: avion ? 0 : hasard(-260, 260), aligne: avion, duree: hasard(1200, 1800) * (avion ? 1.4 : 1) });
     }
   }
 
@@ -173,7 +210,7 @@
   }
 
   /* notes de musique qui s'envolent (muguet, cloche) */
-  function notes(x, y, n) {
+  function musique(x, y, n) {
     for (var i = 0; i < n; i++) {
       envol('note', x + hasard(-14, 14), y, { texte: i % 2 ? '\u266b' : '\u266a', taille: hasard(15, 21), vx: hasard(-26, 26),
         vy: hasard(-95, -70), duree: 1500, delai: i * 160, balance: [5, 5, i], fondu: 0.5 });
@@ -273,7 +310,7 @@
       var c = cl[o.clics - 1], p = point(c, 0.5, 0.2);
       c.classList.add('on');
       relancer(c, 'pop', 700);
-      notes(p[0], p[1], 2);
+      musique(p[0], p[1], 2);
       if (o.clics < cl.length) {
         dire(o, messageMuguet(o.clics));
         return;
@@ -323,7 +360,7 @@
       var z = zone(root), r = z ? z.getBoundingClientRect() : null, H = window.innerHeight || 768;
       var sol = Math.min(H - 14, r ? r.bottom - 14 : H - 14);
       if (sol < bas[1] + 60) { sol = bas[1] + 160; }
-      notes(haut[0], haut[1], 2);
+      musique(haut[0], haut[1], 2);
       for (var i = 0; i < n; i++) {
         envol('oeuf', bas[0] + hasard(-12, 12), bas[1], { couleur: choix(PALETTES.oeufs), taille: hasard(20, 26),
           vx: hasard(-150, 150), vy: hasard(-260, -110), g: 1300, frein: 0.995, vr: hasard(-200, 200),
@@ -361,6 +398,296 @@
       });
       gerbe(p[0], p[1], [['etoile', 'etoiles']], 6);
       dire(o, MESSAGES_LUNE[o.clics <= 3 ? o.clics - 1 : 3 + o.clics % 2]);   /* trois phrases, puis « Zzz… » et « Chut… » à tour de rôle */
+    });
+  }
+
+  /* Galette des rois (janvier) : huit parts et une fève cachée. Chaque clic sert une part ;
+     celle qui cache la fève couronne la reine ou le roi du jour, puis une nouvelle galette arrive. */
+  var PARTS = 8;
+  function polaire(a, r) {   /* point du disque de la galette (centre 85, 112), angle en degrés */
+    var t = a * Math.PI / 180;
+    return (85 + r * Math.cos(t)).toFixed(1) + ' ' + (112 + r * Math.sin(t)).toFixed(1);
+  }
+
+  function messageGalette(servies, reste) {
+    if (servies === 1) { return 'Une part pour vous… Pas de fève ! Encore une ?'; }
+    if (servies === 2) { return 'Toujours pas de fève… La prochaine sera peut-être la bonne !'; }
+    if (reste === 1) { return 'Plus qu\'une part : la fève est forcément dedans !'; }
+    return 'Pas de fève dans cette part. Plus que <b>' + reste + '</b> parts !';
+  }
+
+  function galette(root) {
+    /* rosace dorée : 20 rayures en spirale, dessinées dans chaque part (et coupées à sa forme) pour des parts nettes */
+    var rosace = '', parts = '', formes = '';
+    for (var i = 0; i < 20; i++) {
+      rosace += 'M' + polaire(i * 18, 5) + 'Q' + polaire(i * 18 + 8, 34) + ' ' + polaire(i * 18 + 40, 53);
+    }
+    for (var k = 0; k < PARTS; k++) {
+      var a1 = -90 + 45 * k, m = (a1 + 22.5) * Math.PI / 180, bord = [];
+      for (var j = 0; j <= 30; j++) {   /* bord festonné, débordant un peu sur les parts voisines pour éviter tout liseré */
+        var a = a1 - 0.5 + 46 * j / 30;
+        bord.push(polaire(a, 57 + 1.1 * Math.cos((a - a1) * 32 * Math.PI / 180)));
+      }
+      var d = 'M' + polaire(a1 + 202.5, 3) + 'L' + bord.join('L') + 'Z';   /* départ juste derrière le centre : pas de liseré au milieu */
+      formes += '<clipPath id="deco-galette-c' + k + '"><path d="' + d + '"/></clipPath>';
+      parts += '<g class="part" style="--dx:' + (Math.cos(m) * 34).toFixed(1) + 'px;--dy:' + (Math.sin(m) * 34).toFixed(1) + 'px">' +
+        '<g clip-path="url(#deco-galette-c' + k + ')"><path d="' + d + '" fill="url(#deco-galette-g)"/>' +
+        '<circle cx="85" cy="112" r="53.5" fill="none" stroke="#C27F35" stroke-opacity=".5" stroke-width="6"/>' +
+        '<path d="' + rosace + '" fill="none" stroke="#A3672A" stroke-opacity=".55" stroke-width="1.4" stroke-linecap="round"/></g></g>';
+    }
+    var dessin = '<svg viewBox="0 0 170 190" focusable="false" aria-hidden="true"><defs>' +
+      '<radialGradient id="deco-galette-g" gradientUnits="userSpaceOnUse" cx="78" cy="102" r="66"><stop offset="0" stop-color="#F9DE93"/>' +
+      '<stop offset=".55" stop-color="#EEBB5E"/><stop offset=".85" stop-color="#DB9C47"/><stop offset="1" stop-color="#C4823A"/></radialGradient>' +
+      '<linearGradient id="deco-couronne-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F8DD8C"/><stop offset="1" stop-color="#DCA640"/></linearGradient>' +
+      formes + '</defs>' +
+      '<circle cx="85" cy="112" r="74" fill="#FBF7EF" stroke="#E0D4BF" stroke-width="1.6"/>' +
+      '<circle cx="85" cy="112" r="65" fill="none" stroke="#EEE4D3" stroke-width="1.3"/>' +
+      '<g class="feve" transform="translate(85 82)"><path d="M0-10.5 3.2-3.3 10.6-3 4.8 1.7 6.7 9 0 4.9-6.7 9-4.8 1.7-10.6-3-3.2-3.3Z" fill="#FBE3A0" stroke="#B5862C" stroke-width="1.4" stroke-linejoin="round"/></g>' +
+      '<g class="gateau">' + parts + '</g>' +
+      '<g transform="rotate(-7 85 30)"><g class="couronne">' +
+      '<path d="M54 50V26L62 36L70 16L78 34L85 10L92 34L100 16L108 36L116 26V50Z" fill="url(#deco-couronne-g)" stroke="#B5862C" stroke-width="1.3" stroke-linejoin="round"/>' +
+      '<path d="M54 41H116" stroke="#C99A3E" stroke-width="1.2" opacity=".7"/>' +
+      '<circle cx="70" cy="16" r="2.6" fill="#F8DD8C" stroke="#B5862C"/><circle cx="85" cy="10" r="2.8" fill="#F8DD8C" stroke="#B5862C"/>' +
+      '<circle cx="100" cy="16" r="2.6" fill="#F8DD8C" stroke="#B5862C"/>' +
+      '<circle cx="66" cy="45.5" r="2.7" fill="#C8734F"/><circle cx="85" cy="45.5" r="3.1" fill="#6E8F72"/><circle cx="104" cy="45.5" r="2.7" fill="#D9777F"/></g></g></svg>';
+    var o = objet(root, 'galette', dessin, 'Servir une part de galette des rois (petit jeu)');
+    if (!o) { return; }
+    var partsEl = [].slice.call(o.boite.querySelectorAll('.part')), feveEl = o.boite.querySelector('.feve'), jeu;
+    function nouvellePartie() {
+      partsEl.forEach(function (x) { x.classList.remove('servie'); });
+      o.boite.classList.remove('gagne');
+      jeu = { depart: Math.floor(Math.random() * PARTS), servies: 0, feve: Math.floor(Math.random() * PARTS), fini: false };
+      var m = (-90 + 45 * jeu.feve + 22.5) * Math.PI / 180;
+      feveEl.setAttribute('transform', 'translate(' + (85 + 31 * Math.cos(m)).toFixed(1) + ' ' + (112 + 31 * Math.sin(m)).toFixed(1) + ')');
+    }
+    nouvellePartie();
+    o.jeu = function () { return jeu; };   /* pour les tests */
+    indice(o, 'galette', 'Psst… tirez les rois !');
+    o.bouton.addEventListener('click', function () {
+      o.clics += 1;
+      if (jeu.fini) { relancer(o.boite, 'sonne', 900); return; }   /* pendant la fête : la couronne brille */
+      var k = (jeu.depart + jeu.servies) % PARTS;
+      jeu.servies += 1;
+      partsEl[k].classList.add('servie');
+      if (k !== jeu.feve) {
+        dire(o, messageGalette(jeu.servies, PARTS - jeu.servies));
+        return;
+      }
+      jeu.fini = true;
+      o.boite.classList.add('gagne');
+      var p = point(feveEl, 0.5, 0.5);
+      gerbe(p[0], p[1], [['etoile', 'paillettes']], petitEcran() ? 12 : 18);
+      dire(o, '<b>La fève !</b> Bravo, vous voilà reine ou roi du jour. Très belle année !', 7000);
+      setTimeout(nouvellePartie, 7000);
+    });
+  }
+
+  /* Crêpe de la Chandeleur : à chaque clic, elle saute et retombe dans la poêle. */
+  function messageCrepe(n) {
+    if (n === 1) { return 'Hop ! Elle retombe dans la poêle : selon la tradition, chance et prospérité pour toute l\'année !'; }
+    if (n === 2) { return 'Et de deux ! Vous avez le coup de main.'; }
+    if (n === 3) { return 'Trois crêpes ! La tradition veut qu\'on les fasse sauter une pièce dans l\'autre main : voici les vôtres.'; }
+    return '<b>' + n + '</b> crêpes sautées. Bonne Chandeleur !';
+  }
+
+  function crepe(root) {
+    var dessin = '<svg viewBox="0 0 176 128" focusable="false" aria-hidden="true"><defs>' +
+      '<linearGradient id="deco-crepe-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7DC93"/><stop offset="1" stop-color="#DDA751"/></linearGradient>' +
+      '<linearGradient id="deco-poele-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4A4541"/><stop offset="1" stop-color="#2B2725"/></linearGradient></defs>' +
+      '<g class="vapeur" fill="none" stroke="#B8AFA4" stroke-width="2" stroke-linecap="round"><path d="M64 60c-5-6 5-9 0-16"/><path d="M94 58c-5-6 5-9 0-16"/></g>' +
+      '<g class="poele"><path d="M127 80 168 68c3.6-1 6 1 6 4s-1.6 4.6-4.4 5.4L131 88z" fill="#80593A"/>' +
+      '<path d="M126 79.6 135.4 77l2.6 8.8-8.6 2.6z" fill="#8C8580"/>' +
+      '<path d="M22 80c1 15 13 25 30 26h54c17-1 29-11 30-26z" fill="url(#deco-poele-g)"/>' +
+      '<ellipse cx="79" cy="80" rx="57" ry="13.5" fill="#57514C"/><ellipse cx="79" cy="81" rx="50.5" ry="10.5" fill="#2E2A27"/></g>' +
+      '<g class="crepe"><ellipse cx="79" cy="77" rx="43" ry="8.6" fill="url(#deco-crepe-g)" stroke="#C99248" stroke-width=".9"/>' +
+      '<g fill="#C4863B" fill-opacity=".5"><ellipse cx="62" cy="76" rx="3.4" ry="1.4"/><ellipse cx="96" cy="78" rx="3.4" ry="1.4"/>' +
+      '<ellipse cx="74" cy="79.5" rx="2.2" ry="1"/><ellipse cx="84" cy="74.5" rx="2.2" ry="1"/>' +
+      '<ellipse cx="50" cy="78.5" rx="1.8" ry=".8"/><ellipse cx="108" cy="75.5" rx="1.8" ry=".8"/></g></g></svg>';
+    var o = objet(root, 'crepe', dessin, 'Faire sauter la crêpe (petit jeu de la Chandeleur)');
+    if (!o) { return; }
+    var enVol = false;
+    o.sauts = 0;
+    indice(o, 'crepe', 'Psst… faites sauter la crêpe !');
+    o.bouton.addEventListener('click', function () {
+      if (enVol) { return; }
+      enVol = true;
+      o.clics += 1;
+      relancer(o.boite, 'saute', 1000);
+      setTimeout(function () {   /* atterrissage */
+        enVol = false;
+        o.sauts += 1;
+        dire(o, messageCrepe(o.sauts));
+        if (o.sauts === 3 || o.sauts % 10 === 0) {
+          var p = point(o.bouton, 0.45, 0.55);
+          gerbe(p[0], p[1], [['piece', 'pieces']], petitEcran() ? 8 : 12);
+        }
+      }, calme() ? 0 : 950);
+    });
+  }
+
+  /* Poisson d'avril (1er avril) : un poisson en papier collé au bord de la photo. Au clic, il se décolle et s'enfuit. */
+  function poisson(root) {
+    var dessin = '<svg viewBox="0 0 96 62" focusable="false" aria-hidden="true"><g class="corps">' +
+      '<path class="queue" d="M66 31 86 14l-4 17 5 17z" fill="#9CC0D6" stroke="#5E8199" stroke-width="1.6" stroke-linejoin="round"/>' +
+      '<path d="M36 17l8-9 5 10z" fill="#9CC0D6" stroke="#5E8199" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<path d="M8 31c8-15 33-22 55-9 3 2 5 5.6 6 9-1 3.4-3 7-6 9-22 13-47 6-55-9z" fill="#BCD7E8" stroke="#5E8199" stroke-width="1.6"/>' +
+      '<path d="M30 22q5 9 0 18M41 20q5 11 0 22M52 21q5 10 0 20" fill="none" stroke="#7FA2BA" stroke-width="1.1" stroke-linecap="round"/>' +
+      '<circle cx="20" cy="28" r="2.8" fill="#2F2B26"/><circle cx="19.2" cy="27.1" r=".9" fill="#fff"/>' +
+      '<path d="M10.5 34q3 1.6 6 .4" fill="none" stroke="#5E8199" stroke-width="1.2" stroke-linecap="round"/></g>' +
+      '<g transform="rotate(9 49 8)"><rect class="scotch" x="34" y="3" width="30" height="11" rx="1" fill="#F3EAD2" fill-opacity=".88" stroke="#DCCDAA" stroke-width=".7"/></g></svg>';
+    var o = objet(root, 'poisson', dessin, 'Décoller le poisson en papier');
+    if (!o) { return; }
+    o.bouton.addEventListener('click', function () {
+      if (o.parti) { return; }
+      o.parti = true;
+      o.clics += 1;
+      o.boite.classList.add('nage');
+      dire(o, '<b>Poisson d\'avril !</b> Il était accroché là depuis ce matin…', 5000);
+      setTimeout(function () { o.boite.classList.add('parti'); o.bouton.disabled = true; }, calme() ? 0 : 2600);
+    });
+  }
+
+  /* Ardoise de la rentrée : elle écrit de bonnes résolutions à la craie et lance un avion en papier à chaque clic. */
+  var RESOLUTIONS = [['Bonne rentrée !'], ['Je prends du temps', 'pour moi'], ['Je respire'], ['J\'ose !'], ['Je crois', 'en moi'],
+                     ['Je dors mieux'], ['Je souris']];
+
+  function rentree(root) {
+    var dessin = '<svg viewBox="0 0 180 146" focusable="false" aria-hidden="true"><defs>' +
+      '<linearGradient id="deco-bois-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#DDB277"/><stop offset="1" stop-color="#B5804A"/></linearGradient>' +
+      '<radialGradient id="deco-ardoise-g" cx=".45" cy=".4" r=".75"><stop offset="0" stop-color="#4A5A52"/><stop offset="1" stop-color="#2F3B35"/></radialGradient>' +
+      '<filter id="deco-craie-f" x="-5%" y="-30%" width="110%" height="160%"><feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="4" result="b"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="b" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter></defs>' +
+      '<rect x="3" y="12" width="174" height="128" rx="10" fill="url(#deco-bois-g)" stroke="#9C6C3B" stroke-width="1.2"/>' +
+      '<rect x="13" y="22" width="154" height="108" rx="4" fill="url(#deco-ardoise-g)"/>' +
+      '<path d="M13 49H167M13 76H167M13 103H167" stroke="#C9776A" stroke-opacity=".22" stroke-width="1"/>' +
+      '<path d="M30 117c22-5 48-3 72 1" fill="none" stroke="#fff" stroke-opacity=".07" stroke-width="9" stroke-linecap="round"/>' +
+      '<text class="craie" x="90" y="80" text-anchor="middle" filter="url(#deco-craie-f)"></text>' +
+      '<rect x="118" y="128" width="22" height="6" rx="2.5" fill="#F8F6EF" stroke="#D8D2C2" stroke-width=".7" transform="rotate(-4 129 131)"/></svg>';
+    var o = objet(root, 'rentree', dessin, 'Écrire sur l\'ardoise (bonnes résolutions de rentrée)');
+    if (!o) { return; }
+    var texte = o.boite.querySelector('.craie'), minuterie;
+    o.phrase = 0;
+    function ecrire(lignes, instant) {
+      clearTimeout(minuterie);
+      lignes = lignes.map(fr);
+      texte.setAttribute('class', 'craie' + (lignes.some(function (l) { return l.length > 13; }) ? ' longue' : ''));
+      var total = lignes.join('').length, k = instant || calme() ? total : 0;
+      (function suite() {
+        var reste = k, html = '';
+        lignes.forEach(function (l, i) {
+          html += '<tspan x="90" dy="' + (i ? 24 : (lignes.length - 1) * -12) + '">' + echappe(l.slice(0, Math.max(0, reste))) + '</tspan>';
+          reste -= l.length;
+        });
+        texte.innerHTML = html;
+        if (k < total) { k += 1; minuterie = setTimeout(suite, 55); }
+      })();
+    }
+    ecrire(RESOLUTIONS[0], true);
+    o.bouton.addEventListener('click', function () {
+      o.clics += 1;
+      o.phrase = (o.phrase + 1) % RESOLUTIONS.length;
+      relancer(o.boite, 'efface', 450);
+      var phrase = RESOLUTIONS[o.phrase];
+      minuterie = setTimeout(function () { ecrire(phrase); }, calme() ? 0 : 320);
+      var p = point(o.bouton, 0.15, 0.2);
+      envol('avion', p[0], p[1], { taille: 30, vx: hasard(-340, -250), vy: hasard(-170, -100), g: 80, frein: 0.996,
+        aligne: true, duree: 3400, fondu: 0.8 });
+      if (o.phrase === 0) { dire(o, 'Et vous, quelle est votre bonne résolution de rentrée ?', 5500); }
+      else if (o.clics === 1) { dire(o, 'Mes bonnes résolutions de rentrée…', 3000); }
+    });
+  }
+
+  /* Calendrier de l'Avent (1er – 24 décembre) : un paquet cadeau qui porte le numéro du jour.
+     Ouvert, il offre le petit conseil bien-être du jour (textes modifiables dans le CMS). */
+  function conseilsAvent() {
+    var c = document.getElementById('conseils-avent');
+    try { return c ? JSON.parse(c.textContent) : []; } catch (e) { return []; }
+  }
+
+  function texteAvent(n, conseils) {
+    if (!n) { return '<b>Joyeuses fêtes !</b> Prenez bien soin de vous.'; }
+    var c = conseils.length ? conseils[(n - 1) % conseils.length] : '';
+    return '<b>' + n + (n === 1 ? '<sup>er</sup>' : '') + ' décembre</b> · ' + (c ? 'Le conseil du jour : ' + echappe(c) : 'Belle journée à vous !');
+  }
+
+  function avent(root) {
+    var jour = window.CR.jour, n = Math.floor(jour / 100) === 12 && jour % 100 <= 24 ? jour % 100 : 0;
+    var etoiles = '';
+    [[38, 96], [100, 94], [44, 128], [96, 132], [33, 112], [106, 115]].forEach(function (e) {
+      etoiles += '<path transform="translate(' + e[0] + ' ' + e[1] + ') scale(.55)" d="M0-7 1.9-2.3 7-2 3.1 1.2 4.3 6.3 0 3.4-4.3 6.3-3.1 1.2-7-2-1.9-2.3Z"/>';
+    });
+    var dessin = '<svg viewBox="0 0 140 156" focusable="false" aria-hidden="true"><defs>' +
+      '<linearGradient id="deco-avent-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#62806A"/><stop offset="1" stop-color="#4A644F"/></linearGradient>' +
+      '<radialGradient id="deco-avent-l"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".95"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>' +
+      '<ellipse class="lueur" cx="70" cy="76" rx="60" ry="36" fill="url(#deco-avent-l)"/>' +
+      '<rect x="22" y="76" width="96" height="74" rx="6" fill="url(#deco-avent-g)"/>' +
+      '<g fill="#F6F1EA" fill-opacity=".38">' + etoiles + '</g>' +
+      '<rect x="63" y="76" width="14" height="74" fill="#C8734F"/><rect x="63" y="76" width="4" height="74" fill="#DD9370" opacity=".7"/>' +
+      '<g class="couvercle"><rect x="16" y="60" width="108" height="20" rx="5" fill="#6C8B71"/>' +
+      '<rect x="63" y="60" width="14" height="20" fill="#C8734F"/>' +
+      '<path d="M70 60c-6-16-28-22-28-8 0 7 14 9 28 8zM70 60c6-16 28-22 28-8 0 7-14 9-28 8z" fill="#D07B56" stroke="#A85C3E" stroke-width="1.2"/>' +
+      '<circle cx="70" cy="60" r="5" fill="#A85C3E"/>' +
+      '<path d="M75 57c10-6 17-12 23-18" fill="none" stroke="#94533A" stroke-width="1.2"/>' +
+      '<circle cx="106" cy="30" r="15" fill="#FBF3DC" stroke="#C99A3E" stroke-width="1.5"/>' +
+      '<text class="jour" x="106" y="35.5" text-anchor="middle">' + (n || '\u2605') + '</text></g></svg>';
+    var o = objet(root, 'avent', dessin, n ? 'Ouvrir la case du ' + n + (n === 1 ? 'er' : '') + ' décembre (calendrier de l\'Avent)' : 'Ouvrir le cadeau');
+    if (!o) { return; }
+    indice(o, 'avent', n ? 'Psst… ouvrez la case du jour !' : 'Psst… ouvrez le cadeau !');
+    o.bouton.addEventListener('click', function () {
+      o.clics += 1;
+      var ouvert = o.boite.classList.toggle('ouvert');
+      if (!ouvert) {
+        dire(o, n && n < 24 ? 'À demain pour un nouveau conseil !' : 'Joyeuses fêtes !', 3500);
+        return;
+      }
+      var p = point(o.bouton, 0.5, 0.45);
+      gerbe(p[0], p[1], [['etoile', 'guirlande']], petitEcran() ? 8 : 12);
+      dire(o, texteAvent(n, conseilsAvent()), 12000);
+    });
+  }
+
+  /* Glace de l'été : une boule pour commencer ; chaque clic en ajoute une, jusqu'à cinq et la cerise… puis une nouvelle glace. */
+  var BOULES = [['#FBF0D2', '#E2CC92'], ['#F6B8C1', '#DC8796'], ['#CFE3AE', '#9EBE74'], ['#F5C88A', '#DA9A4F'], ['#A87557', '#7D513A']];
+  var MESSAGES_GLACE = ['Une nouvelle glace ? Avec plaisir !', 'Une boule de fraise en plus ?', 'Et une de pistache !', 'Un peu d\'abricot…',
+                        'Et du chocolat, avec sa cerise ! Bel été : savourez chaque instant.'];
+
+  function glace(root) {
+    var boules = '';
+    BOULES.forEach(function (b, i) {
+      boules += '<g transform="translate(50 ' + (124 - i * 21) + ')"><g class="boule' + (i ? '' : ' posee') + '">' +
+        '<path d="M-22 5c-3-18 8-29 22-29s25 11 22 29c-2 4-6 1-8 4s-6 4-8 0-6-2-7 1-6 3-7-1-5-2-7-1-6-1-7-3z" fill="' + b[0] + '" stroke="' + b[1] + '" stroke-width="1.4"/>' +
+        '<path d="M-12-13c3-4 8-6 13-6" fill="none" stroke="#fff" stroke-opacity=".75" stroke-width="2.6" stroke-linecap="round"/></g></g>';
+    });
+    var dessin = '<svg viewBox="0 0 100 196" focusable="false" aria-hidden="true">' +
+      '<path d="M27 128 50 192 73 128z" fill="#E3B26A" stroke="#BF8840" stroke-width="1.4" stroke-linejoin="round"/>' +
+      '<path d="M33 128l29 40M43 128l24 33M53 128l18 25M67 128l-29 40M57 128l-24 33M47 128l-18 25" stroke="#BF8840" stroke-opacity=".6" stroke-width="1.2"/>' +
+      boules +
+      '<g class="cerise"><path d="M51 17c1-7 4-11 9-13" fill="none" stroke="#6B8B58" stroke-width="1.8" stroke-linecap="round"/>' +
+      '<circle cx="50" cy="22" r="7" fill="#C8434A"/><circle cx="47.6" cy="19.6" r="2" fill="#fff" fill-opacity=".6"/></g></svg>';
+    var o = objet(root, 'glace', dessin, 'Ajouter une boule de glace (petit jeu)');
+    if (!o) { return; }
+    var boulesEl = [].slice.call(o.boite.querySelectorAll('.boule'));
+    o.boules = 1;
+    indice(o, 'glace', 'Psst… une boule de plus ?');
+    o.bouton.addEventListener('click', function () {
+      o.clics += 1;
+      if (o.boules >= BOULES.length) {   /* nouvelle glace */
+        boulesEl.forEach(function (b, i) { if (i) { b.classList.remove('posee'); } });
+        o.boite.classList.remove('complete');
+        o.boules = 1;
+        dire(o, MESSAGES_GLACE[0]);
+        return;
+      }
+      var b = boulesEl[o.boules];
+      o.boules += 1;
+      b.classList.add('posee');
+      relancer(b, 'plop', 600);
+      dire(o, MESSAGES_GLACE[o.boules - 1], o.boules === BOULES.length ? 6500 : 4500);
+      if (o.boules === BOULES.length) {
+        o.boite.classList.add('complete');
+        var p = point(o.bouton, 0.5, 0.1);
+        gerbe(p[0], p[1], [['etoile', 'soleil']], petitEcran() ? 10 : 14);
+      }
     });
   }
 
@@ -438,6 +765,14 @@
     muguet: muguet,
     cloches: cloches,
     lune: lune,
+    galette: galette,
+    crepe: crepe,
+    poisson: poisson,
+    rentree: rentree,
+    avent: avent,
+    glace: glace,
+    flocons: flocons,
+    notes: function (r) { particules(r, 'notes'); },
     coeurs: function (r) { particules(r, 'coeurs'); },
     neige: function (r) { particules(r, 'neige'); },
     petales: function (r) { particules(r, 'petales'); },

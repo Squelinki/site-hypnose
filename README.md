@@ -14,5 +14,6 @@
 | `.pages.yml` | Configuration du CMS |
 | `.github/workflows/publier-le-site.yml` | Publication automatique à chaque modification |
 | `CNAME`, `robots.txt`, `favicon.*`, `apple-touch-icon.png` | Nom de domaine, consignes aux moteurs de recherche, icônes |
+| `assets/img/logo*.svg`, `assets/img/logo-hypnose-roulleau.png`, `assets/img/partage.jpg` | Logo « HR » et image de partage (voir GUIDE.md, section 7) |
 
 Pages publiées : `index.html` (accueil), `l-hypnose-c-est-quoi.html`, `indications.html`, `deroulement-d-une-seance.html`, `qui-suis-je.html`, `contact.html` (tarifs et formulaire), `mentions-legales.html`, `404.html`.

@@ -29,6 +29,13 @@
   function initSite(root) {
     root = root || document;
 
+    /* 0. Filet de sécurité : si un petit script de la page n'a pas pu s'exécuter, on affiche quand même
+          les bandeaux et encarts du moment, et l'année en cours dans le pied de page. */
+    if (window.CR) {
+      [].forEach.call(root.querySelectorAll('[data-affiche-du][hidden]'), window.CR.montrer);
+      window.CR.dater(root.querySelector('.foot-bottom'));
+    }
+
     /* 1. Menu mobile ------------------------------------------------------ */
     var header = root.querySelector('.site-header');
     var burger = root.querySelector('.burger');

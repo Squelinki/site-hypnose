@@ -55,6 +55,7 @@ Pages CMS est gratuit et open source. Il n'héberge rien : il enregistre directe
 | **Coordonnées, horaires et tarifs** | Téléphone, e-mail, adresse, accès, horaires, tarifs, moyens de paiement, réseaux sociaux, fiche Google, adresse du formulaire. Repris automatiquement sur toutes les pages et transmis à Google |
 | **Avis** | Les témoignages de l'accueil (le plus récent en premier) et le nombre de recommandations |
 | **Questions fréquentes** | La FAQ de l'accueil |
+| **Calendrier de l'Avent** | Les 24 petits conseils bien-être du calendrier de l'Avent (un par jour, du 1er au 24 décembre) |
 | **Lectures et émissions** | Les liens « Pour aller plus loin » de l'accueil |
 | **Textes des pages** | Tous les textes de chaque page, ainsi que leur **titre et description dans Google** |
 
@@ -77,22 +78,30 @@ Chaque annonce revient **toute seule chaque année** pendant sa période (heure 
 | Période | Décoration | Bandeau en haut des pages | Encart sur l'accueil |
 |---|---|---|---|
 | 1er – 31 janvier | Paillettes dorées | « Belle et heureuse année 2027 ! » | « Et si cette année était celle du changement ? » |
+| 2 – 31 janvier | Galette des rois (jeu de la fève) | – | – |
+| 1er – 2 février | Crêpe de la Chandeleur (à faire sauter) | « Bonne Chandeleur ! » | – |
 | 7 – 14 février | Cœurs | « Bonne Saint-Valentin ! Prenez soin de vous et de ceux que vous aimez. » | – |
 | La semaine de la Journée du sommeil, calculée chaque année (en 2027 : du 13 au 19 mars) | Lune et étoiles | Journée du sommeil (lien vers l'encart) | « Retrouver un sommeil apaisé » |
 | 20 mars – 30 avril | Pétales de fleurs | – | – |
 | Du lundi précédant Pâques au lundi de Pâques, calculé chaque année (en 2027 : du 22 au 29 mars) | Cloche de Pâques | « Joyeuses Pâques ! » | – |
+| 1er avril | Poisson d'avril | – | – |
 | 1er – 7 mai | Brin de muguet à 13 clochettes, au pied de la photo | « Un brin de muguet pour vous porter bonheur ! » | – |
 | 24 – 31 mai | – | Journée mondiale sans tabac (lien vers l'encart) | « Arrêter de fumer avec l'hypnose » |
-| 21 juin – 31 août | Soleil d'été | « Bel été à toutes et à tous ! » | – |
-| 1er – 30 septembre | – | – | « Une rentrée plus sereine » |
+| 21 juin | Notes de musique (Fête de la musique) | – | – |
+| 21 juin – 31 août | Soleil d'été et glace (une boule de plus à chaque clic) | « Bel été à toutes et à tous ! » | – |
+| 1er – 30 septembre | Ardoise de la rentrée (bonnes résolutions) | « C'est la rentrée : et si cette année, vous preniez du temps pour vous ? » | « Une rentrée plus sereine » |
 | 22 septembre – 31 octobre | Feuilles d'automne | – | – |
-| 1er – 30 novembre | – | – | Mois sans tabac |
-| 1er – 31 décembre | Guirlande lumineuse et neige | « Belles fêtes de fin d'année ! » | – |
+| 4 – 10 octobre | – | Journée mondiale de la santé mentale (lien vers les indications) | – |
+| 1er – 30 novembre | – | Mois sans tabac (lien vers l'encart) | Mois sans tabac, avec le visuel |
+| 1er – 24 décembre | Calendrier de l'Avent (le conseil du jour) | – | – |
+| 1er – 31 décembre | Guirlande lumineuse et neige sur tout le site | « Belles fêtes de fin d'année ! » | « Des fêtes plus sereines » |
+
+Les encarts s'affichent sur la page d'accueil, **juste sous la photo** : faites défiler la page pour les voir.
 
 **Dans le CMS** (rubrique *Annonces et décorations*), pour chaque annonce :
 - **Activée** : décochez pour la mettre en pause ;
 - **Début / Fin** au format JJ/MM (une période peut chevaucher deux années, ex. du 15/12 au 15/01), ou le nom d'une fête dont la date change chaque année (voir plus bas) ;
-- **Décorations** : guirlande, neige, paillettes, pétales, muguet, soleil, feuilles, cœurs, cloche de Pâques, lune et étoiles (plusieurs possibles, ou aucune) ;
+- **Décorations** : guirlande, neige (en haut des pages) ou neige sur tout le site, paillettes, pétales, muguet, soleil, feuilles, cœurs, notes de musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe, poisson d'avril, glace, ardoise de la rentrée, calendrier de l'Avent (plusieurs possibles, ou aucune) ;
 - **Bandeau** : une phrase courte en haut de toutes les pages, idéale pour vos **dates de fermeture** (« Le cabinet sera fermé du 24 au 26 décembre ») ;
 - **Encart** : un bloc sur la page d'accueil, avec titre, texte, points clés, image et boutons.
 Écrivez `{annee}` pour afficher l'année en cours. Pour ajouter une annonce : bouton **Add** en bas de la liste.
@@ -109,23 +118,31 @@ Comme les clins d'œil de Google sur certaines recherches, chaque décoration ca
 
 | Décoration | Au clic |
 |---|---|
+| **Galette des rois** (janvier) | Chaque clic sert une part ; la fève est cachée dans l'une des huit. Quand on la trouve, la couronne se soulève et des paillettes jaillissent : « Bravo, vous voilà reine ou roi du jour. Très belle année ! ». Puis une nouvelle galette arrive. |
+| **Crêpe** (Chandeleur) | Elle saute et retombe dans la poêle. À la troisième, une pluie de pièces d'or (selon la tradition, on fait sauter la crêpe une pièce dans l'autre main pour la prospérité). |
+| **Poisson d'avril** (1er avril) | Le poisson en papier se décolle et s'enfuit : « Poisson d'avril ! » |
 | **Brin de muguet** (1er – 7 mai) | Le jeu des 13 clochettes : chaque clic fait tinter une clochette, qui s'allume. À la 13e (un brin à 13 clochettes porte bonheur), une pluie de muguet tombe sur la page avec un petit mot de Caroline. Puis le brin se remet à zéro pour une nouvelle partie. |
 | **Cloche de Pâques** | Elle sonne et sème des œufs en chocolat qui rebondissent en bas du haut de page ; une petite histoire s'affiche clic après clic. |
 | **Lune** (Journée du sommeil) | Elle s'endort (« Zzz… ») et glisse au troisième clic que l'hypnose peut aider à mieux dormir. |
+| **Glace** (été) | Une boule de plus à chaque clic (vanille, fraise, pistache, abricot, puis chocolat avec sa cerise) ; le clic suivant sert une nouvelle glace. |
+| **Ardoise** (rentrée) | Elle écrit à la craie une bonne résolution (« Je prends du temps pour moi », « Je respire », « J'ose ! »…) et lance un avion en papier. |
+| **Calendrier de l'Avent** (1er – 24 décembre) | Le paquet porte le numéro du jour ; ouvert, il offre le petit conseil bien-être du jour (modifiable dans le CMS, rubrique *Calendrier de l'Avent*). |
 | **Guirlande** (décembre) | Un clic sur une ampoule, en haut de page, lance une vague de lumière. |
-| **Photo de Caroline** (accueil et « Qui suis-je ? ») | Pendant chaque période décorée, une gerbe aux couleurs du moment jaillit du clic : flocons, paillettes, cœurs, pétales, feuilles, étoiles, clochettes ou œufs. |
+| **Photo de Caroline** (accueil et « Qui suis-je ? ») | Pendant chaque période décorée, une gerbe aux couleurs du moment jaillit du clic : flocons, paillettes, cœurs, notes, pétales, feuilles, étoiles, clochettes, œufs, pièces, petits poissons ou avions en papier. |
 
-Pour que les visiteurs découvrent le muguet, la cloche et la lune, une bulle « Psst… » les invite à cliquer, une seule fois par visite (pour la revoir, ouvrez le site dans une fenêtre de navigation privée).
+Pour que les visiteurs découvrent ces petits jeux, une bulle « Psst… » les invite à cliquer, une seule fois par visite (pour la revoir, ouvrez le site dans une fenêtre de navigation privée).
 
-Les décorations sont discrètes et ne gênent aucun lien ni bouton. Le muguet, la cloche et la lune sont de vrais boutons (utilisables au clavier, annoncés par les lecteurs d'écran) ; le reste est ignoré par les lecteurs d'écran. Chez les visiteurs qui ont demandé à réduire les animations, rien ne bouge : les jeux affichent seulement leurs messages.
+La **neige sur tout le site** (décembre) tombe légèrement devant toute la page, sans jamais gêner un clic. Les décorations sont discrètes et ne gênent aucun lien ni bouton. Les objets à cliquer sont de vrais boutons (utilisables au clavier, annoncés par les lecteurs d'écran) ; le reste est ignoré par les lecteurs d'écran. Chez les visiteurs qui ont demandé à réduire les animations, rien ne bouge : les jeux affichent seulement leurs messages.
 
 ---
 
 ## 4. Si quelque chose ne va pas
 
 - **Le site ne change pas après un enregistrement** : onglet **Actions** du dépôt. Une croix rouge signifie que la construction a échoué ; cliquez dessus, puis sur l'étape **Construire le site** : le message commence par **ERREUR** et explique le problème en français (date mal écrite, image introuvable…). **Le site en ligne n'est pas modifié** tant que l'erreur n'est pas corrigée. Corrigez dans le CMS et enregistrez de nouveau.
-- **Revenir en arrière** : sur GitHub, ouvrez le fichier concerné dans `contenu/`, bouton **History**, choisissez une version précédente et recopiez-la.
+- **Revenir en arrière** : sur GitHub, ouvrez le fichier concerné dans `contenu/`, bouton **History**, choisissez une version précédente et recopiez-la. Les enregistrements faits depuis le CMS y apparaissent sous la forme « Update … (via Pages CMS) ».
+- **Installer une mise à jour que je vous envoie** : page du dépôt → **Add file** → **Upload files**, glissez le contenu du dossier reçu, puis **Commit changes**. Ces paquets de mise à jour ne contiennent pas vos textes ni vos images (dossiers `contenu/` et `assets/img/medias/`), sauf un fichier nouveau : ce que vous avez modifié dans le CMS est conservé. **N'envoyez plus le paquet complet `site-hypnose-roulleau`** : il remplacerait vos textes par ceux d'origine.
 - **Relancer la publication à la main** : onglet **Actions** → **Publier le site** → **Run workflow**.
+- **L'année du pied de page** (« © 2027 Caroline Roulleau ») change toute seule le 1er janvier, dans le navigateur des visiteurs. GitHub republie aussi le site chaque 1er janvier ; si le dépôt n'a reçu aucune modification depuis 60 jours, GitHub peut mettre cette tâche annuelle en pause (onglet **Actions** → **Publier le site** → **Enable workflow** pour la réactiver). Ce n'est pas grave : l'année affichée reste juste.
 
 ---
 
@@ -153,15 +170,32 @@ Comptez quelques jours à quelques semaines pour que Google affiche le nouveau s
 
 ---
 
-## 7. Pour aller plus loin (modifier la mise en page)
+## 7. Logo
+
+Le logo « HR » (Hypnose Roulleau) apparaît dans l'en-tête, le pied de page, l'onglet du navigateur, l'icône de l'écran d'accueil des téléphones, l'image de partage (Facebook, WhatsApp, LinkedIn…) et dans les données transmises à Google.
+
+| Fichier | Rôle |
+|---|---|
+| `assets/img/logo.svg` | Le médaillon de l'en-tête et du pied de page |
+| `assets/img/logo-hypnose-roulleau.svg` et `.png` | Le logo d'origine (fond transparent), déclaré à Google |
+| `favicon.svg`, `favicon.ico` | L'icône de l'onglet (anneau un peu plus épais pour rester lisible en tout petit) |
+| `apple-touch-icon.png` | L'icône quand on ajoute le site à l'écran d'accueil d'un iPhone ou d'un iPad |
+| `assets/img/partage.jpg` | L'image qui s'affiche quand on partage un lien du site |
+
+Pour changer de logo, demandez-moi : les icônes et l'image de partage doivent être refaites en même temps.
+
+---
+
+## 8. Pour aller plus loin (modifier la mise en page)
 
 | Dossier ou fichier | Rôle |
 |---|---|
 | `contenu/` | Tous les textes et réglages (ce que modifie le CMS) |
 | `modeles/` | La mise en page de chaque page (HTML), `base.html` pour l'en-tête et le pied de page communs, `morceaux/date.js` pour la date du jour et le calcul des fêtes mobiles |
 | `assets/css/style.css` | Couleurs, polices, mise en forme (section 1 « RÉGLAGES » pour les couleurs) ; section 20 bis pour les annonces et décorations |
-| `assets/js/` | `main.js` (menu, animations, formulaire), `decorations.js` (décorations saisonnières : guirlande, neige, paillettes, pétales, muguet, soleil, feuilles, cœurs, cloche de Pâques, lune et étoiles, et leurs petites surprises au clic) |
+| `assets/js/` | `main.js` (menu, animations, formulaire), `decorations.js` (décorations saisonnières et leurs petites surprises au clic) |
 | `assets/img/medias/` | Les images envoyées depuis le CMS |
+| `contenu/calendrier-avent.yml` | Les conseils du calendrier de l'Avent (rubrique du CMS) |
 | `construire.py` | Le programme qui fabrique le site à partir de `contenu/` et `modeles/` |
 | `.pages.yml` | La configuration du CMS (rubriques et champs) |
 | `.github/workflows/publier-le-site.yml` | La publication automatique |

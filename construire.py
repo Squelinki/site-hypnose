@@ -35,7 +35,8 @@ JOURS = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"
 DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
         "septembre", "octobre", "novembre", "décembre"]
-EFFETS = {"guirlande", "neige", "paillettes", "petales", "muguet", "soleil", "feuilles", "coeurs", "cloches", "lune"}
+EFFETS = {"guirlande", "neige", "flocons", "paillettes", "petales", "muguet", "soleil", "feuilles", "coeurs", "cloches", "lune",
+          "notes", "galette", "crepe", "poisson", "rentree", "avent", "glace"}
 ICONES = {"soleil", "feuille", "fleches", "montagne", "etoile"}
 
 
@@ -377,6 +378,20 @@ def preparer_annonces(donnees):
     return annonces, (json.dumps(decorations, ensure_ascii=False, separators=(",", ":")) if decorations else "")
 
 
+def preparer_avent(annonces):
+    """Conseils du calendrier de l'Avent (un par jour, du 1er au 24 décembre), seulement si la décoration est utilisée."""
+    if not any("avent" in a["decorations"] for a in annonces):
+        return ""
+    fichier = ICI / "contenu" / "calendrier-avent.yml"
+    conseils = [chaine(c).strip() for c in ((lire("calendrier-avent.yml") if fichier.exists() else {}).get("conseils") or [])]
+    conseils = [c for c in conseils if c]
+    if not conseils:
+        print("  Calendrier de l'Avent : aucun conseil saisi, le paquet souhaitera simplement une belle journée.")
+    elif len(conseils) < 24:
+        print(f"  Calendrier de l'Avent : {len(conseils)} conseils pour 24 jours, ils seront répétés.")
+    return json.dumps(conseils, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
 # ---------------------------------------------------------------------------
 # Données structurées pour Google (JSON-LD)
 # ---------------------------------------------------------------------------
@@ -390,6 +405,7 @@ def donnees_google(infos, qui):
         "description": "Hypnose ericksonienne, Nouvelle Hypnose et PNL à Paris 16e : stress, confiance en soi, "
                        "sommeil, arrêt du tabac, phobies…",
         "url": SITE_URL + "/", "image": [photo, SITE_URL + "/assets/img/partage.jpg"],
+        "logo": {"@type": "ImageObject", "url": SITE_URL + "/assets/img/logo-hypnose-roulleau.png", "width": 512, "height": 512},
         "telephone": infos["tel"], "email": chaine(infos.get("email")).strip(),
         "priceRange": infos["fourchette"], "currenciesAccepted": "EUR",
         "paymentAccepted": re.sub(r"\s+ou\s+", ", ", chaine(infos.get("paiement")).strip()),
@@ -488,7 +504,7 @@ def construire():
     pages = {cle: lire(f"pages/{fichier}.yml") for _, _, cle, fichier in PAGES if fichier}
     annonces, decorations = preparer_annonces(lire("annonces.yml"))
     commun = {
-        "infos": infos, "pages": pages, "annonces": annonces, "decorations": decorations,
+        "infos": infos, "pages": pages, "annonces": annonces, "decorations": decorations, "conseils_avent": preparer_avent(annonces),
         "avis": preparer_avis(lire("avis.yml")), "faq": lire("faq.yml"), "lectures": preparer_lectures(lire("lectures.yml")),
         "site_url": SITE_URL, "annee": ANNEE,
     }

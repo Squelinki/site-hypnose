@@ -49,9 +49,14 @@ window.CR = (function () {
       var s = quand(du, cr.annee), e = quand(au, cr.annee), n = cr.jour;
       return s <= e ? (n >= s && n <= e) : (n >= s || n <= e);
     },
+    /* l'année du jour dans les [data-annee] (pied de page, annonces) : elle change toute seule le 1er janvier */
+    dater: function (el) {
+      if (!el) { return; }
+      [].forEach.call(el.hasAttribute('data-annee') ? [el] : el.querySelectorAll('[data-annee]'), function (s) { s.textContent = cr.annee; });
+    },
     montrer: function (el) {
       if (!el || !cr.actif(el.getAttribute('data-affiche-du'), el.getAttribute('data-affiche-au'))) { return; }
-      [].forEach.call(el.querySelectorAll('[data-annee]'), function (s) { s.textContent = cr.annee; });
+      cr.dater(el);
       el.hidden = false;
     }
   };

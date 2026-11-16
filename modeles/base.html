@@ -42,7 +42,7 @@
 <!-- ============ EN-TÊTE (identique sur toutes les pages) ============ -->
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{{ root }}index.html"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></a>
+    <a class="brand" href="{{ root }}index.html"><img class="brand-logo" src="{{ root }}assets/img/logo.svg" alt="" width="46" height="46"><span class="brand-texte"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></span></a>
     <nav class="nav" id="menu" aria-label="Menu principal">
       <a href="{{ root }}l-hypnose-c-est-quoi.html"{% if page == 'hypnose' %} aria-current="page"{% endif %}>L'hypnose</a>
       <a href="{{ root }}indications.html"{% if page == 'indications' %} aria-current="page"{% endif %}>Indications</a>
@@ -64,6 +64,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
+        <img class="foot-logo" src="{{ root }}assets/img/logo.svg" alt="" width="64" height="64" loading="lazy">
         <p class="brand-name">Caroline Roulleau</p>
         <p class="brand-sub">Hypnose ericksonienne · Nouvelle Hypnose · PNL</p>
         <p class="foot-note">L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
@@ -91,7 +92,7 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© {{ annee }} Caroline Roulleau</span>
+      <span>© <span data-annee>{{ annee }}</span> Caroline Roulleau</span><script>CR.dater(document.currentScript.previousElementSibling)</script>
       <a href="{{ root }}mentions-legales.html">Mentions légales et confidentialité</a>
     </div>
   </div>
@@ -105,6 +106,9 @@
 <script src="{{ root }}assets/js/main.js" defer></script>
 {%- if decorations %}
 <script type="application/json" id="decorations">{{ decorations }}</script>
+{%- if conseils_avent %}
+<script type="application/json" id="conseils-avent">{{ conseils_avent }}</script>
+{%- endif %}
 <script src="{{ root }}assets/js/decorations.js" defer></script>
 {%- endif %}
 </body>
