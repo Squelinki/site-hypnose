@@ -1,342 +1,184 @@
 annonces:
-  - nom: "Nouvelle année"
+  - nom: Nouvelle année
     active: true
-    du: "01/01"
-    au: "31/01"
-    decorations: [paillettes]
-    bandeau: "Belle et heureuse année {annee} !"
-    bandeau_lien: ""
+    du: 01/01
+    au: 31/01
+    decorations:
+      - paillettes
+    bandeau: Belle et heureuse année {annee} !
     encart:
       afficher: true
-      surtitre: "Nouvelle année · janvier {annee}"
-      titre: "Et si cette année était celle du changement ?"
-      texte: |
-        Je vous souhaite d'être libre ! Libre d'être vous-même, libre de réaliser vos rêves.
-        Arrêter de fumer, retrouver un sommeil apaisé, apprivoiser le stress, prendre confiance en vous : l'hypnose peut vous aider à transformer vos bonnes résolutions en véritables changements, à votre rythme.
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
+      surtitre: Nouvelle année · janvier {annee}
+      titre: Et si cette année était celle du changement ?
+      texte: >
+        Je vous souhaite d'être libre ! Libre d'être vous-même, libre de
+        réaliser vos rêves.
+
+        Arrêter de fumer, retrouver un sommeil apaisé, apprivoiser le stress,
+        prendre confiance en vous : l'hypnose peut vous aider à transformer vos
+        bonnes résolutions en véritables changements, à votre rythme.
+      bouton: Prendre rendez-vous
+      bouton_lien: contact.html#rendez-vous
       bouton_telephone: true
-  - nom: "Galette des rois"
+  - nom: Saint-Valentin
     active: true
-    du: "02/01"
-    au: "31/01"
-    decorations: [galette]
-    bandeau: ""
-    bandeau_lien: ""
+    du: 07/02
+    au: 14/02
+    decorations:
+      - coeurs
+    bandeau: Bonne Saint-Valentin ! Prenez soin de vous et de ceux que vous aimez.
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Chandeleur"
+  - nom: Journée du sommeil
     active: true
-    du: "01/02"
-    au: "02/02"
-    decorations: [crepe]
-    bandeau: "Bonne Chandeleur !"
-    bandeau_lien: ""
-    encart:
-      afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
-      bouton_telephone: false
-  - nom: "Saint-Valentin"
-    active: true
-    du: "07/02"
-    au: "14/02"
-    decorations: [coeurs]
-    bandeau: "Bonne Saint-Valentin ! Prenez soin de vous et de ceux que vous aimez."
-    bandeau_lien: ""
-    encart:
-      afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
-      bouton_telephone: false
-  - nom: "Journée du sommeil"
-    active: true
-    du: "Journée du sommeil -6"
-    au: "Journée du sommeil"
-    decorations: [lune]
-    bandeau: "Journée du sommeil : et si l'hypnose vous aidait à retrouver des nuits paisibles ?"
-    bandeau_lien: "index.html#journee-du-sommeil"
+    du: Journée du sommeil -6
+    au: Journée du sommeil
+    decorations:
+      - lune
+    bandeau: "Journée du sommeil : et si l'hypnose vous aidait à retrouver des nuits
+      paisibles ?"
+    bandeau_lien: index.html#journee-du-sommeil
     encart:
       afficher: true
-      surtitre: "Journée du sommeil · mars {annee}"
-      titre: "Retrouver un sommeil apaisé"
-      texte: |
-        Chaque année en mars, la Journée du sommeil rappelle combien nos nuits comptent pour notre santé, notre humeur et notre énergie.
-        Difficultés d'endormissement, réveils nocturnes, pensées qui tournent en boucle : l'hypnose peut vous aider à relâcher les tensions, à apaiser le mental et à retrouver des nuits plus sereines, à votre rythme.
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
+      surtitre: Journée du sommeil · mars {annee}
+      titre: Retrouver un sommeil apaisé
+      texte: >
+        Chaque année en mars, la Journée du sommeil rappelle combien nos nuits
+        comptent pour notre santé, notre humeur et notre énergie.
+
+        Difficultés d'endormissement, réveils nocturnes, pensées qui tournent en
+        boucle : l'hypnose peut vous aider à relâcher les tensions, à apaiser le
+        mental et à retrouver des nuits plus sereines, à votre rythme.
+      bouton: Prendre rendez-vous
+      bouton_lien: contact.html#rendez-vous
       bouton_telephone: true
-  - nom: "Printemps"
+  - nom: Printemps
     active: true
-    du: "20/03"
-    au: "30/04"
-    decorations: [petales]
-    bandeau: ""
-    bandeau_lien: ""
+    du: 20/03
+    au: 30/04
+    decorations:
+      - petales
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Poisson d'avril"
+  - nom: Pâques
     active: true
-    du: "01/04"
-    au: "01/04"
-    decorations: [poisson]
-    bandeau: ""
-    bandeau_lien: ""
+    du: Pâques -6
+    au: Pâques +1
+    decorations:
+      - cloches
+    bandeau: Joyeuses Pâques !
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Pâques"
+  - nom: 1er mai
     active: true
-    du: "Pâques -6"
-    au: "Pâques +1"
-    decorations: [cloches]
-    bandeau: "Joyeuses Pâques !"
-    bandeau_lien: ""
+    du: 01/05
+    au: 07/05
+    decorations:
+      - muguet
+    bandeau: Un brin de muguet pour vous porter bonheur !
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "1er mai"
+  - nom: Journée mondiale sans tabac
     active: true
-    du: "01/05"
-    au: "07/05"
-    decorations: [muguet]
-    bandeau: "Un brin de muguet pour vous porter bonheur !"
-    bandeau_lien: ""
-    encart:
-      afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
-      bouton_telephone: false
-  - nom: "Journée mondiale sans tabac"
-    active: true
-    du: "24/05"
-    au: "31/05"
-    decorations: []
-    bandeau: "31 mai, Journée mondiale sans tabac : et si c'était le bon moment pour arrêter ?"
-    bandeau_lien: "index.html#journee-mondiale-sans-tabac"
+    du: 24/05
+    au: 31/05
+    bandeau: "31 mai, Journée mondiale sans tabac : et si c'était le bon moment pour
+      arrêter ?"
+    bandeau_lien: index.html#journee-mondiale-sans-tabac
     encart:
       afficher: true
-      surtitre: "Journée mondiale sans tabac · 31 mai {annee}"
-      titre: "Arrêter de fumer avec l'hypnose"
-      texte: |
-        Chaque 31 mai, la Journée mondiale sans tabac invite les fumeurs à faire le point… et peut-être à passer le cap.
-        L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble, nous travaillons sur l'envie de fumer, sur les habitudes et les émotions qui l'accompagnent, et sur votre motivation.
+      surtitre: Journée mondiale sans tabac · 31 mai {annee}
+      titre: Arrêter de fumer avec l'hypnose
+      texte: >
+        Chaque 31 mai, la Journée mondiale sans tabac invite les fumeurs à faire
+        le point… et peut-être à passer le cap.
+
+        L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble,
+        nous travaillons sur l'envie de fumer, sur les habitudes et les émotions
+        qui l'accompagnent, et sur votre motivation.
       points:
         - "Consultation « arrêt du tabac » : 200 €"
-        - "Au cabinet, 30 rue de Chaillot, Paris 16e"
-      image: "/assets/img/medias/journee-mondiale-sans-tabac-caroline-roulleau.jpg"
-      image_alt: "Visuel « Journée mondiale sans tabac : et si c'était le bon moment pour arrêter ? », avec la date du 31 mai : Caroline Roulleau, hypnothérapeute ericksonienne et praticienne PNL"
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
+        - Au cabinet, 30 rue de Chaillot, Paris 16e
+      image: /assets/img/medias/mois-sans-tabac-caroline-roulleau.jpg
+      bouton: Prendre rendez-vous
+      bouton_lien: contact.html#rendez-vous
       bouton_telephone: true
-  - nom: "Fête de la musique"
+  - nom: Été
     active: true
-    du: "21/06"
-    au: "21/06"
-    decorations: [notes]
-    bandeau: ""
-    bandeau_lien: ""
+    du: 21/06
+    au: 31/08
+    decorations:
+      - soleil
+    bandeau: Bel été à toutes et à tous !
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Été"
+  - nom: Rentrée
     active: true
-    du: "21/06"
-    au: "31/08"
-    decorations: [soleil, glace]
-    bandeau: "Bel été à toutes et à tous !"
-    bandeau_lien: ""
-    encart:
-      afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
-      bouton_telephone: false
-  - nom: "Rentrée"
-    active: true
-    du: "01/09"
-    au: "30/09"
-    decorations: [rentree]
-    bandeau: "C'est la rentrée : et si cette année, vous preniez du temps pour vous ?"
-    bandeau_lien: "index.html#rentree"
+    du: 01/09
+    au: 30/09
     encart:
       afficher: true
-      surtitre: "Rentrée {annee}"
-      titre: "Une rentrée plus sereine"
-      texte: |
-        Reprise du travail, nouveaux projets, examens à préparer : la rentrée rime souvent avec pression.
-        L'hypnose peut vous accompagner pour mieux gérer le stress, retrouver un sommeil apaisé, gagner en concentration et en confiance en vous.
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
+      surtitre: Rentrée {annee}
+      titre: Une rentrée plus sereine
+      texte: >
+        Reprise du travail, nouveaux projets, examens à préparer : la rentrée
+        rime souvent avec pression.
+
+        L'hypnose peut vous accompagner pour mieux gérer le stress, retrouver un
+        sommeil apaisé, gagner en concentration et en confiance en vous.
+      bouton: Prendre rendez-vous
+      bouton_lien: contact.html#rendez-vous
       bouton_telephone: true
-  - nom: "Automne"
+  - nom: Automne
     active: true
-    du: "22/09"
-    au: "31/10"
-    decorations: [feuilles]
-    bandeau: ""
-    bandeau_lien: ""
+    du: 22/09
+    au: 31/10
+    decorations:
+      - feuilles
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Journée mondiale de la santé mentale"
+  - nom: Mois sans tabac
     active: true
-    du: "04/10"
-    au: "10/10"
-    decorations: []
-    bandeau: "10 octobre, Journée mondiale de la santé mentale : et si vous preniez soin de vous ?"
-    bandeau_lien: "indications.html"
-    encart:
-      afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
-      bouton_telephone: false
-  - nom: "Mois sans tabac"
-    active: true
-    du: "01/11"
-    au: "30/11"
-    decorations: []
-    bandeau: "Novembre, c'est le Mois sans tabac : l'hypnose peut vous aider à arrêter de fumer."
-    bandeau_lien: "index.html#mois-sans-tabac"
+    du: 01/11
+    au: 30/11
     encart:
       afficher: true
-      surtitre: "Mois sans tabac · novembre {annee}"
-      titre: "Arrêter de fumer avec l'hypnose"
-      texte: |
-        Du 1er au 30 novembre, le Mois sans tabac invite les fumeurs à relever un défi collectif : arrêter de fumer pendant 30 jours. Un cap décisif, puisque d'après Santé publique France, 30 jours sans tabac multiplient par cinq les chances d'arrêter durablement.
-        L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble, nous travaillons sur l'envie de fumer, sur les habitudes et les émotions qui l'accompagnent, et sur votre motivation.
+      surtitre: Mois sans tabac · novembre {annee}
+      titre: Arrêter de fumer avec l'hypnose
+      texte: >
+        Du 1er au 30 novembre, le Mois sans tabac invite les fumeurs à relever
+        un défi collectif : arrêter de fumer pendant 30 jours. Un cap décisif,
+        puisque d'après Santé publique France, 30 jours sans tabac multiplient
+        par cinq les chances d'arrêter durablement.
+
+        L'hypnose peut vous aider à franchir le pas, puis à tenir. Ensemble,
+        nous travaillons sur l'envie de fumer, sur les habitudes et les émotions
+        qui l'accompagnent, et sur votre motivation.
       points:
         - "Consultation « arrêt du tabac » : 200 €"
-        - "Au cabinet, 30 rue de Chaillot, Paris 16e"
-        - "Du lundi au vendredi, de 9 h à 19 h, sur rendez-vous"
-      image: "/assets/img/medias/mois-sans-tabac-caroline-roulleau.jpg"
-      image_alt: "Visuel « En novembre, on arrête ensemble ! » : Caroline Roulleau, hypnothérapeute ericksonienne et praticienne PNL, avec le logo du Mois sans tabac"
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
+        - Au cabinet, 30 rue de Chaillot, Paris 16e
+        - Du lundi au vendredi, de 9 h à 19 h, sur rendez-vous
+      image: /assets/img/medias/mois-sans-tabac-caroline-roulleau.jpg
+      image_alt: "Visuel « En novembre, on arrête ensemble ! » : Caroline Roulleau,
+        hypnothérapeute ericksonienne et praticienne PNL, avec le logo du Mois
+        sans tabac"
+      bouton: Prendre rendez-vous
+      bouton_lien: contact.html#rendez-vous
       bouton_telephone: true
-  - nom: "Calendrier de l'Avent"
+  - nom: Fêtes de fin d'année
     active: true
-    du: "01/12"
-    au: "24/12"
-    decorations: [avent]
-    bandeau: ""
-    bandeau_lien: ""
+    du: 01/12
+    au: 31/12
+    decorations:
+      - guirlande
+      - neige
+    bandeau: Belles fêtes de fin d'année !
     encart:
       afficher: false
-      surtitre: ""
-      titre: ""
-      texte: ""
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: ""
-      bouton_lien: ""
       bouton_telephone: false
-  - nom: "Fêtes de fin d'année"
-    active: true
-    du: "01/12"
-    au: "31/12"
-    decorations: [guirlande, flocons]
-    bandeau: "Belles fêtes de fin d'année !"
-    bandeau_lien: ""
-    encart:
-      afficher: true
-      surtitre: "Fêtes de fin d'année"
-      titre: "Des fêtes plus *sereines*"
-      texte: |
-        Préparatifs, retrouvailles en famille, repas de fête, fatigue de fin d'année… Cette période est souvent aussi source de stress et d'émotions.
-        L'hypnose peut vous aider à la vivre plus sereinement, à vous accorder une vraie pause et à préparer en douceur vos projets pour la nouvelle année.
-      points: []
-      image: ""
-      image_alt: ""
-      bouton: "Prendre rendez-vous"
-      bouton_lien: "contact.html#rendez-vous"
-      bouton_telephone: true
