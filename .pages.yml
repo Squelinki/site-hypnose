@@ -104,6 +104,10 @@ content:
                   label: Poisson d'avril (se décolle au clic)
                 - name: glace
                   label: Glace de l'été (une boule de plus à chaque clic)
+                - name: feux
+                  label: Feu d'artifice du 14 juillet (14 fusées au clic, puis bouquet final)
+                - name: fanions
+                  label: Fanions bleu-blanc-rouge (sous le menu, ils ondulent au clic)
                 - name: rentree
                   label: Ardoise de la rentrée (bonnes résolutions au clic)
                 - name: avent
