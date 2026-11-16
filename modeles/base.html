@@ -25,12 +25,12 @@
   <meta property="og:image:alt" content="Caroline Roulleau, hypnothérapeute à Paris 16e">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#F6F1EA">
-  <link rel="icon" href="{{ root }}favicon.ico" sizes="32x32">
-  <link rel="icon" href="{{ root }}favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{ root }}apple-touch-icon.png">
+  <link rel="icon" href="{{ root }}{{ 'favicon.ico'|version }}" sizes="32x32">
+  <link rel="icon" href="{{ root }}{{ 'favicon.svg'|version }}" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="{{ root }}{{ 'apple-touch-icon.png'|version }}">
   <link rel="preload" href="{{ root }}assets/fonts/gelasio-regular.woff" as="font" type="font/woff" crossorigin>
   <link rel="preload" href="{{ root }}assets/fonts/rubik-regular.woff" as="font" type="font/woff" crossorigin>
-  <link rel="stylesheet" href="{{ root }}assets/css/style.css">
+  <link rel="stylesheet" href="{{ root }}{{ 'assets/css/style.css'|version }}">
 {% if jsonld %}  <script type="application/ld+json">{{ jsonld }}</script>
 {% endif %}</head>
 <body>
@@ -42,7 +42,7 @@
 <!-- ============ EN-TÊTE (identique sur toutes les pages) ============ -->
 <header class="site-header">
   <div class="wrap header-inner">
-    <a class="brand" href="{{ root }}index.html"><img class="brand-logo" src="{{ root }}assets/img/logo.svg" alt="" width="46" height="46"><span class="brand-texte"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></span></a>
+    <a class="brand" href="{{ root }}index.html"><img class="brand-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="46" height="46"><span class="brand-texte"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></span></a>
     <nav class="nav" id="menu" aria-label="Menu principal">
       <a href="{{ root }}l-hypnose-c-est-quoi.html"{% if page == 'hypnose' %} aria-current="page"{% endif %}>L'hypnose</a>
       <a href="{{ root }}indications.html"{% if page == 'indications' %} aria-current="page"{% endif %}>Indications</a>
@@ -64,7 +64,7 @@
   <div class="wrap">
     <div class="foot-grid">
       <div>
-        <img class="foot-logo" src="{{ root }}assets/img/logo.svg" alt="" width="64" height="64" loading="lazy">
+        <img class="foot-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="64" height="64" loading="lazy">
         <p class="brand-name">Caroline Roulleau</p>
         <p class="brand-sub">Hypnose ericksonienne · Nouvelle Hypnose · PNL</p>
         <p class="foot-note">L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
@@ -103,13 +103,13 @@
   <a class="btn btn-ghost" href="{{ root }}contact.html#formulaire">Écrire</a>
 </nav>
 
-<script src="{{ root }}assets/js/main.js" defer></script>
+<script src="{{ root }}{{ 'assets/js/main.js'|version }}" defer></script>
 {%- if decorations %}
 <script type="application/json" id="decorations">{{ decorations }}</script>
 {%- if conseils_avent %}
 <script type="application/json" id="conseils-avent">{{ conseils_avent }}</script>
 {%- endif %}
-<script src="{{ root }}assets/js/decorations.js" defer></script>
+<script src="{{ root }}{{ 'assets/js/decorations.js'|version }}" defer></script>
 {%- endif %}
 </body>
 </html>

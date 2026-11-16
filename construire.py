@@ -7,6 +7,7 @@ GitHub lance ce script tout seul à chaque modification (voir .github/workflows/
 Pour l'essayer sur un ordinateur :  pip install -r requirements.txt  puis  python construire.py
 """
 import datetime
+import hashlib
 import html
 import json
 import re
@@ -36,7 +37,7 @@ DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sun
 MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
         "septembre", "octobre", "novembre", "décembre"]
 EFFETS = {"guirlande", "neige", "flocons", "paillettes", "petales", "muguet", "soleil", "feuilles", "coeurs", "cloches", "lune",
-          "notes", "galette", "crepe", "poisson", "rentree", "avent", "glace"}
+          "notes", "galette", "crepe", "poisson", "rentree", "avent", "glace", "feux", "fanions"}
 ICONES = {"soleil", "feuille", "fleches", "montagne", "etoile"}
 
 
@@ -121,6 +122,16 @@ def lien(ctx, url):
     if ctx.get("fichier") == "index.html" and url.startswith("index.html#"):
         return attr(url[len("index.html"):])          # ancre sur la page elle-même
     return attr(ctx.get("root", "") + url)
+
+
+def version(chemin):
+    """Adresse d'un fichier du site suivie d'une empreinte de son contenu (favicon.svg?v=1a2b3c4d).
+    Quand le fichier change (nouveau logo, nouveaux styles…), son adresse change aussi : les navigateurs
+    chargent aussitôt la nouvelle version au lieu de garder l'ancienne en mémoire (l'icône de l'onglet, surtout)."""
+    f = SORTIE / chemin
+    if not f.is_file():
+        return chemin
+    return f"{chemin}?v={hashlib.sha256(f.read_bytes()).hexdigest()[:8]}"
 
 
 def dimensions(chemin):
@@ -514,7 +525,7 @@ def construire():
     options = {"undefined": StrictUndefined} if "--strict" in sys.argv else {}
     env = Environment(loader=FileSystemLoader(ICI / "modeles"), autoescape=False, keep_trailing_newline=True, **options)
     env.filters.update(texte=texte, titre=titre, paragraphes=paragraphes, annee=annee, lien=lien, attr=attr,
-                       dimensions=dimensions, brut=esc,
+                       dimensions=dimensions, brut=esc, version=version,
                        lien_telephone=lambda t: t.replace(
                            "{telephone}", f'<a href="tel:{infos["tel"]}" class="nw">{esc(infos["telephone"])}</a>'))
 

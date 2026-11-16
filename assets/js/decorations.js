@@ -3,7 +3,8 @@
    Guirlande lumineuse, neige (en haut des pages ou sur tout le site),
    paillettes, pétales, muguet, soleil, feuilles d'automne, cœurs, notes de
    musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe de la
-   Chandeleur, poisson d'avril, glace de l'été, ardoise de la rentrée, calendrier de l'Avent.
+   Chandeleur, poisson d'avril, glace de l'été, feu d'artifice et fanions du 14 juillet,
+   ardoise de la rentrée, calendrier de l'Avent.
    Les périodes se choisissent dans le CMS (« Annonces et décorations ») :
    ce fichier n'a pas besoin d'être modifié.
 
@@ -14,11 +15,15 @@
    - le muguet : jeu des 13 clochettes (un brin à 13 clochettes porte bonheur) ;
    - la cloche de Pâques : elle sonne et sème des œufs ;
    - la glace de l'été : une boule de plus à chaque clic, jusqu'à la cerise ;
+   - la fusée du 14 juillet : chaque clic lance une fusée (bleu, blanc, rouge…) ; à la 14e, bouquet final ;
+   - les fanions du 14 juillet : un clic fait onduler toute la ligne ;
    - la lune (Journée du sommeil) : elle s'endort ;
    - l'ardoise de la rentrée : elle écrit de bonnes résolutions et lance des avions en papier ;
    - le calendrier de l'Avent : chaque jour, une case s'ouvre sur un petit conseil bien-être ;
    - les ampoules de la guirlande : une vague de lumière ;
    - la photo de l'accueil (et de « Qui suis-je ? ») : une gerbe aux couleurs du moment.
+   Un seul objet à cliquer à la fois : si deux périodes se chevauchent, c'est
+   l'occasion la plus courte qui l'emporte (la fusée remplace la glace du 10 au 14 juillet).
    Le reste est purement décoratif : ignoré par les lecteurs d'écran, sans
    effet sur les clics, et immobile si l'appareil demande de réduire les animations.
    ========================================================================== */
@@ -38,7 +43,9 @@
     notes: ['#4C6650', '#C8734F', '#C99A3E', '#7D6A9E', '#5E8199'],
     pieces: ['#E9BE58'],
     poissons: ['#8FB7D0', '#B9D4E6', '#F0B49A', '#A8CFA8', '#F2D58A'],
-    rentree: ['#FFFFFF']
+    rentree: ['#FFFFFF'],
+    feux: ['#3F63AE', '#F1CF73', '#D64B3E'],   /* bleu, blanc aux reflets dorés, rouge */
+    fanions: ['#4466B0', '#FFFFFF', '#D4513F']
   };
   /* nombre d'éléments sur grand écran (environ deux fois moins sur téléphone) */
   var NOMBRE = { neige: 28, petales: 20, feuilles: 12, paillettes: 22, coeurs: 14, etoiles: 18, notes: 14, flocons: 30 };
@@ -48,12 +55,15 @@
     petales: ['petale', 'petales'], feuilles: ['feuille', 'feuilles'], coeurs: ['coeur', 'coeurs'],
     soleil: ['etoile', 'soleil'], lune: ['etoile', 'etoiles'], muguet: ['clochette', 'neige'], cloches: ['oeuf', 'oeufs'],
     flocons: ['flocon', 'neige'], notes: ['croche', 'notes'], galette: ['etoile', 'paillettes'], crepe: ['piece', 'pieces'],
-    poisson: ['poissonnet', 'poissons'], rentree: ['avion', 'rentree'], avent: ['etoile', 'guirlande'], glace: ['etoile', 'soleil']
+    poisson: ['poissonnet', 'poissons'], rentree: ['avion', 'rentree'], avent: ['etoile', 'guirlande'], glace: ['etoile', 'soleil'],
+    feux: ['etincelle', 'feux'], fanions: ['etincelle', 'feux']
   };
   /* pesanteur (px/s²) et freinage de l'air pour chaque forme */
   var PHYSIQUE = { flocon: [150, 0.985], etoile: [480, 0.975], petale: [170, 0.975], feuille: [190, 0.975],
                    coeur: [-140, 0.975], clochette: [420, 0.98], oeuf: [1300, 0.995], piece: [900, 0.99],
-                   poissonnet: [240, 0.975], croche: [-120, 0.975], avion: [80, 0.99] };
+                   poissonnet: [240, 0.975], croche: [-120, 0.975], avion: [80, 0.99], etincelle: [260, 0.965] };
+  /* objets à cliquer posés sur la photo : un seul à la fois (voir decorer) */
+  var OBJETS = ['muguet', 'cloches', 'lune', 'galette', 'crepe', 'poisson', 'rentree', 'avent', 'glace', 'feux'];
   var actifs = [];   /* décorations du moment */
 
   function hasard(min, max) { return min + Math.random() * (max - min); }
@@ -691,6 +701,191 @@
     });
   }
 
+  /* ---------------------------------------------------------------------
+     14 juillet : feu d'artifice et fanions bleu-blanc-rouge
+     --------------------------------------------------------------------- */
+  var ARTIFICE = ['#4C6FB8', '#D65A48', '#4C6FB8'];   /* bleu, rouge, bleu : les gerbes discrètes du haut de page (l'or se perdrait dans le soleil) */
+
+  /* une gerbe d'étincelles tout autour d'un point (avec un éclair au centre) */
+  function eclat(x, y, couleurs, grand) {
+    if (!couche()) { return; }
+    var n = Math.round((grand ? 28 : 20) * (petitEcran() ? 0.75 : 1)), v0 = (grand ? 245 : 190) * (petitEcran() ? 0.8 : 1);
+    envol('flash', x, y, { couleur: couleurs[0], taille: grand ? 96 : 72, duree: 450, echelle: [0.3, 1.2], fondu: 0.15 });
+    for (var i = 0; i < n; i++) {   /* traits lumineux tournés dans le sens de leur course ; les blancs ont un fin liseré doré */
+      var a = i / n * 2 * Math.PI + hasard(-0.08, 0.08), v = v0 * hasard(0.88, 1.06), c = couleurs[i % couleurs.length];
+      envol(/^#FFF/i.test(c) ? 'trait-blanc' : 'trait', x, y, { couleur: c, taille: hasard(7, 10), vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+        g: 120, frein: 0.955, aligne: true, duree: hasard(1300, 1700), fondu: 0.4, echelle: [1.1, 0.5] });
+    }
+    for (var k = 0; k < 6; k++) {   /* cœur pétillant, doré */
+      var b = hasard(0, 2 * Math.PI), w = hasard(40, 80);
+      envol('etincelle', x, y, { couleur: '#E9C46A', taille: hasard(4, 6), vx: Math.cos(b) * w, vy: Math.sin(b) * w, g: 60, frein: 0.97,
+        duree: hasard(900, 1200), delai: hasard(60, 160), fondu: 0.3 });
+    }
+  }
+
+  /* une fusée monte de (x0, y0) jusqu'à (x1, y1) en laissant une traînée dorée, puis éclate */
+  function tir(x0, y0, x1, y1, couleurs, delai, grand) {
+    if (!couche()) { return; }
+    var h = Math.max(60, y0 - y1), T = 0.5 + h / 1200;
+    setTimeout(function () {   /* créée au départ seulement : rien d'immobile à l'écran avant */
+      envol('trainee', x0, y0, { taille: 26, vx: (x1 - x0) / T, vy: -2 * h / T, g: 2 * h / (T * T), duree: T * 1000, fondu: 0.7 });
+    }, delai || 0);
+    setTimeout(function () { eclat(x1, y1, couleurs, grand); }, (delai || 0) + T * 1000 - 30);
+  }
+
+  /* bas de l'en-tête (les gerbes restent dans la page, sous le menu) */
+  function plafond() {
+    var h = document.querySelector('.site-header');
+    return h ? Math.max(0, h.getBoundingClientRect().bottom) : 0;
+  }
+
+  /* bouquet final : une dizaine de fusées tirées depuis le bas de l'écran, la dernière plus grande */
+  function bouquetFinal() {
+    var L = window.innerWidth || 1024, H = window.innerHeight || 768, haut = plafond(), n = petitEcran() ? 7 : 11;
+    for (var i = 0; i < n; i++) {
+      var grand = i === n - 1, x1 = grand ? L / 2 + hasard(-40, 40) : hasard(L * 0.1, L * 0.9);
+      var y1 = grand ? haut + Math.max(90, (H - haut) * 0.3) : hasard(haut + 60, haut + Math.max(120, (H - haut) * 0.5));
+      tir(x1 + hasard(-40, 40), H + 10, x1, y1, grand ? [TRICOLORE[0][0], TRICOLORE[1][0], TRICOLORE[2][0]] : TRICOLORE[i % 3],
+        i * 260 + hasard(0, 120) + (grand ? 500 : 0), grand);
+    }
+  }
+
+  /* trois gerbes discrètes qui éclatent de temps en temps dans le haut de page (dessinées en CSS).
+     Leur place est calculée dans style.css, dans des zones toujours libres (jamais sur les textes) ; pas de gerbes sur téléphone. */
+  function artifice(root) {
+    var z = zone(root);
+    if (!z) { return; }
+    var b = boite('artifice'), html = '';
+    for (var k = 0; k < 3; k++) {
+      var d = hasard(8, 12), rayons = '';
+      for (var i = 0; i < 12; i++) { rayons += '<i style="--a:' + (i * 30 + hasard(-4, 4)).toFixed(0) + 'deg"></i>'; }
+      html += '<span class="fa f' + (k + 1) + '" style="--jx:' + hasard(-6, 6).toFixed(1) + 'px;--jy:' + hasard(-10, 10).toFixed(1) + 'px;' +
+        '--d:' + d.toFixed(1) + 's;--r:' + (-hasard(0, d)).toFixed(1) + 's;--t:' + hasard(30, 44).toFixed(0) + 'px;--c:' + ARTIFICE[k % 3] + '">' + rayons + '</span>';
+    }
+    b.innerHTML = html;
+    z.insertBefore(b, z.firstChild);
+  }
+
+  /* La fusée bleu-blanc-rouge, plantée dans un pot au pied de la photo. Le jeu : 14 fusées pour le 14 juillet,
+     puis le bouquet final. Les trois premières éclatent en bleu… blanc… rouge ! */
+  var TRICOLORE = [['#3F63AE', '#7F9BD6'], ['#FFFFFF', '#FFF6DA'], ['#D64B3E', '#EE9077']];
+  var FUSEES = 14;
+
+  function messageFeux(n) {
+    if (n === 1) { return 'Bleu… <b>1</b> fusée sur 14. Lancez-les toutes pour le bouquet final !'; }
+    if (n === 2) { return '… blanc… <b>2</b> fusées sur 14'; }
+    if (n === 3) { return '… rouge ! <b>3</b> fusées sur 14'; }
+    if (n === 7) { return '<b>7</b> fusées sur 14 : à mi-chemin du bouquet final !'; }
+    if (n === 13) { return '<b>13</b> fusées sur 14 : plus qu\'une avant le bouquet final !'; }
+    return '<b>' + n + '</b> fusées sur 14';
+  }
+
+  function feux(root) {
+    artifice(root);
+    var dessin = '<svg viewBox="0 0 90 200" focusable="false" aria-hidden="true"><defs>' +
+      '<linearGradient id="deco-pot-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D88A62"/><stop offset=".55" stop-color="#C8734F"/><stop offset="1" stop-color="#A85C3E"/></linearGradient>' +
+      '<linearGradient id="deco-fusee-v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#1E2A44" stop-opacity=".22"/></linearGradient>' +
+      '<linearGradient id="deco-fusee-or" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F8DD8C"/><stop offset="1" stop-color="#D6A443"/></linearGradient>' +
+      '<radialGradient id="deco-fusee-h"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".95"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></radialGradient></defs>' +
+      '<g class="fusee">' +
+      '<path d="M60 58V158" stroke="#B08A5B" stroke-width="2.6" stroke-linecap="round"/>' +
+      '<path d="M44.5 103c0 6 5.5 6.5 5 11.5-.4 4-5 4.5-6.5 8.5" fill="none" stroke="#6E5A45" stroke-width="1.4" stroke-linecap="round"/>' +
+      '<g class="meche" transform="translate(43 123)"><circle r="7" fill="url(#deco-fusee-h)"/>' +
+      '<path d="M0-5 1-1 5 0 1 1 0 5-1 1-5 0-1-1z" fill="#FFF4C2" stroke="#E0A93E" stroke-width=".6"/></g>' +
+      '<rect x="33" y="44" width="8" height="56" fill="#3F63AE"/><rect x="41" y="44" width="8" height="56" fill="#FFFDF8"/>' +
+      '<rect x="49" y="44" width="8" height="56" fill="#D64B3E"/><rect x="33" y="44" width="24" height="56" fill="url(#deco-fusee-v)"/>' +
+      '<path d="M33 44h24v56H33z" fill="none" stroke="#2F3E66" stroke-opacity=".3" stroke-width="1"/>' +
+      '<rect x="31.5" y="97.5" width="27" height="5" rx="1.5" fill="url(#deco-fusee-or)" stroke="#B5862C" stroke-width=".8"/>' +
+      '<path d="M32 44.5 45 17 58 44.5z" fill="url(#deco-fusee-or)" stroke="#B5862C" stroke-width="1" stroke-linejoin="round"/>' +
+      '<rect x="31.5" y="42" width="27" height="5" rx="1.5" fill="url(#deco-fusee-or)" stroke="#B5862C" stroke-width=".8"/>' +
+      '<circle cx="45" cy="15.5" r="2.6" fill="#F8DD8C" stroke="#B5862C" stroke-width=".8"/></g>' +
+      '<ellipse cx="45" cy="160" rx="24" ry="3.4" fill="#7E4E36" fill-opacity=".55"/>' +
+      '<path d="M20 165h50l-6 33H26z" fill="url(#deco-pot-g)"/>' +
+      '<rect x="16" y="157" width="58" height="11" rx="3" fill="#B9653F"/><rect x="16" y="157" width="58" height="3.5" rx="1.75" fill="#D9895F" opacity=".6"/>' +
+      '<g transform="translate(45 182)"><circle r="7.5" fill="#D64B3E"/><circle r="5" fill="#FFFDF8"/><circle r="2.6" fill="#3F63AE"/></g></svg>';
+    var o = objet(root, 'fusee', dessin, 'Lancer une fusée (feu d\'artifice du 14 juillet, petit jeu)');
+    if (!o) { return; }
+    o.fusees = 0;
+    indice(o, 'feux', 'Psst… lancez une fusée !');
+    o.bouton.addEventListener('click', function () {
+      o.clics += 1;
+      if (o.fini) { relancer(o.boite, 'frisson', 700); return; }   /* pendant le bouquet final : la fusée trépigne */
+      o.fusees += 1;
+      var n = o.fusees, nez = point(o.bouton, 0.5, 0.08), haut = plafond();
+      o.boite.classList.remove('recharge');   /* la fusée décolle… et une nouvelle sort du pot */
+      relancer(o.boite, 'part', 700);
+      clearTimeout(o.retour);
+      o.retour = setTimeout(function () { relancer(o.boite, 'recharge', 600); }, 560);
+      var x1 = Math.min((window.innerWidth || 1024) - 80, nez[0] + hasard(-90, 40)), y1 = Math.max(haut + 70, nez[1] - hasard(190, 280));
+      tir(nez[0], nez[1], x1, y1, TRICOLORE[(n - 1) % 3], 180);
+      if (n < FUSEES) {
+        dire(o, messageFeux(n));
+        return;
+      }
+      o.fini = true;
+      dire(o, '<b>Bouquet final !</b> Bon 14 juillet à toutes et à tous !', 7500);
+      setTimeout(bouquetFinal, 900);
+      setTimeout(function () {   /* tout est prêt pour un nouveau feu d'artifice */
+        o.fusees = 0;
+        o.fini = false;
+      }, 7500);
+    });
+  }
+
+  /* Fanions bleu-blanc-rouge accrochés sous l'en-tête ; un clic sur un fanion fait onduler toute la ligne */
+  function fanions(root) {
+    var h = root.querySelector('.site-header');
+    if (!h) { return; }
+    var b = boite('fanions'), petit = petitEcran();
+    var P = petit ? 84 : 120, y0 = 2, y1 = petit ? 8 : 12, fw = petit ? 11 : 14, fh = petit ? 13 : 17;
+    var largeur = Math.max(window.innerWidth || 0, (window.screen && screen.width) || 0);
+    var W = (Math.ceil(largeur / P) + 1) * P, cy = 2 * y1 - y0, H = Math.ceil(y1 + fh + 4);
+    var fil = 'M0 ' + y0, drapeaux = '', k = 0;
+    for (var x = 0; x < W; x += P) {
+      fil += ' Q' + (x + P / 2) + ' ' + cy + ' ' + (x + P) + ' ' + y0;
+      for (var t = 0.125; t < 1; t += 0.25) {   /* quatre fanions par boucle, qui suivent la courbe du fil */
+        var px = x + P * t, py = (1 - t) * (1 - t) * y0 + 2 * (1 - t) * t * cy + t * t * y0;
+        var angle = Math.atan2(2 * (cy - y0) * (1 - 2 * t), P) * 180 / Math.PI, c = PALETTES.fanions[k % 3];
+        k += 1;
+        drapeaux += '<g transform="translate(' + px.toFixed(1) + ' ' + py.toFixed(1) + ') rotate(' + angle.toFixed(1) + ')">' +
+          '<path class="fl" style="--d:' + hasard(1.8, 3.2).toFixed(2) + 's;--r:' + (-hasard(0, 3)).toFixed(2) + 's" d="M' + (-fw / 2) + ' 0H' + (fw / 2) + 'L0 ' + fh + 'Z" fill="' + c + '"' +
+          (c === '#FFFFFF' ? ' stroke="#C3CAD8" stroke-width=".8" stroke-linejoin="round"' : '') + '/></g>';
+      }
+    }
+    b.innerHTML = '<svg width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" focusable="false">' +
+      '<path d="' + fil + '" fill="none" stroke="#4C6650" stroke-opacity=".55" stroke-width="1.2"/>' + drapeaux + '</svg>';
+    h.appendChild(b);
+    var liste = [].slice.call(b.querySelectorAll('.fl'));
+    b.addEventListener('click', function (e) {
+      var f = e.target && e.target.closest ? e.target.closest('.fl') : null, i0 = liste.indexOf(f);
+      if (i0 < 0) { return; }
+      var loin = 0;
+      liste.forEach(function (x, i) {
+        var d = Math.abs(i - i0);
+        loin = Math.max(loin, d);
+        x.style.setProperty('--v', (d * 0.04).toFixed(3) + 's');
+      });
+      relancer(b, 'vague', loin * 40 + 900);
+      gerbe(e.clientX, e.clientY, [['etincelle', 'feux']], 8);
+    });
+    /* écran agrandi ou téléphone tourné : on rallonge la ligne de fanions */
+    if (!fanions.ecoute) {
+      fanions.ecoute = true;
+      var minuterie;
+      window.addEventListener('resize', function () {
+        clearTimeout(minuterie);
+        minuterie = setTimeout(function () {
+          var g = document.querySelector('.deco-fanions');
+          var svg = g && g.querySelector('svg');
+          if (svg && Number(svg.getAttribute('width')) < (window.innerWidth || 0) + 10) {
+            g.parentNode.removeChild(g);
+            fanions(document);
+          }
+        }, 250);
+      });
+    }
+  }
+
   /* Soleil d'été : halo chaud et rayons qui tournent très lentement */
   function soleil(root) {
     var z = zone(root);
@@ -771,6 +966,8 @@
     rentree: rentree,
     avent: avent,
     glace: glace,
+    feux: feux,
+    fanions: fanions,
     flocons: flocons,
     notes: function (r) { particules(r, 'notes'); },
     coeurs: function (r) { particules(r, 'coeurs'); },
@@ -792,6 +989,13 @@
     });
   }
 
+  /* nombre de jours d'une période (pour départager deux objets à cliquer) */
+  function longueur(a) {
+    var an = window.CR.annee, jour = function (q) { return Date.UTC(an, Math.floor(q / 100) - 1, q % 100) / 864e5; };
+    var n = jour(window.CR.quand(a.au, an)) - jour(window.CR.quand(a.du, an));
+    return n < 0 ? n + 365 : n;
+  }
+
   /* Pose les décorations du moment (et retire les précédentes : utile pour l'aperçu) */
   function decorer(root) {
     root = root || document;
@@ -802,10 +1006,20 @@
     if (!conf || !window.CR) { return; }
     var liste;
     try { liste = JSON.parse(conf.textContent); } catch (e) { return; }
+    var objet = null, plusCourte = Infinity;
     liste.forEach(function (a) {
       if (!window.CR.actif(a.du, a.au)) { return; }
-      a.effets.forEach(function (e) { if (actifs.indexOf(e) < 0 && EFFETS[e]) { actifs.push(e); } });
+      a.effets.forEach(function (e) {
+        if (!EFFETS[e]) { return; }
+        if (OBJETS.indexOf(e) < 0) {
+          if (actifs.indexOf(e) < 0) { actifs.push(e); }
+        } else if (longueur(a) < plusCourte) {   /* un seul objet à cliquer : celui de l'occasion la plus courte */
+          objet = e;
+          plusCourte = longueur(a);
+        }
+      });
     });
+    if (objet) { actifs.push(objet); }
     if (!actifs.length) { return; }
     document.documentElement.classList.add('a-deco');
     actifs.forEach(function (e) { document.documentElement.classList.add('a-' + e); EFFETS[e](root); });

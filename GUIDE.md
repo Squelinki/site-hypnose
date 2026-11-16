@@ -89,6 +89,7 @@ Chaque annonce revient **toute seule chaque année** pendant sa période (heure 
 | 24 – 31 mai | – | Journée mondiale sans tabac (lien vers l'encart) | « Arrêter de fumer avec l'hypnose » |
 | 21 juin | Notes de musique (Fête de la musique) | – | – |
 | 21 juin – 31 août | Soleil d'été et glace (une boule de plus à chaque clic) | « Bel été à toutes et à tous ! » | – |
+| 10 – 14 juillet | Fanions bleu-blanc-rouge sous le menu, feu d'artifice dans le haut des pages et fusée à lancer (à la place de la glace) | – | – |
 | 1er – 30 septembre | Ardoise de la rentrée (bonnes résolutions) | « C'est la rentrée : et si cette année, vous preniez du temps pour vous ? » | « Une rentrée plus sereine » |
 | 22 septembre – 31 octobre | Feuilles d'automne | – | – |
 | 4 – 10 octobre | – | Journée mondiale de la santé mentale (lien vers les indications) | – |
@@ -101,7 +102,7 @@ Les encarts s'affichent sur la page d'accueil, **juste sous la photo** : faites 
 **Dans le CMS** (rubrique *Annonces et décorations*), pour chaque annonce :
 - **Activée** : décochez pour la mettre en pause ;
 - **Début / Fin** au format JJ/MM (une période peut chevaucher deux années, ex. du 15/12 au 15/01), ou le nom d'une fête dont la date change chaque année (voir plus bas) ;
-- **Décorations** : guirlande, neige (en haut des pages) ou neige sur tout le site, paillettes, pétales, muguet, soleil, feuilles, cœurs, notes de musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe, poisson d'avril, glace, ardoise de la rentrée, calendrier de l'Avent (plusieurs possibles, ou aucune) ;
+- **Décorations** : guirlande, neige (en haut des pages) ou neige sur tout le site, paillettes, pétales, muguet, soleil, feuilles, cœurs, notes de musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe, poisson d'avril, glace, feu d'artifice du 14 juillet, fanions bleu-blanc-rouge, ardoise de la rentrée, calendrier de l'Avent (plusieurs possibles, ou aucune) ;
 - **Bandeau** : une phrase courte en haut de toutes les pages, idéale pour vos **dates de fermeture** (« Le cabinet sera fermé du 24 au 26 décembre ») ;
 - **Encart** : un bloc sur la page d'accueil, avec titre, texte, points clés, image et boutons.
 Écrivez `{annee}` pour afficher l'année en cours. Pour ajouter une annonce : bouton **Add** en bas de la liste.
@@ -110,7 +111,7 @@ Les encarts s'affichent sur la page d'accueil, **juste sous la photo** : faites 
 
 Pour une nouvelle décoration, demandez-la-moi : elle s'ajoute ensuite à la liste du CMS.
 
-**Voir le site à une autre date** : ajoutez `?apercu=JJ/MM` à l'adresse, ou `?apercu=JJ/MM/AAAA` pour une autre année, par exemple https://hypnose-roulleau.fr/?apercu=15/12 (Noël), https://hypnose-roulleau.fr/?apercu=01/05 (muguet), https://hypnose-roulleau.fr/?apercu=16/03/2027 (Journée du sommeil 2027) ou https://hypnose-roulleau.fr/?apercu=26/03/2027 (Pâques 2027). Seul votre écran est concerné.
+**Voir le site à une autre date** : ajoutez `?apercu=JJ/MM` à l'adresse, ou `?apercu=JJ/MM/AAAA` pour une autre année, par exemple https://hypnose-roulleau.fr/?apercu=15/12 (Noël), https://hypnose-roulleau.fr/?apercu=01/05 (muguet), https://hypnose-roulleau.fr/?apercu=14/07 (14 juillet), https://hypnose-roulleau.fr/?apercu=16/03/2027 (Journée du sommeil 2027) ou https://hypnose-roulleau.fr/?apercu=26/03/2027 (Pâques 2027). Seul votre écran est concerné.
 
 ### Les petites surprises au clic
 
@@ -125,12 +126,16 @@ Comme les clins d'œil de Google sur certaines recherches, chaque décoration ca
 | **Cloche de Pâques** | Elle sonne et sème des œufs en chocolat qui rebondissent en bas du haut de page ; une petite histoire s'affiche clic après clic. |
 | **Lune** (Journée du sommeil) | Elle s'endort (« Zzz… ») et glisse au troisième clic que l'hypnose peut aider à mieux dormir. |
 | **Glace** (été) | Une boule de plus à chaque clic (vanille, fraise, pistache, abricot, puis chocolat avec sa cerise) ; le clic suivant sert une nouvelle glace. |
+| **Fusée** (10 – 14 juillet) | Chaque clic lance une fusée qui éclate en bleu, puis en blanc, puis en rouge… À la 14e fusée (pour le 14 juillet), bouquet final sur toute la page : « Bon 14 juillet à toutes et à tous ! ». Puis on peut recommencer. |
+| **Fanions** (10 – 14 juillet) | Un clic sur un fanion, en haut de page, fait onduler toute la ligne. |
 | **Ardoise** (rentrée) | Elle écrit à la craie une bonne résolution (« Je prends du temps pour moi », « Je respire », « J'ose ! »…) et lance un avion en papier. |
 | **Calendrier de l'Avent** (1er – 24 décembre) | Le paquet porte le numéro du jour ; ouvert, il offre le petit conseil bien-être du jour (modifiable dans le CMS, rubrique *Calendrier de l'Avent*). |
 | **Guirlande** (décembre) | Un clic sur une ampoule, en haut de page, lance une vague de lumière. |
-| **Photo de Caroline** (accueil et « Qui suis-je ? ») | Pendant chaque période décorée, une gerbe aux couleurs du moment jaillit du clic : flocons, paillettes, cœurs, notes, pétales, feuilles, étoiles, clochettes, œufs, pièces, petits poissons ou avions en papier. |
+| **Photo de Caroline** (accueil et « Qui suis-je ? ») | Pendant chaque période décorée, une gerbe aux couleurs du moment jaillit du clic : flocons, paillettes, cœurs, notes, pétales, feuilles, étoiles, clochettes, œufs, pièces, petits poissons, avions en papier ou étincelles. |
 
 Pour que les visiteurs découvrent ces petits jeux, une bulle « Psst… » les invite à cliquer, une seule fois par visite (pour la revoir, ouvrez le site dans une fenêtre de navigation privée).
+
+**Un seul objet à cliquer à la fois** : quand deux périodes se chevauchent, c'est l'occasion la plus courte qui l'emporte. Du 10 au 14 juillet, la fusée remplace la glace, qui revient le 15 ; quand la semaine de Pâques englobe le 1er avril, le poisson d'avril passe ce jour-là avant la cloche, qui revient le lendemain. Les autres décorations (soleil, fanions, pétales…) s'ajoutent sans rien remplacer.
 
 La **neige sur tout le site** (décembre) tombe légèrement devant toute la page, sans jamais gêner un clic. Les décorations sont discrètes et ne gênent aucun lien ni bouton. Les objets à cliquer sont de vrais boutons (utilisables au clavier, annoncés par les lecteurs d'écran) ; le reste est ignoré par les lecteurs d'écran. Chez les visiteurs qui ont demandé à réduire les animations, rien ne bouge : les jeux affichent seulement leurs messages.
 
@@ -140,7 +145,7 @@ La **neige sur tout le site** (décembre) tombe légèrement devant toute la pag
 
 - **Le site ne change pas après un enregistrement** : onglet **Actions** du dépôt. Une croix rouge signifie que la construction a échoué ; cliquez dessus, puis sur l'étape **Construire le site** : le message commence par **ERREUR** et explique le problème en français (date mal écrite, image introuvable…). **Le site en ligne n'est pas modifié** tant que l'erreur n'est pas corrigée. Corrigez dans le CMS et enregistrez de nouveau.
 - **Revenir en arrière** : sur GitHub, ouvrez le fichier concerné dans `contenu/`, bouton **History**, choisissez une version précédente et recopiez-la. Les enregistrements faits depuis le CMS y apparaissent sous la forme « Update … (via Pages CMS) ».
-- **Installer une mise à jour que je vous envoie** : page du dépôt → **Add file** → **Upload files**, glissez le contenu du dossier reçu, puis **Commit changes**. Ces paquets de mise à jour ne contiennent pas vos textes ni vos images (dossiers `contenu/` et `assets/img/medias/`), sauf un fichier nouveau : ce que vous avez modifié dans le CMS est conservé. **N'envoyez plus le paquet complet `site-hypnose-roulleau`** : il remplacerait vos textes par ceux d'origine.
+- **Installer une mise à jour que je vous envoie** : page du dépôt → **Add file** → **Upload files**, glissez le contenu du dossier reçu, puis **Commit changes**. Ces paquets de mise à jour ne contiennent pas vos textes ni vos images (dossiers `contenu/` et `assets/img/medias/`), sauf un fichier nouveau ou un fichier que je vous signale dans mon message, préparé à partir de votre dernière version : ce que vous avez modifié dans le CMS est conservé. **N'envoyez plus le paquet complet `site-hypnose-roulleau`** : il remplacerait vos textes par ceux d'origine.
 - **Relancer la publication à la main** : onglet **Actions** → **Publier le site** → **Run workflow**.
 - **L'année du pied de page** (« © 2027 Caroline Roulleau ») change toute seule le 1er janvier, dans le navigateur des visiteurs. GitHub republie aussi le site chaque 1er janvier ; si le dépôt n'a reçu aucune modification depuis 60 jours, GitHub peut mettre cette tâche annuelle en pause (onglet **Actions** → **Publier le site** → **Enable workflow** pour la réactiver). Ce n'est pas grave : l'année affichée reste juste.
 
@@ -181,6 +186,8 @@ Le logo « HR » (Hypnose Roulleau) apparaît dans l'en-tête, le pied de page, 
 | `favicon.svg`, `favicon.ico` | L'icône de l'onglet (anneau un peu plus épais pour rester lisible en tout petit) |
 | `apple-touch-icon.png` | L'icône quand on ajoute le site à l'écran d'accueil d'un iPhone ou d'un iPad |
 | `assets/img/partage.jpg` | L'image qui s'affiche quand on partage un lien du site |
+
+**L'icône de l'onglet se met à jour toute seule.** Les navigateurs gardent longtemps en mémoire la petite icône d'un site. Pour l'éviter, son adresse porte une empreinte qui change automatiquement dès que le fichier change (par exemple `favicon.svg?v=1a2b3c4d`) : à la visite suivante, le navigateur charge la nouvelle icône. Il en va de même pour le logo, les styles et les scripts. Si votre onglet montre encore l'ancienne icône juste après une mise à jour, attendez quelques minutes puis fermez l'onglet et rouvrez le site. Dans les résultats de Google, l'icône change au prochain passage de Google sur le site (quelques jours à quelques semaines).
 
 Pour changer de logo, demandez-moi : les icônes et l'image de partage doivent être refaites en même temps.
 

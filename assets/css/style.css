@@ -451,7 +451,8 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
    Bandeau en haut des pages, encart de la page d'accueil et décorations
    (guirlande, neige, paillettes, pétales, muguet, soleil, feuilles, cœurs, notes,
    cloche de Pâques, lune et étoiles, galette des rois, crêpe, poisson d'avril,
-   glace de l'été, ardoise de la rentrée, calendrier de l'Avent), avec leurs petites surprises au clic.
+   glace de l'été, feu d'artifice et fanions du 14 juillet, ardoise de la rentrée, calendrier de l'Avent),
+   avec leurs petites surprises au clic.
    Les périodes et les textes se règlent dans le CMS : cette section n'a pas besoin d'être modifiée. */
 [hidden] { display: none !important; }
 
@@ -585,6 +586,53 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .deco-glace .deco-bulle::after { right: 34px; bottom: -5px; }
 .page-hero > .deco.deco-glace { inset: auto 4% 4px auto; width: 82px; height: 160px; z-index: 2; }
 
+/* 14 juillet : fusée bleu-blanc-rouge plantée dans un pot, au pied de la photo ; la bulle s'ouvre à gauche */
+.deco.deco-fusee { inset: auto -22px -16px auto; width: 90px; height: 200px; }
+.deco-fusee svg { filter: drop-shadow(0 10px 10px rgba(47,43,38,.22)); }
+.deco-fusee .fusee { transform-box: fill-box; transform-origin: 50% 100%; }
+.deco-fusee .meche { transform-box: fill-box; transform-origin: center; }
+.deco-fusee .deco-bulle { right: calc(100% - 4px); bottom: 82%; }
+.deco-fusee .deco-bulle::after { right: -5px; bottom: 12px; }
+.page-hero > .deco.deco-fusee { inset: auto 4% 4px auto; width: 74px; height: 164px; z-index: 2; }
+
+/* 14 juillet : gerbes discrètes qui éclatent de temps en temps dans le haut de page (immobiles si on réduit les animations).
+   Elles se placent dans des zones que la mise en page garde toujours libres, même si les textes changent dans le CMS :
+   entre le texte et la photo, à droite de la photo, et sur les pages sans photo au-delà de la largeur maximale des titres.
+   Repères calculés comme .wrap : --cl = bord gauche du contenu, --lc = largeur du contenu (1200 px au plus, marges de 40 px). */
+.deco-artifice { --cl: calc(max(0px, 50% - 600px) + 40px); --lc: calc(min(100%, 1200px) - 80px); }
+.deco-artifice .fa { --x: -200px; --y: 0px; --tt: min(var(--t), var(--tmax, 44px));
+  position: absolute; left: calc(var(--x) + var(--jx)); top: calc(var(--y) + var(--jy)); width: 0; height: 0; }
+/* accueil : colonnes 1.08fr / .92fr, photo en arche centrée dans la seconde colonne */
+.hero > .deco-artifice { --g: 56px; --aw: 390px; }
+.hero > .deco-artifice .fa { --col1: calc((var(--lc) - var(--g)) * .54);
+  --arche-g: calc(var(--cl) + var(--col1) + var(--g) + ((var(--lc) - var(--g)) * .46 - var(--aw)) / 2); --arche-d: calc(var(--arche-g) + var(--aw)); }
+.hero > .deco-artifice .f1 { --x: calc((var(--cl) + var(--col1) + var(--arche-g)) / 2); --y: 14%; }
+.hero > .deco-artifice :is(.f2, .f3) { --x: min((var(--arche-d) + 100%) / 2, var(--arche-d) + 70px); }
+.hero > .deco-artifice .f2 { --y: 15%; }
+.hero > .deco-artifice .f3 { --y: 42%; }
+/* autres pages : à droite des titres (16em au plus) ; « Qui suis-je ? » : entre le texte et la photo, puis à droite de la photo */
+.page-hero > .deco-artifice .f1 { --x: calc(var(--cl) + 980px); --y: 22%; }
+.page-hero > .deco-artifice .f2 { --x: min(var(--cl) + 1050px, 96% - 122px); --y: 72%; }   /* plus bas, à gauche de la fusée */
+.page-hero > .deco-artifice .f3 { display: none; }
+.page-hero:has(.photo) > .deco-artifice { --g: 64px; --pw: 360px; }
+.page-hero:has(.photo) > .deco-artifice .fa { --col1: calc((var(--lc) - var(--g)) * .575);
+  --photo-g: calc(var(--cl) + var(--col1) + var(--g) + ((var(--lc) - var(--g)) * .425 - var(--pw)) / 2); }
+.page-hero:has(.photo) > .deco-artifice .f1 { --x: calc((var(--cl) + var(--col1) + var(--photo-g)) / 2); --y: 14%; }
+.page-hero:has(.photo) > .deco-artifice .f2 { --x: min(var(--photo-g) + var(--pw) + 84px, 100% - 52px); --y: 18%; }
+@media (max-width: 1259px) { .page-hero > .deco-artifice .f2 { display: none; } }
+@media (max-width: 1120px) {
+  .deco-artifice { --tmax: 34px; }
+  .hero > .deco-artifice { --g: 40px; --aw: 330px; }
+  .page-hero:has(.photo) > .deco-artifice { --pw: 300px; }
+}
+@media (max-width: 1100px) { .page-hero:not(:has(.photo)) > .deco-artifice { display: none; } }
+@media (max-width: 980px) { .hero > .deco-artifice { display: none; } }
+.deco-artifice .fa i { position: absolute; left: 0; top: -1px; width: calc(var(--tt) * .42); height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, rgba(246,241,234,0), var(--c)); transform-origin: 0 50%;
+  transform: rotate(var(--a)) translateX(calc(var(--tt) * .58)); opacity: .4; }
+.deco-artifice .fa::before { content: ""; position: absolute; left: -1px; top: 0; width: 2px; height: 24px; border-radius: 2px;
+  background: linear-gradient(#E9C46A, rgba(233,196,106,0)); opacity: 0; }
+
 /* Ardoise de la rentrée */
 .deco.deco-rentree { inset: auto -32px -24px auto; width: 170px; height: 138px; }
 .deco-rentree svg { filter: drop-shadow(0 10px 12px rgba(47,43,38,.25)); }
@@ -634,6 +682,15 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   box-shadow: inset 0 0 0 1.5px #B5862C, 0 2px 4px -1px rgba(47,43,38,.35); }
 .f-avion b { -webkit-mask: none; mask: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M2 6l20 6-20 6 5-6z' fill='%23fff' stroke='%23858C87' stroke-width='1.2' stroke-linejoin='round'/%3E%3Cpath d='M7 12h15' stroke='%23858C87' stroke-width='1'/%3E%3C/svg%3E") center / contain no-repeat;
   filter: drop-shadow(0 4px 4px rgba(47,43,38,.22)); }
+.f-etincelle b { -webkit-mask: none; mask: none; border-radius: 50%; background: radial-gradient(closest-side, var(--c) 0 45%, rgba(255,255,255,0) 100%); }
+.f-trait, .f-trait-blanc { width: calc(var(--s) * 2.6); height: calc(var(--s) * .5); margin: calc(var(--s) * -.25) 0 0 calc(var(--s) * -1.3); }
+.f-trait b, .f-trait-blanc b { -webkit-mask: none; mask: none; border-radius: 50%; background: linear-gradient(90deg, rgba(255,255,255,0), var(--c) 62%); }
+.f-trait-blanc b { filter: drop-shadow(0 0 .8px rgba(150,112,40,.9)); }
+.f-flash b { -webkit-mask: none; mask: none; border-radius: 50%; opacity: .4;
+  background: radial-gradient(closest-side, rgba(255,250,235,.9), var(--c) 28%, rgba(255,255,255,0) 100%); }
+.f-trainee { width: 4px; margin: 0 0 0 -2px; }
+.f-trainee b { -webkit-mask: none; mask: none; border-radius: 2px; background: linear-gradient(#FFF8E1, #E5B54C 24%, rgba(229,181,76,0));
+  filter: drop-shadow(0 0 1px rgba(150,104,32,.6)); }
 .f-note b, .f-z b { width: auto; height: auto; -webkit-mask: none; mask: none; background: none; color: var(--sauge-profonde); font: 400 var(--s)/1 var(--police-titres); white-space: nowrap; }
 .f-z b { font-style: italic; color: #8C84B4; }
 
@@ -651,6 +708,13 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .is-scrolled .deco-guirlande .l { pointer-events: none; }
 .nav-open .deco-guirlande { display: none; }
 
+/* Fanions bleu-blanc-rouge sous l'en-tête (un clic sur un fanion, en haut de page : toute la ligne ondule) */
+.deco.deco-fanions { inset: calc(100% - 3px) 0 auto 0; height: 34px; z-index: 1; }
+.deco-fanions svg { display: block; overflow: visible; }
+.deco-fanions .fl { pointer-events: auto; cursor: pointer; transform-box: fill-box; transform-origin: 50% 0; }
+.is-scrolled .deco-fanions .fl { pointer-events: none; }
+.nav-open .deco-fanions { display: none; }
+
 @media (max-width: 900px) {
   .bandeau { font-size: 13.5px; }
   .bandeau p { padding-top: 9px; padding-bottom: 9px; }
@@ -665,10 +729,14 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   .deco.deco-avent { width: 100px; height: 111px; right: -10px; bottom: -16px; }
   .deco.deco-poisson { width: 76px; height: 49px; right: -8px; top: 38%; }
   .deco.deco-glace { width: 80px; height: 157px; right: -8px; bottom: -14px; }
+  .deco.deco-fusee { width: 72px; height: 160px; right: -8px; bottom: -14px; }
+  .deco-artifice { display: none; }
+  .deco.deco-fanions { height: 24px; }
   .deco-avent .deco-bulle { max-width: 215px; }
   .page-hero > .deco.deco-objet { display: none; }
   .deco-bulle { max-width: 205px; font-size: 13px; }
   .a-guirlande .hero-grid { padding-top: 30px; }
+  .a-fanions .hero-grid { padding-top: 26px; }
   .encart-seul { grid-template-columns: 1fr; gap: 18px; }
 }
 
@@ -706,6 +774,18 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   @keyframes deco-brille { 25% { rotate: -7deg; } 75% { rotate: 7deg; } }
   @keyframes deco-plop { 0% { translate: 0 -30px; scale: .9 1.1; opacity: 0; } 60% { translate: 0 2px; scale: 1.08 .92; opacity: 1; } 100% { translate: 0 0; scale: 1; } }
   @keyframes deco-frisson { 0%, 84%, 100% { rotate: 0deg; } 88% { rotate: -3deg; } 92% { rotate: 3deg; } 96% { rotate: -1.5deg; } }
+  @keyframes deco-fa-rayon {
+    0%, 9% { transform: rotate(var(--a)) translateX(0) scaleX(.2); opacity: 0; }
+    10% { opacity: .75; }
+    21% { transform: rotate(var(--a)) translateX(calc(var(--tt) * .58)) scaleX(1); opacity: .65; }
+    30%, 100% { transform: rotate(var(--a)) translateX(calc(var(--tt) * .72)) scaleX(.3); opacity: 0; } }
+  @keyframes deco-fa-monte { 0% { opacity: 0; translate: 0 150px; } 2% { opacity: .8; } 9% { opacity: .8; translate: 0 0; } 10%, 100% { opacity: 0; translate: 0 0; } }
+  @keyframes deco-fa-chute { 0%, 10% { translate: 0 0; } 30%, 100% { translate: 0 14px; } }
+  @keyframes deco-decolle { 0% { translate: 0 0; opacity: 1; } 20% { translate: 0 3px; opacity: 1; } 100% { translate: 0 -160px; opacity: 0; } }
+  @keyframes deco-recharge { from { translate: 0 34px; opacity: 0; } to { translate: 0 0; opacity: 1; } }
+  @keyframes deco-meche { 0%, 100% { scale: .7; opacity: .7; } 50% { scale: 1.15; opacity: 1; } }
+  @keyframes deco-fanion { from { rotate: -6deg; } to { rotate: 6deg; } }
+  @keyframes deco-claque { 0% { rotate: 0deg; } 30% { rotate: 24deg; } 60% { rotate: -16deg; } 100% { rotate: 0deg; } }
   .deco .p { animation: deco-chute var(--d) linear var(--r) infinite; }
   .deco .p i { animation: deco-balance calc(var(--d) / 3) ease-in-out var(--r) infinite alternate; }
   .deco-paillettes .p, .deco-etoiles .p { animation: none; }
@@ -751,6 +831,15 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   .deco-glace.complete .cerise { transform-box: fill-box; transform-origin: 50% 100%; animation: deco-plop .6s cubic-bezier(.3,1.5,.5,1); }
   .deco-avent .couvercle { transition: transform .55s cubic-bezier(.3,1.4,.5,1); }
   .deco-avent .lueur { transition: opacity .5s ease; }
+  .deco-artifice .fa { animation: deco-fa-chute var(--d) ease-out var(--r) infinite; }
+  .deco-artifice .fa i { animation: deco-fa-rayon var(--d) cubic-bezier(.2,.7,.3,1) var(--r) infinite; }
+  .deco-artifice .fa::before { animation: deco-fa-monte var(--d) ease-out var(--r) infinite; }
+  .deco-fusee .meche { animation: deco-meche .9s ease-in-out infinite; }
+  .deco-fusee.part .fusee { animation: deco-decolle .5s cubic-bezier(.55,0,.9,.45) both; }
+  .deco-fusee.recharge .fusee { animation: deco-recharge .45s cubic-bezier(.2,.7,.3,1) both; }
+  .deco-fusee.frisson .fusee { animation: deco-brille .6s ease-in-out; }
+  .deco-fanions .fl { animation: deco-fanion var(--d) ease-in-out var(--r) infinite alternate; }
+  .deco-fanions.vague .fl { animation: deco-claque .7s ease-out var(--v) both; }
 }
 
 /* 21. ANIMATIONS --------------------------------------------------------------
