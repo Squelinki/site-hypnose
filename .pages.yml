@@ -149,6 +149,10 @@ content:
                 label: Description de l'image
                 type: string
                 description: "Ce que montre l'image, pour les personnes malvoyantes et pour Google."
+              - name: dos
+                label: Texte au dos de l'image (petit jeu)
+                type: string
+                description: "L'image se retourne comme un badge de récompense (clic, ou glissé du doigt). Au dos : « Badge débloqué », le nom et la date pris dans le surtitre, puis ce texte. Laissez vide pour « Bravo, vous avez trouvé la face cachée ! ». {annee} = l'année en cours."
               - name: bouton
                 label: Texte du bouton
                 type: string
