@@ -1,30 +1,37 @@
-telephone: "07 69 85 06 19"
-email: "hypnose.roulleau@gmail.com"
-adresse: "30 rue de Chaillot"
+telephone: 07 69 85 06 19
+email: hypnose.roulleau@gmail.com
+adresse: 30 rue de Chaillot
 code_postal: "75016"
-ville: "Paris"
-quartier: "Paris 16e"
-acces: "Métro Alma-Marceau (ligne 9) ou George V (ligne 1)"
-acces_detail: "Aussi : métro Kléber (ligne 6), RER C Pont de l'Alma, bus 32 et 92 (arrêt Marceau – Pierre 1er de Serbie)"
+ville: Paris
+quartier: Paris 16e
+acces: Métro Alma-Marceau (ligne 9), George V (ligne 1) ou Kléber (ligne 6)
+acces_detail: "Aussi : RER C Pont de l'Alma, bus 32 et 92 (arrêt Marceau –
+  Pierre 1er de Serbie)"
 horaires:
-  - jours: [lundi, mardi, mercredi, jeudi, vendredi]
-    de: "9 h"
-    a: "19 h"
+  - jours:
+      - lundi
+      - mardi
+      - mercredi
+      - jeudi
+      - vendredi
+    de: 9 h
+    a: 19 h
 tarifs:
-  - intitule: "Consultation d'hypnose"
-    intitule_court: "Consultation d'hypnose"
-    precision: "séance de 1 à 2 heures selon son type"
+  - intitule: Consultation d'hypnose
+    intitule_court: Consultation d'hypnose
+    precision: séance de 1 à 2 heures selon son type
     prix: 120
-  - intitule: "Consultation d'hypnose « arrêt du tabac »"
-    intitule_court: "Arrêt du tabac"
-    precision: ""
+  - intitule: Consultation d'hypnose « arrêt du tabac »
+    intitule_court: Arrêt du tabac
     prix: 200
-duree_seance: "Séance de 1 à 2 heures selon son type"
-paiement: "Chèque ou espèces"
-paiement_precision: "Cartes bancaires non acceptées"
-remboursement: "Les séances ne sont pas remboursées par la Sécurité sociale. Néanmoins, certaines mutuelles prennent en charge une partie des séances par an sur facture : renseignez-vous !"
-instagram: "https://www.instagram.com/carolineroulleau_hypnose/"
-facebook: "https://www.facebook.com/carolineroulleauhypnose/"
-linkedin: "https://fr.linkedin.com/in/caroline-roulleau-1006b570"
-fiche_google: "https://share.google/SU6ubBhQa9dX3cHF1"
-formulaire: "https://formspree.io/f/xljbgbab"
+duree_seance: Séance de 1 à 2 heures selon son type
+paiement: Chèque ou espèces
+paiement_precision: Cartes bancaires non acceptées
+remboursement: "Les séances ne sont pas remboursées par la Sécurité sociale.
+  Néanmoins, certaines mutuelles prennent en charge une partie des séances par
+  an sur facture : renseignez-vous !"
+instagram: https://www.instagram.com/carolineroulleau_hypnose/
+facebook: https://www.facebook.com/carolineroulleauhypnose/
+linkedin: https://fr.linkedin.com/in/caroline-roulleau-1006b570
+fiche_google: https://share.google/SU6ubBhQa9dX3cHF1
+formulaire: https://formspree.io/f/xljbgbab
