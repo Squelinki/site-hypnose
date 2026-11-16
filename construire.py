@@ -358,6 +358,21 @@ def date_reelle(code, an):
     return date_fete(m.group(1), an) + datetime.timedelta(days=int(m.group(2) or 0))
 
 
+DOS_PAR_DEFAUT = "Bravo, vous avez trouvé la face cachée !"
+
+
+def dos_du_badge(e, nom):
+    """Texte gravé au dos de l'image d'un encart (l'image se retourne comme un badge de récompense).
+    Le nom et la date viennent du surtitre (« Mois sans tabac · novembre {annee} ») ; la phrase, du champ « dos »."""
+    morceaux = re.split(r"\s*[·•]\s*", chaine(e.get("surtitre")).strip(), maxsplit=1)
+    nom_dos = morceaux[0].strip() or nom
+    date_dos = morceaux[1].strip() if len(morceaux) > 1 else ""
+    if not date_dos and "{annee}" not in nom_dos:
+        date_dos = "{annee}"
+    date_dos = date_dos[:1].upper() + date_dos[1:]
+    return nom_dos, date_dos, chaine(e.get("dos")).strip() or DOS_PAR_DEFAUT
+
+
 def preparer_annonces(donnees):
     annonces, ids = [], set()
     for a in donnees.get("annonces") or []:
@@ -379,6 +394,7 @@ def preparer_annonces(donnees):
         e = a.get("encart") or {}
         e["afficher"] = bool(e.get("afficher") and chaine(e.get("titre")).strip())
         e["points"] = [p for p in e.get("points") or [] if chaine(p).strip()]
+        e["dos_nom"], e["dos_date"], e["dos_mot"] = dos_du_badge(e, nom)
         a["encart"] = e
         annonces.append(a)
     for a in annonces:   # fêtes à date variable : dates calculées, affichées dans le journal de GitHub

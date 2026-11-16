@@ -1,7 +1,7 @@
 /* ==========================================================================
    Caroline Roulleau – Hypnothérapeute · Petits scripts du site
    1. Menu mobile   2. Ombre de l'en-tête   3. Apparitions au défilement
-   4. Exercice de respiration   5. Formulaire de contact
+   4. Exercice de respiration   5. Formulaire de contact   6. Badge à retourner
    Le site reste lisible et utilisable même si ce fichier ne se charge pas.
    ========================================================================== */
 (function () {
@@ -182,6 +182,189 @@
           })
           .then(function () { submit.disabled = false; });
       });
+    }
+
+    /* 6. Badge à retourner (image des encarts d'annonce, page d'accueil) -- */
+    [].forEach.call(root.querySelectorAll('[data-badge]'), badge);
+  }
+
+  /* Comme une récompense de montre connectée : l'image fait un tour complet quand elle
+     apparaît à l'écran, puis se retourne d'un clic, d'une touche ou d'un glissé du doigt,
+     pour montrer le texte gravé au dos (réglé dans le CMS : encart, « Texte au dos »).
+     Visiteurs qui demandent de réduire les animations : pas de tour, la face change d'un clic. */
+  function badge(b) {
+    var carte = b.querySelector('.badge-carte'), dos = b.querySelector('.badge-dos');
+    if (!carte || !dos || b.classList.contains('badge-on')) { return; }
+    var calme = reduceMotion();
+    var image = window.requestAnimationFrame ? function (f) { window.requestAnimationFrame(f); }
+      : function (f) { setTimeout(function () { f(Date.now()); }, 16); };
+
+    var bouton = document.createElement('button');
+    bouton.setAttribute('type', 'button');
+    bouton.className = 'badge-bouton';
+    bouton.setAttribute('aria-label', "Retourner l'image");
+    bouton.setAttribute('aria-pressed', 'false');
+    bouton.setAttribute('title', "Retournez l'image !");
+    b.appendChild(bouton);
+    var reflet = document.createElement('span');
+    reflet.className = 'badge-reflet';
+    carte.appendChild(reflet);
+    for (var k = 0, N = 9; k < N; k++) {   /* tranche dorée, plus foncée au milieu */
+      var couche = document.createElement('i'), z = (k + 0.5) / N - 0.5, f = 1 - Math.abs(z) * 2;
+      couche.className = 'badge-couche';
+      couche.setAttribute('style', '--k:' + z.toFixed(3) + ';background:rgb(' +
+        Math.round(222 - 76 * f) + ',' + Math.round(190 - 74 * f) + ',' + Math.round(118 - 62 * f) + ')');
+      carte.appendChild(couche);
+    }
+    dos.hidden = false;
+    b.classList.add('badge-on');
+    function ajuster() {   /* texte un peu long (saisi dans le CMS) : il est réduit juste ce qu'il faut pour tenir au dos */
+      var t = 1;
+      dos.style.removeProperty('--t');
+      while (dos.scrollHeight > dos.clientHeight + 1 && t > 0.55) { t -= 0.05; dos.style.setProperty('--t', t.toFixed(2)); }
+    }
+    ajuster();
+    if (document.fonts && document.fonts.ready) { document.fonts.ready.then(ajuster); }
+    var reajuster = null;
+    window.addEventListener('resize', function () { clearTimeout(reajuster); reajuster = setTimeout(ajuster, 200); });
+
+    /* angle en degrés (0 = image, 180 = dos), vitesse en degrés par seconde ; un ressort ramène l'angle vers la cible */
+    var angle = 0, vitesse = 0, cible = 0, raideur = 80, rx = 0, rxCible = 0, ry = 0, ryCible = 0;
+    var anime = false, avant = 0, glisse = null, sansClic = false, touche = false, eclat = null;
+
+    function face() { return ((Math.round(cible / 180) % 2) + 2) % 2; }
+    function poser() {
+      var a = angle + ry, s = Math.sin(a * Math.PI / 180);
+      carte.style.setProperty('--ry', a.toFixed(2) + 'deg');
+      carte.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+      carte.style.setProperty('--bx', (50 + s * 60).toFixed(1) + '%');
+      carte.style.setProperty('--brille', Math.min(1, Math.abs(s) * 1.5 + (Math.abs(rx) + Math.abs(ry)) / 30).toFixed(2));
+    }
+    function briller() {   /* l'or du dos scintille une fois */
+      b.classList.remove('badge-brille');
+      void b.offsetWidth;
+      b.classList.add('badge-brille');
+      clearTimeout(eclat);
+      eclat = setTimeout(function () { b.classList.remove('badge-brille'); }, 2000);
+    }
+    function repos() {   /* à plat, net, sur la face d'arrivée */
+      var envers = face() === 1;
+      angle = cible = envers ? 180 : 0;
+      vitesse = 0;
+      poser();
+      b.classList.remove('badge-3d');
+      b.classList.toggle('badge-envers', envers);
+      bouton.setAttribute('aria-pressed', String(envers));
+      if (envers) { briller(); }
+    }
+    function etape(t) {
+      t = typeof t === 'number' ? t : Date.now();
+      var dt = avant ? Math.min(0.034, Math.max(0.001, (t - avant) / 1000)) : 0.016;
+      avant = t;
+      if (!glisse) {   /* ressort à peine amorti : la pièce oscille un peu avant de s'arrêter */
+        vitesse += (-raideur * (angle - cible) - 2 * Math.sqrt(raideur) * 0.74 * vitesse) * dt;
+        angle += vitesse * dt;
+      }
+      var suivre = Math.min(1, dt * 10);
+      rx += (rxCible - rx) * suivre;
+      ry += (ryCible - ry) * suivre;
+      poser();
+      if (glisse || Math.abs(angle - cible) > 0.1 || Math.abs(vitesse) > 3 || Math.abs(rx - rxCible) > 0.05 || Math.abs(ry - ryCible) > 0.05) {
+        image(etape);
+        return;
+      }
+      anime = false;
+      angle = cible; vitesse = 0; rx = rxCible; ry = ryCible;
+      if (rx || ry) { poser(); return; }   /* la souris est encore dessus : il reste un peu incliné */
+      repos();
+    }
+    function demarrer() {
+      b.classList.add('badge-3d');
+      if (!anime) { anime = true; avant = 0; image(etape); }
+    }
+    function retourner() {
+      touche = true;
+      cible = Math.round(cible / 180) * 180 + 180;
+      if (calme) { repos(); return; }
+      raideur = 60;
+      vitesse += 220;
+      demarrer();
+    }
+    function tourner() {   /* le tour complet de bienvenue */
+      if (touche || calme) { return; }
+      raideur = 22;
+      cible += 360;
+      vitesse += 130;
+      demarrer();
+    }
+
+    bouton.addEventListener('click', function () {
+      if (sansClic) { sansClic = false; return; }   /* fin d'un glissé à la souris : ce n'était pas un clic */
+      retourner();
+    });
+    if (calme) { return; }
+
+    bouton.addEventListener('pointerdown', function (e) {
+      sansClic = false;
+      if (e.button) { return; }
+      glisse = { id: e.pointerId, x: e.clientX, y: e.clientY, a: angle, t: e.timeStamp || Date.now(), v: 0, bouge: false };
+      if (bouton.setPointerCapture) { try { bouton.setPointerCapture(e.pointerId); } catch (err) { /* rien */ } }
+    });
+    bouton.addEventListener('pointermove', function (e) {
+      var r;
+      if (glisse && e.pointerId === glisse.id) {
+        var dx = e.clientX - glisse.x, dy = e.clientY - glisse.y;
+        if (!glisse.bouge && Math.abs(dx) < 6) { return; }   /* le doigt tremble : pas encore un glissé */
+        if (!glisse.bouge) { glisse.bouge = touche = true; b.classList.add('badge-glisse'); }
+        r = carte.getBoundingClientRect();
+        var nouvel = glisse.a + dx * 200 / (r.width || 300), t = e.timeStamp || Date.now();
+        glisse.v = glisse.v * 0.4 + (nouvel - angle) / Math.max(1, t - glisse.t) * 1000 * 0.6;
+        glisse.t = t;
+        angle = nouvel;
+        rxCible = Math.max(-12, Math.min(12, -dy * 0.08));
+        demarrer();
+        return;
+      }
+      if (e.pointerType === 'mouse' && !glisse) {   /* survol : l'image s'incline un peu vers la souris */
+        r = carte.getBoundingClientRect();
+        if (!r.width) { return; }
+        ryCible = ((e.clientX - r.left) / r.width - 0.5) * 12;
+        rxCible = -((e.clientY - r.top) / r.height - 0.5) * 9;
+        demarrer();
+      }
+    });
+    function lacher(e, annule) {
+      if (!glisse || e.pointerId !== glisse.id) { return; }
+      var g = glisse;
+      glisse = null;
+      b.classList.remove('badge-glisse');
+      rxCible = 0;
+      if (!g.bouge) { return; }   /* simple appui : c'est le clic qui retourne l'image */
+      sansClic = true;
+      setTimeout(function () { sansClic = false; }, 350);
+      vitesse = annule ? 0 : Math.max(-2400, Math.min(2400, g.v));
+      raideur = 70;
+      cible = Math.round((angle + vitesse * 0.22) / 180) * 180;   /* elle s'arrête sur la face la plus proche de son élan */
+      demarrer();
+    }
+    bouton.addEventListener('pointerup', function (e) { lacher(e, false); });
+    bouton.addEventListener('pointercancel', function (e) { lacher(e, true); });
+    bouton.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'mouse' || glisse) { return; }
+      rxCible = ryCible = 0;
+      if (b.classList.contains('badge-3d')) { demarrer(); }
+    });
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entrees) {
+        if (!entrees.some(function (en) { return en.isIntersecting; })) { return; }
+        io.disconnect();
+        var img = carte.querySelector('img');   /* on attend que l'image soit chargée pour la faire tourner */
+        setTimeout(function () {
+          if (!img || img.complete !== false) { tourner(); } else { img.addEventListener('load', tourner, { once: true }); }
+        }, 280);
+      }, { threshold: 0.55 });
+      io.observe(b);
     }
   }
 

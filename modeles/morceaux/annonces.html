@@ -16,7 +16,21 @@
 <section class="sec sec--sauge encart" id="{{ a.id }}" aria-labelledby="t-{{ a.id }}" data-affiche-du="{{ a.du }}" data-affiche-au="{{ a.au }}" hidden>
   <div class="wrap {{ 'about-grid' if e.image else 'encart-seul' }}">
 {%- if e.image %}
-    <img class="encart-img" src="{{ e.image|lien }}" alt="{{ e.image_alt|attr }}"{{ e.image|dimensions }} loading="lazy" decoding="async">
+    <div class="badge" data-badge>
+      <div class="badge-carte">
+        <img class="encart-img" src="{{ e.image|lien }}" alt="{{ e.image_alt|attr }}"{{ e.image|dimensions }} loading="lazy" decoding="async">
+        <div class="badge-dos" hidden>
+          <span class="badge-sceau"></span>
+          <p class="badge-titre badge-or">Badge débloqué</p>
+          <p class="badge-nom badge-or">{{ e.dos_nom|texte(annonce=True)|annee }}</p>
+{%- if e.dos_date %}
+          <p class="badge-date badge-or">{{ e.dos_date|texte(annonce=True)|annee }}</p>
+{%- endif %}
+          <p class="badge-mot">{{ e.dos_mot|texte(annonce=True)|annee }}</p>
+          <p class="badge-signature">Caroline Roulleau · Hypnothérapeute</p>
+        </div>
+      </div>
+    </div>
 {%- endif %}
     <div>
 {%- if e.surtitre %}

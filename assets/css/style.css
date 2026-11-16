@@ -475,6 +475,57 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .encart-seul .h2 { margin-bottom: 0; }
 .encart-seul .about-text:first-child { margin-top: 0; }
 
+/* Badge : l'image d'un encart se retourne comme une récompense de montre connectée, avec un texte gravé au dos.
+   Elle fait un tour complet quand elle apparaît, puis se retourne d'un clic, d'une touche ou d'un glissé (main.js, section 6).
+   Au repos elle est à plat (image nette) ; la 3D et la tranche dorée ne servent que pendant qu'elle tourne.
+   Sans script : l'image seule, comme avant. */
+.badge { position: relative; justify-self: center; width: 100%; max-width: 440px; container-type: inline-size; --ep: 1.8cqi; }
+.badge .encart-img { width: 100%; max-width: none; }
+.badge-carte { position: relative; }
+.badge-dos {
+  position: absolute; inset: 0; z-index: 1; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 8.5% 10.5%; border-radius: var(--arrondi); text-align: center; color: #F5EAD0;
+  background:
+    radial-gradient(85% 65% at 26% 14%, rgba(255,255,255,.17), rgba(255,255,255,0) 62%),
+    radial-gradient(110% 80% at 82% 104%, rgba(0,0,0,.26), rgba(0,0,0,0) 60%),
+    linear-gradient(152deg, #5E7D63, #3F5644 78%);
+  box-shadow: 0 30px 50px -30px rgba(76,102,80,.55);
+}
+.badge-dos > * { flex-shrink: 0; max-width: 100%; }
+.badge-dos::before { content: ""; position: absolute; inset: 4.5%; border: 1.5px solid rgba(233,207,147,.8); border-radius: calc(var(--arrondi) - 8px); outline: 1px solid rgba(233,207,147,.35); outline-offset: 5px; pointer-events: none; }
+.badge-dos::after, .badge-reflet {   /* reflet de lumière qui glisse pendant que l'image tourne */
+  content: ""; position: absolute; inset: 0; border-radius: var(--arrondi); pointer-events: none; opacity: 0;
+  background: linear-gradient(105deg, rgba(255,255,255,0) 38%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 62%) var(--bx, 50%) 0 / 280% 100% no-repeat;
+}
+.badge-sceau { width: calc(19cqi * var(--t, 1)); height: calc(19cqi * var(--t, 1)); margin-bottom: calc(3.6cqi * var(--t, 1)); background: linear-gradient(135deg, #F1DDA4, #B8924A 55%, #F3E2AE); -webkit-mask: url("../img/sceau.svg") center / contain no-repeat; mask: url("../img/sceau.svg") center / contain no-repeat; }
+.badge-or { color: #E9CF93; }
+@supports (-webkit-background-clip: text) or (background-clip: text) {
+  .badge-or { background: linear-gradient(100deg, #C29A52 0%, #F6E6B4 24%, #C9A35C 44%, #FBEFCB 62%, #BF964D 84%) var(--bx, 30%) 0 / 260% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; }
+}
+.badge-titre { margin-bottom: 2.4cqi; font-size: 12px; font-size: calc(2.9cqi * var(--t, 1)); font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+.badge-nom { margin-bottom: 2.6cqi; font-family: var(--police-titres); font-size: 34px; font-size: calc(8.2cqi * var(--t, 1)); line-height: 1.1; text-wrap: balance; }
+.badge-date { display: flex; align-items: center; gap: 2.6cqi; font-size: 13px; font-size: calc(3.2cqi * var(--t, 1)); letter-spacing: .22em; text-transform: uppercase; }
+.badge-date::before, .badge-date::after { content: ""; width: 7cqi; height: 1px; background: rgba(233,207,147,.7); }
+.badge-mot { max-width: 30ch; margin-top: 4.4cqi; font-family: var(--police-titres); font-style: italic; font-size: 19px; font-size: calc(4.6cqi * var(--t, 1)); line-height: 1.35; text-wrap: balance; }
+.badge-signature { margin-top: 5cqi; font-size: 11px; font-size: calc(2.55cqi * var(--t, 1)); letter-spacing: .2em; text-transform: uppercase; color: rgba(245,234,208,.72); }
+.badge-bouton { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: var(--arrondi); background: none; cursor: inherit; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+.badge-bouton:focus-visible { outline-offset: 5px; border-radius: var(--arrondi); }
+.badge-on { cursor: grab; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+.badge-glisse { cursor: grabbing; }
+/* au repos : à plat, une seule face visible */
+.badge-on:not(.badge-3d):not(.badge-envers) .badge-dos, .badge-envers:not(.badge-3d) .encart-img { visibility: hidden; }
+/* pendant qu'elle tourne : en 3D, avec une tranche dorée (fines couches entre les deux faces) */
+.badge-couche, .badge-reflet { display: none; }
+.badge-3d { perspective: 1400px; }
+.badge-3d .badge-carte { transform-style: preserve-3d; transform: translateZ(calc(var(--ep) / -2)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); will-change: transform; }
+.badge-3d .encart-img, .badge-3d .badge-dos, .badge-3d .badge-reflet { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.badge-3d .encart-img { transform: translateZ(calc(var(--ep) / 2)); }
+.badge-3d .badge-reflet { display: block; z-index: 2; transform: translateZ(calc(var(--ep) / 2 + .6px)); }
+.badge-3d .badge-dos { transform: rotateY(180deg) translateZ(calc(var(--ep) / 2)); }
+.badge-3d .badge-dos::after, .badge-3d .badge-reflet { opacity: calc(var(--brille, 0) * .75); }
+.badge-3d .badge-couche { display: block; position: absolute; inset: 0; border-radius: var(--arrondi); transform: translateZ(calc(var(--k) * var(--ep))); }
+
 :root {   /* formes des décorations (dessins d'une seule couleur) */
   --f-flocon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M12 2 9.6 4.4M12 2l2.4 2.4M12 22l-2.4-2.4M12 22l2.4-2.4M3.3 7l.9 3.3M3.3 7l3.3-.9M20.7 17l-3.3.9M20.7 17l-.9-3.3M3.3 17l3.3.9M3.3 17l.9-3.3M20.7 7l-3.3-.9M20.7 7l-.9 3.3'/%3E%3C/svg%3E");
   --f-petale: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1.5C6.5 6 4.5 12.5 7.5 18.5c1.6 3.2 7.4 3.2 9 0 3-6-1-12.6-4.5-17z'/%3E%3C/svg%3E");
@@ -846,6 +897,10 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   .deco-fusee.frisson .fusee { animation: deco-brille .6s ease-in-out; }
   .deco-fanions .fl { animation: deco-fanion var(--d) ease-in-out var(--r) infinite alternate; }
   .deco-fanions.vague .fl { animation: deco-claque .7s ease-out var(--v) both; }
+  /* badge : l'or du dos scintille une fois quand on vient de le retourner */
+  @keyframes badge-eclat { from { background-position: 125% 0; } to { background-position: -25% 0; } }
+  .badge-brille .badge-or { animation: badge-eclat 1.7s ease-in-out .05s both; }
+  .badge-brille .badge-dos::after { opacity: .6; animation: badge-eclat 1.7s ease-in-out .05s both; }
 }
 
 /* 21. ANIMATIONS --------------------------------------------------------------
@@ -910,6 +965,8 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 @media print {
   .site-header, .mobile-bar, .skip, .breathe-stage, .breathe-controls, .cta-band, .bandeau, .deco, .deco-envol { display: none !important; }
   body { background: #fff; display: block; min-height: 0; }
+  .badge-dos, .badge-couche, .badge-reflet, .badge-bouton { display: none !important; }
+  .badge .encart-img { visibility: visible !important; transform: none !important; }
   .band { background: none; color: var(--encre); }
   .reveal-on .rv { opacity: 1 !important; animation: none !important; }
   .avis-hint { display: none !important; }
