@@ -1,0 +1,690 @@
+# Configuration du CMS du site (Pages CMS : https://app.pagescms.org)
+# Chaque entrée correspond à un fichier du dossier contenu/. Après chaque enregistrement dans le CMS,
+# GitHub reconstruit et republie le site tout seul (environ 1 à 2 minutes).
+
+media:
+  input: assets/img/medias
+  output: /assets/img/medias
+  categories: [image]
+  rename: safe
+
+components:
+  seo_titre:
+    type: string
+    label: Titre dans Google
+    description: "Le titre bleu affiché par Google et dans l'onglet du navigateur. Idéalement moins de 60 caractères, avec « hypnose » et « Paris 16e »."
+    required: true
+  seo_description:
+    type: text
+    label: Description dans Google
+    description: "Les deux lignes grises sous le titre dans Google. Idéalement 120 à 160 caractères."
+  titre:
+    type: text
+    label: Titre
+    description: "Mettez entre astérisques le mot à afficher en italique vert, par exemple : Pourquoi choisir *l'hypnose ?*"
+  paragraphes:
+    type: text
+    label: Texte
+    description: "Allez à la ligne pour commencer un nouveau paragraphe."
+
+content:
+  - name: annonces
+    label: Annonces et décorations
+    type: file
+    path: contenu/annonces.yml
+    fields:
+      - name: annonces
+        label: "Annonces de l'année (chacune revient automatiquement chaque année pendant sa période)"
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nom} · du {du} au {au}"
+        fields:
+          - name: nom
+            label: Nom de l'annonce
+            type: string
+            required: true
+            description: "Pour vous repérer (ex. Fêtes de fin d'année). Sert aussi d'adresse pour un lien vers l'encart : index.html#fetes-de-fin-d-annee."
+          - name: active
+            label: Activée
+            type: boolean
+            description: "Décochez pour mettre l'annonce en pause : elle ne s'affiche plus, même pendant sa période."
+          - name: du
+            label: Début (JJ/MM ou fête)
+            type: string
+            required: true
+            pattern:
+              regex: '^\s*(\d{1,2}\s*/\s*\d{1,2}|([Dd]imanche de )?[Pp][âaÂA][Qq][Uu][Ee][Ss]|[Jj]ourn[ée]e (mondiale |internationale |nationale )?du sommeil|[Ff][êe]te des [mp][èe]res)(\s*[-+−–]\s*\d{1,2}\s*(j|jours?)?)?\s*$'
+              message: "Écrivez JJ/MM (ex. 01/12) ou une fête : Pâques, Journée du sommeil, Fête des mères, Fête des pères, éventuellement suivie d'un nombre de jours (ex. Pâques -6)"
+            description: "Chaque année à partir de ce jour (heure de Paris). Pour une fête dont la date change chaque année, écrivez son nom : Pâques, Journée du sommeil, Fête des mères ou Fête des pères, avec si besoin un nombre de jours avant (-) ou après (+). Exemple : « Pâques -6 » = 6 jours avant Pâques. La date est recalculée toute seule chaque année."
+          - name: au
+            label: Fin incluse (JJ/MM ou fête)
+            type: string
+            required: true
+            pattern:
+              regex: '^\s*(\d{1,2}\s*/\s*\d{1,2}|([Dd]imanche de )?[Pp][âaÂA][Qq][Uu][Ee][Ss]|[Jj]ourn[ée]e (mondiale |internationale |nationale )?du sommeil|[Ff][êe]te des [mp][èe]res)(\s*[-+−–]\s*\d{1,2}\s*(j|jours?)?)?\s*$'
+              message: "Écrivez JJ/MM (ex. 31/12) ou une fête : Pâques, Journée du sommeil, Fête des mères, Fête des pères, éventuellement suivie d'un nombre de jours (ex. Pâques +1)"
+            description: "Dernier jour d'affichage. Une période peut chevaucher deux années (ex. du 15/12 au 15/01). Exemple avec une fête : « Pâques +1 » = le lundi de Pâques."
+          - name: decorations
+            label: Décorations
+            type: select
+            options:
+              multiple: true
+              values:
+                - name: guirlande
+                  label: Guirlande lumineuse (sous le menu)
+                - name: neige
+                  label: Neige
+                - name: paillettes
+                  label: Paillettes dorées
+                - name: petales
+                  label: Pétales de fleurs
+                - name: muguet
+                  label: Brin de muguet (jeu des 13 clochettes au clic)
+                - name: soleil
+                  label: Soleil d'été
+                - name: feuilles
+                  label: Feuilles d'automne
+                - name: coeurs
+                  label: Cœurs
+                - name: cloches
+                  label: Cloche de Pâques (sème des œufs au clic)
+                - name: lune
+                  label: Lune et étoiles (s'endort au clic)
+          - name: bandeau
+            label: Bandeau en haut de toutes les pages (facultatif)
+            type: string
+            description: "Une phrase courte, par exemple vos dates de fermeture. {annee} est remplacé par l'année en cours. Laissez vide : pas de bandeau."
+          - name: bandeau_lien
+            label: Lien du bandeau (facultatif)
+            type: string
+            description: "Par exemple contact.html#rendez-vous, ou index.html#nom-de-l-annonce pour renvoyer vers l'encart."
+          - name: encart
+            label: Encart sur la page d'accueil
+            type: object
+            fields:
+              - name: afficher
+                label: Afficher un encart sur la page d'accueil
+                type: boolean
+              - name: surtitre
+                label: Surtitre
+                type: string
+                description: "Petite ligne au-dessus du titre. {annee} est remplacé par l'année en cours."
+              - name: titre
+                label: Titre
+                type: string
+              - name: texte
+                component: paragraphes
+              - name: points
+                label: Points clés (tarif, lieu, horaires…)
+                type: string
+                list: true
+                description: "Pensez à mettre à jour le tarif ici aussi s'il change."
+              - name: image
+                label: Image (facultative)
+                type: image
+                description: "Format carré conseillé. Les photos trop lourdes sont réduites automatiquement."
+              - name: image_alt
+                label: Description de l'image
+                type: string
+                description: "Ce que montre l'image, pour les personnes malvoyantes et pour Google."
+              - name: bouton
+                label: Texte du bouton
+                type: string
+              - name: bouton_lien
+                label: Lien du bouton
+                type: string
+                description: "Par défaut : contact.html#rendez-vous"
+              - name: bouton_telephone
+                label: Ajouter un bouton « téléphone »
+                type: boolean
+
+  - name: infos
+    label: Coordonnées, horaires et tarifs
+    type: file
+    path: contenu/infos-pratiques.yml
+    fields:
+      - name: telephone
+        label: Téléphone
+        type: string
+        required: true
+        description: "Repris partout sur le site (en-tête, pied de page, boutons « Appeler »)."
+      - name: email
+        label: Adresse e-mail
+        type: string
+        required: true
+      - name: adresse
+        label: Adresse du cabinet
+        type: string
+        required: true
+      - name: code_postal
+        label: Code postal
+        type: string
+        required: true
+      - name: ville
+        label: Ville
+        type: string
+        required: true
+      - name: quartier
+        label: Quartier (forme courte)
+        type: string
+        description: "Ex. Paris 16e — affiché sous le nom en haut des pages."
+      - name: acces
+        label: Accès (métro principal)
+        type: string
+      - name: acces_detail
+        label: Autres accès (facultatif)
+        type: text
+        description: "Vous pouvez aussi indiquer ici l'étage ou le code de la porte."
+      - name: horaires
+        label: Horaires d'ouverture
+        type: object
+        list:
+          min: 1
+          collapsible:
+            collapsed: false
+            summary: "{de} – {a}"
+        description: "Le texte des horaires (« Du lundi au vendredi, de 9 h à 19 h ») est composé automatiquement et transmis à Google."
+        fields:
+          - name: jours
+            label: Jours
+            type: select
+            required: true
+            options:
+              multiple: true
+              values: [lundi, mardi, mercredi, jeudi, vendredi, samedi, dimanche]
+          - name: de
+            label: De
+            type: string
+            required: true
+            pattern:
+              regex: '^\d{1,2} ?h( ?\d{2})?$'
+              message: "Écrivez par exemple 9 h ou 18 h 30"
+          - name: a
+            label: À
+            type: string
+            required: true
+            pattern:
+              regex: '^\d{1,2} ?h( ?\d{2})?$'
+              message: "Écrivez par exemple 19 h ou 18 h 30"
+      - name: tarifs
+        label: Tarifs
+        type: object
+        list:
+          collapsible:
+            collapsed: false
+            summary: "{intitule} : {prix} €"
+        fields:
+          - name: intitule
+            label: Intitulé (page Tarifs & contact)
+            type: string
+            required: true
+          - name: intitule_court
+            label: Intitulé court (page d'accueil)
+            type: string
+          - name: precision
+            label: Précision (facultative)
+            type: string
+          - name: prix
+            label: Prix en euros
+            type: number
+            required: true
+      - name: duree_seance
+        label: Durée d'une séance (sous les tarifs de l'accueil)
+        type: string
+      - name: paiement
+        label: Moyens de paiement
+        type: string
+      - name: paiement_precision
+        label: Précision sur le paiement
+        type: string
+      - name: remboursement
+        label: Remboursement (page Tarifs & contact)
+        type: text
+      - name: instagram
+        label: Page Instagram (adresse complète)
+        type: string
+      - name: facebook
+        label: Page Facebook (adresse complète)
+        type: string
+      - name: linkedin
+        label: Profil LinkedIn (adresse complète)
+        type: string
+      - name: fiche_google
+        label: Fiche Google (adresse complète, facultative)
+        type: string
+        description: "Lien de la fiche d'établissement Google. Un lien « Laisser un avis Google » s'affiche près des témoignages. Une fois la fiche revendiquée, remplacez-le par le lien du bouton « Demander des avis », qui ouvre directement le formulaire d'avis."
+      - name: formulaire
+        label: Adresse Formspree du formulaire de contact
+        type: string
+        description: "Ne pas modifier, sauf changement de compte Formspree."
+
+  - name: avis
+    label: Avis
+    type: file
+    path: contenu/avis.yml
+    fields:
+      - name: recommandations
+        label: Nombre total de recommandations sur Facebook
+        type: number
+        description: "Avec ou sans commentaire. La différence avec la liste ci-dessous est indiquée automatiquement."
+      - name: pourcentage
+        label: Pourcentage de recommandations
+        type: number
+      - name: lien
+        label: Lien vers les avis Facebook
+        type: string
+      - name: liste
+        label: Avis affichés (le plus récent en premier)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{nom} · {date}"
+        fields:
+          - name: texte
+            label: Avis
+            type: text
+            required: true
+          - name: nom
+            label: Prénom et initiale du nom
+            type: string
+            required: true
+          - name: date
+            label: Date de publication
+            type: date
+            options:
+              format: yyyy-MM-dd
+
+  - name: faq
+    label: Questions fréquentes
+    type: file
+    path: contenu/faq.yml
+    fields:
+      - name: questions
+        label: Questions (la première est ouverte par défaut)
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{question}"
+        fields:
+          - name: question
+            label: Question
+            type: string
+            required: true
+          - name: reponse
+            label: Réponse
+            type: text
+            required: true
+
+  - name: lectures
+    label: Lectures et émissions
+    type: file
+    path: contenu/lectures.yml
+    fields:
+      - name: introduction
+        label: Introduction
+        type: text
+      - name: liens
+        label: Liens
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{source} · {titre}"
+        fields:
+          - name: type
+            label: Rubrique
+            type: select
+            required: true
+            options:
+              values:
+                - name: ecouter
+                  label: À écouter
+                - name: lire
+                  label: À lire
+          - name: source
+            label: Source (média)
+            type: string
+          - name: date
+            label: Date (en toutes lettres)
+            type: string
+            description: "Par exemple : 31 décembre 2025"
+          - name: duree
+            label: Durée (émissions)
+            type: string
+            description: "Par exemple : 5 min"
+          - name: titre
+            label: Titre
+            type: string
+            required: true
+          - name: description
+            label: Une phrase de présentation
+            type: text
+          - name: lien
+            label: Adresse de la page
+            type: string
+            required: true
+
+  - name: pages
+    label: Textes des pages
+    type: group
+    items:
+      - name: accueil
+        label: Accueil
+        type: file
+        path: contenu/pages/accueil.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+          - name: haut
+            label: Haut de page
+            type: object
+            fields:
+              - name: surtitre
+                label: Surtitre
+                type: string
+              - name: titre
+                component: titre
+                description: "Une ligne par ligne du titre. *mots* = italique vert."
+              - name: texte
+                label: Texte d'accroche
+                type: text
+              - name: citation
+                label: Citation (sur la photo)
+                type: text
+              - name: citation_auteur
+                label: Auteur de la citation
+                type: string
+          - name: presentation
+            label: Présentation
+            type: object
+            fields:
+              - name: phrase
+                label: Phrase en italique
+                type: text
+              - name: texte
+                component: paragraphes
+          - name: indications
+            label: Bloc « Indications »
+            type: object
+            description: "Les cinq cartes reprennent les « résumés » de la page Indications."
+            fields:
+              - name: surtitre
+                label: Surtitre
+                type: string
+              - name: titre
+                component: titre
+              - name: texte
+                label: Texte
+                type: text
+          - name: hypnose
+            label: Bloc « L'hypnose, c'est quoi ? »
+            type: object
+            description: "La citation reprend celle de la page L'hypnose."
+            fields:
+              - name: texte
+                label: Texte
+                type: text
+          - name: seance
+            label: Bloc « Déroulement d'une séance »
+            type: object
+            description: "Les quatre étapes reprennent les « résumés » de la page Déroulement."
+            fields:
+              - name: surtitre
+                label: Surtitre
+                type: string
+              - name: titre
+                component: titre
+              - name: note
+                label: Note (durée, nombre de séances)
+                type: text
+          - name: qui
+            label: Bloc « Qui suis-je ? »
+            type: object
+            fields:
+              - name: texte
+                label: Présentation courte
+                type: text
+              - name: diplomes_titre
+                label: Formation (titre)
+                type: string
+              - name: diplomes
+                label: Formations (liste courte)
+                type: string
+                list: true
+          - name: contact
+            label: Bloc « Prendre rendez-vous »
+            type: object
+            fields:
+              - name: texte
+                label: Texte
+                type: text
+
+      - name: hypnose
+        label: L'hypnose, c'est quoi ?
+        type: file
+        path: contenu/pages/hypnose.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+          - name: surtitre
+            label: Surtitre
+            type: string
+          - name: titre
+            component: titre
+          - name: introduction
+            label: Introduction
+            type: text
+          - name: citation
+            label: Citation (bandeau vert, reprise sur l'accueil)
+            type: text
+          - name: citation_auteur
+            label: Auteur de la citation
+            type: string
+          - name: sections
+            label: Sections
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{titre}"
+            fields:
+              - name: titre
+                label: Intertitre
+                type: string
+              - name: texte
+                label: Texte
+                type: text
+                description: "Une ligne = un paragraphe. Commencez une ligne par > pour la mettre en valeur en grand."
+          - name: methodes
+            label: Les méthodes
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{titre}"
+            fields:
+              - name: titre
+                label: Titre
+                type: string
+              - name: texte
+                label: Texte
+                type: text
+
+      - name: indications
+        label: Indications
+        type: file
+        path: contenu/pages/indications.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+          - name: surtitre
+            label: Surtitre
+            type: string
+          - name: titre
+            component: titre
+          - name: introduction
+            label: Introduction
+            type: text
+          - name: categories
+            label: Catégories
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{titre}"
+            fields:
+              - name: titre
+                label: Titre
+                type: string
+                required: true
+              - name: icone
+                label: Icône
+                type: select
+                options:
+                  values:
+                    - name: soleil
+                      label: Soleil
+                    - name: feuille
+                      label: Feuille
+                    - name: fleches
+                      label: Flèches (changement)
+                    - name: montagne
+                      label: Montagne
+                    - name: etoile
+                      label: Étoile
+              - name: resume
+                label: Résumé (carte de la page d'accueil)
+                type: text
+              - name: liste
+                label: Liste (page Indications)
+                type: string
+                list: true
+          - name: encadre_titre
+            label: Dernière carte (titre)
+            type: string
+          - name: encadre_texte
+            label: Dernière carte (texte)
+            type: text
+
+      - name: deroulement
+        label: Déroulement d'une séance
+        type: file
+        path: contenu/pages/deroulement.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+          - name: surtitre
+            label: Surtitre
+            type: string
+          - name: titre
+            component: titre
+          - name: introduction
+            label: Introduction
+            type: text
+          - name: etapes
+            label: Étapes de la séance
+            type: object
+            list:
+              collapsible:
+                collapsed: true
+                summary: "{titre}"
+            fields:
+              - name: titre
+                label: Titre
+                type: string
+              - name: resume
+                label: Résumé (page d'accueil)
+                type: text
+              - name: texte
+                component: paragraphes
+          - name: precision_titre
+            label: Encadré (titre)
+            type: string
+          - name: precision_texte
+            component: paragraphes
+            label: Encadré (texte)
+          - name: duree_texte
+            component: paragraphes
+            label: Durée
+          - name: nombre_texte
+            component: paragraphes
+            label: Nombre de séances
+
+      - name: qui
+        label: Qui suis-je ?
+        type: file
+        path: contenu/pages/qui-suis-je.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+          - name: surtitre
+            label: Surtitre
+            type: string
+          - name: titre
+            component: titre
+          - name: metier
+            label: Métier (repris sur l'accueil)
+            type: string
+          - name: presentation
+            component: paragraphes
+            label: Présentation
+          - name: formation_titre
+            label: Formation (titre)
+            type: string
+          - name: formation_texte
+            label: Formation (phrase d'introduction)
+            type: string
+          - name: diplomes
+            label: Diplômes
+            type: string
+            list: true
+          - name: ethique_titre
+            label: Façon d'exercer (titre)
+            type: string
+          - name: ethique
+            label: Façon d'exercer (repris sur l'accueil)
+            type: text
+
+      - name: contact
+        label: Tarifs & contact
+        type: file
+        path: contenu/pages/contact.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
+            description: "Laissez vide : la description est composée automatiquement avec vos tarifs, l'adresse et les horaires."
+          - name: surtitre
+            label: Surtitre
+            type: string
+          - name: titre
+            component: titre
+          - name: introduction
+            label: Introduction
+            type: text
+            description: "{telephone} est remplacé par votre numéro, cliquable."
+
+      - name: mentions
+        label: Mentions légales (référencement)
+        type: file
+        path: contenu/pages/mentions-legales.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+          - name: seo_description
+            component: seo_description
