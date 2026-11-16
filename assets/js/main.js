@@ -229,8 +229,8 @@
     window.addEventListener('resize', function () { clearTimeout(reajuster); reajuster = setTimeout(ajuster, 200); });
 
     /* angle en degrés (0 = image, 180 = dos), vitesse en degrés par seconde ; un ressort ramène l'angle vers la cible */
-    var angle = 0, vitesse = 0, cible = 0, raideur = 80, rx = 0, rxCible = 0, ry = 0, ryCible = 0;
-    var anime = false, avant = 0, glisse = null, sansClic = false, touche = false, eclat = null;
+    var angle = 0, vitesse = 0, cible = 0, raideur = 80, amorti = 0.74, rx = 0, rxCible = 0, ry = 0, ryCible = 0;
+    var anime = false, avant = 0, glisse = null, doigt = 0, sansClic = false, touche = false, eclat = null;
 
     function face() { return ((Math.round(cible / 180) % 2) + 2) % 2; }
     function poser() {
@@ -261,15 +261,18 @@
       t = typeof t === 'number' ? t : Date.now();
       var dt = avant ? Math.min(0.034, Math.max(0.001, (t - avant) / 1000)) : 0.016;
       avant = t;
-      if (!glisse) {   /* ressort à peine amorti : la pièce oscille un peu avant de s'arrêter */
-        vitesse += (-raideur * (angle - cible) - 2 * Math.sqrt(raideur) * 0.74 * vitesse) * dt;
+      var tenu = glisse && glisse.bouge;
+      if (tenu) {   /* il suit le doigt, avec un soupçon d'inertie : pas d'à-coups */
+        angle += (doigt - angle) * (1 - Math.exp(-dt / 0.025));
+      } else {   /* ressort : la pièce ralentit et se pose sur une face */
+        vitesse += (-raideur * (angle - cible) - 2 * Math.sqrt(raideur) * amorti * vitesse) * dt;
         angle += vitesse * dt;
       }
       var suivre = Math.min(1, dt * 10);
       rx += (rxCible - rx) * suivre;
       ry += (ryCible - ry) * suivre;
       poser();
-      if (glisse || Math.abs(angle - cible) > 0.1 || Math.abs(vitesse) > 3 || Math.abs(rx - rxCible) > 0.05 || Math.abs(ry - ryCible) > 0.05) {
+      if (tenu || Math.abs(angle - cible) > 0.1 || Math.abs(vitesse) > 3 || Math.abs(rx - rxCible) > 0.05 || Math.abs(ry - ryCible) > 0.05) {
         image(etape);
         return;
       }
@@ -287,12 +290,14 @@
       cible = Math.round(cible / 180) * 180 + 180;
       if (calme) { repos(); return; }
       raideur = 60;
+      amorti = 0.74;
       vitesse += 220;
       demarrer();
     }
     function tourner() {   /* le tour complet de bienvenue */
       if (touche || calme) { return; }
       raideur = 22;
+      amorti = 0.74;
       cible += 360;
       vitesse += 130;
       demarrer();
@@ -304,32 +309,49 @@
     });
     if (calme) { return; }
 
+    /* Au doigt ou à la souris, comme une médaille de montre connectée : faire glisser l'image sur toute sa largeur
+       la fait tourner d'un demi-tour (le bord suit le doigt). La largeur est celle du cadre, qui ne change pas :
+       celle de l'image qui tourne rétrécit quand on la voit de profil (c'est ce qui la faisait s'emballer). */
+    var DEMI_TOUR_PAR_LARGEUR = 180, ELAN_MAX = 1100;
+    function elan(g, fin) {   /* vitesse du doigt sur ses 100 dernières millisecondes (0 s'il s'était arrêté avant de lâcher) */
+      var p = g.pts, n = p.length, i = n - 1;
+      if (n < 2 || fin - p[n - 1][0] > 80) { return 0; }
+      while (i > 0 && p[n - 1][0] - p[i - 1][0] <= 100) { i--; }
+      if (i === n - 1) { i--; }
+      var dt = (p[n - 1][0] - p[i][0]) / 1000;
+      return dt > 0 ? (p[n - 1][1] - p[i][1]) / dt : 0;
+    }
     bouton.addEventListener('pointerdown', function (e) {
+      if (glisse && glisse.bouge && e.pointerId !== glisse.id) { return; }   /* un deuxième doigt : on garde le premier */
       sansClic = false;
       if (e.button) { return; }
-      glisse = { id: e.pointerId, x: e.clientX, y: e.clientY, a: angle, t: e.timeStamp || Date.now(), v: 0, bouge: false };
+      glisse = { id: e.pointerId, x: e.clientX, y: e.clientY, a: 0, k: DEMI_TOUR_PAR_LARGEUR / (b.offsetWidth || 300), bouge: false, hors: false, pts: [] };
       if (bouton.setPointerCapture) { try { bouton.setPointerCapture(e.pointerId); } catch (err) { /* rien */ } }
     });
     bouton.addEventListener('pointermove', function (e) {
-      var r;
       if (glisse && e.pointerId === glisse.id) {
+        if (glisse.hors) { return; }
         var dx = e.clientX - glisse.x, dy = e.clientY - glisse.y;
-        if (!glisse.bouge && Math.abs(dx) < 6) { return; }   /* le doigt tremble : pas encore un glissé */
-        if (!glisse.bouge) { glisse.bouge = touche = true; b.classList.add('badge-glisse'); }
-        r = carte.getBoundingClientRect();
-        var nouvel = glisse.a + dx * 200 / (r.width || 300), t = e.timeStamp || Date.now();
-        glisse.v = glisse.v * 0.4 + (nouvel - angle) / Math.max(1, t - glisse.t) * 1000 * 0.6;
-        glisse.t = t;
-        angle = nouvel;
-        rxCible = Math.max(-12, Math.min(12, -dy * 0.08));
+        if (!glisse.bouge) {
+          if (Math.abs(dx) < 6 && Math.abs(dy) < 6) { return; }   /* le doigt tremble : pas encore un glissé */
+          if (Math.abs(dy) > Math.abs(dx)) { glisse.hors = true; return; }   /* geste vertical : c'est la page qui défile */
+          glisse.bouge = touche = true;
+          glisse.a = angle - dx * glisse.k;   /* il part de là où il en est, sans à-coup */
+          vitesse = 0;
+          rxCible = 0;   /* il ne tourne que de gauche à droite, comme une médaille sur son axe */
+          b.classList.add('badge-glisse');
+        }
+        doigt = glisse.a + dx * glisse.k;
+        glisse.pts.push([e.timeStamp || Date.now(), doigt]);
+        if (glisse.pts.length > 24) { glisse.pts.shift(); }
         demarrer();
         return;
       }
       if (e.pointerType === 'mouse' && !glisse) {   /* survol : l'image s'incline un peu vers la souris */
-        r = carte.getBoundingClientRect();
-        if (!r.width) { return; }
-        ryCible = ((e.clientX - r.left) / r.width - 0.5) * 12;
-        rxCible = -((e.clientY - r.top) / r.height - 0.5) * 9;
+        var r = b.getBoundingClientRect();   /* le cadre, qui ne tourne pas */
+        if (!r.width || !r.height) { return; }
+        ryCible = (Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) - 0.5) * 12;
+        rxCible = -(Math.max(0, Math.min(1, (e.clientY - r.top) / r.height)) - 0.5) * 9;
         demarrer();
       }
     });
@@ -338,17 +360,25 @@
       var g = glisse;
       glisse = null;
       b.classList.remove('badge-glisse');
-      rxCible = 0;
-      if (!g.bouge) { return; }   /* simple appui : c'est le clic qui retourne l'image */
-      sansClic = true;
-      setTimeout(function () { sansClic = false; }, 350);
-      vitesse = annule ? 0 : Math.max(-2400, Math.min(2400, g.v));
-      raideur = 70;
-      cible = Math.round((angle + vitesse * 0.22) / 180) * 180;   /* elle s'arrête sur la face la plus proche de son élan */
+      if (g.bouge || g.hors) {   /* c'était un glissé, pas un clic */
+        sansClic = true;
+        setTimeout(function () { sansClic = false; }, 350);
+      }
+      if (!g.bouge) { return; }
+      var v = annule ? 0 : elan(g, e.timeStamp || Date.now());
+      cible = Math.round((angle + Math.max(-ELAN_MAX, Math.min(ELAN_MAX, v)) * 0.3) / 180) * 180;   /* son élan la pose sur la face la plus proche : un tour au plus */
+      v = Math.max(-2 * ELAN_MAX, Math.min(2 * ELAN_MAX, v));
+      var d = cible - angle;
+      /* elle garde la vitesse du doigt puis freine en douceur jusqu'à la face, sans rebond */
+      var w = d * v > 0 ? Math.max(5.5, Math.min(13, 2 * Math.abs(v / d))) : 9;
+      raideur = w * w;
+      amorti = 1;
+      vitesse = v;
       demarrer();
     }
     bouton.addEventListener('pointerup', function (e) { lacher(e, false); });
     bouton.addEventListener('pointercancel', function (e) { lacher(e, true); });
+    bouton.addEventListener('lostpointercapture', function (e) { lacher(e, true); });
     bouton.addEventListener('pointerleave', function (e) {
       if (e.pointerType !== 'mouse' || glisse) { return; }
       rxCible = ryCible = 0;

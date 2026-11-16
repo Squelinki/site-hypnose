@@ -509,9 +509,9 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .badge-date::before, .badge-date::after { content: ""; width: 7cqi; height: 1px; background: rgba(233,207,147,.7); }
 .badge-mot { max-width: 30ch; margin-top: 4.4cqi; font-family: var(--police-titres); font-style: italic; font-size: 19px; font-size: calc(4.6cqi * var(--t, 1)); line-height: 1.35; text-wrap: balance; }
 .badge-signature { margin-top: 5cqi; font-size: 11px; font-size: calc(2.55cqi * var(--t, 1)); letter-spacing: .2em; text-transform: uppercase; color: rgba(245,234,208,.72); }
-.badge-bouton { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: var(--arrondi); background: none; cursor: inherit; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+.badge-bouton { position: absolute; inset: 0; z-index: 3; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; border-radius: var(--arrondi); background: none; cursor: inherit; touch-action: pan-y; touch-action: pan-y pinch-zoom; -webkit-tap-highlight-color: transparent; }
 .badge-bouton:focus-visible { outline-offset: 5px; border-radius: var(--arrondi); }
-.badge-on { cursor: grab; touch-action: pan-y; -webkit-user-select: none; user-select: none; }
+.badge-on { cursor: grab; touch-action: pan-y; touch-action: pan-y pinch-zoom; -webkit-user-select: none; user-select: none; }
 .badge-glisse { cursor: grabbing; }
 /* au repos : à plat, une seule face visible */
 .badge-on:not(.badge-3d):not(.badge-envers) .badge-dos, .badge-envers:not(.badge-3d) .encart-img { visibility: hidden; }
