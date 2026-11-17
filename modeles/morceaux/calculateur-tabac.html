@@ -1,0 +1,72 @@
+{#- Calculateur d'économies (page thématique « Arrêt du tabac »). Tout se calcule sur l'appareil du visiteur :
+    rien n'est envoyé ni enregistré. Le prix du paquet par défaut se règle dans le CMS (page thématique, « Prix du paquet »).
+    Les étapes « santé » viennent de Tabac info service (lien en bas du bloc). -#}
+{%- set seance = t.tarif_choisi -%}
+<section class="sec calc" id="calculateur" aria-labelledby="t-calc" data-calc-tabac data-prix="{{ '%.2f'|format(t.prix_paquet) }}"{% if seance %} data-seance="{{ '%.2f'|format(seance.prix_nombre) }}" data-seance-nom="{{ seance.intitule_court|attr }}"{% endif %}>
+  <div class="wrap">
+    <p class="eyebrow">Calculateur</p>
+    <h2 class="h2" id="t-calc">Combien vous coûte <em>la cigarette ?</em></h2>
+    <p class="lead2">Indiquez votre situation : le calcul se fait directement sur votre appareil, rien n'est envoyé ni enregistré.</p>
+
+    <div class="calc-grid">
+      <form class="calc-form" action="#calculateur" novalidate>
+        <fieldset class="calc-mode">
+          <legend class="sr-only">Votre situation</legend>
+          <label><input type="radio" name="calc-mode" value="arrete" checked><span>J'ai arrêté</span></label>
+          <label><input type="radio" name="calc-mode" value="projet"><span>Je compte arrêter</span></label>
+        </fieldset>
+        <div class="calc-champ">
+          <label for="calc-cig">Vous fumiez <output id="calc-cig-val" for="calc-cig">10</output> cigarettes par jour</label>
+          <input id="calc-cig" type="range" min="1" max="40" step="1" value="10">
+        </div>
+        <div class="calc-champ calc-ligne">
+          <label for="calc-duree" data-arrete="Depuis combien de temps ?" data-projet="Sur quelle durée ?">Depuis combien de temps ?</label>
+          <div class="calc-duree">
+            <input id="calc-duree" type="number" inputmode="numeric" min="1" max="999" step="1" value="1">
+            <select id="calc-unite" aria-label="Unité de durée">
+              <option value="1">jour(s)</option>
+              <option value="7">semaine(s)</option>
+              <option value="30.4375" selected>mois</option>
+              <option value="365.25">an(s)</option>
+            </select>
+          </div>
+        </div>
+        <div class="calc-champ calc-ligne">
+          <label for="calc-prix">Prix du paquet de 20</label>
+          <div class="calc-euro"><input id="calc-prix" type="number" inputmode="decimal" min="1" max="99" step="0.1" value="{{ '%.2f'|format(t.prix_paquet) }}"><span aria-hidden="true">€</span></div>
+        </div>
+      </form>
+
+      <div class="calc-resultat">
+        <div class="calc-medaille" aria-hidden="true"><div class="calc-medaille-int"><span class="calc-medaille-txt"></span></div></div>
+        <p class="calc-phrase" data-calc-phrase>Vous avez déjà économisé</p>
+        <p class="calc-montant" data-calc-montant>…</p>
+        <ul class="calc-stats">
+          <li><strong data-calc-cig>…</strong> <span data-calc-cig-mot>cigarettes non fumées</span></li>
+          <li><strong data-calc-paquets>…</strong> <span>paquets</span></li>
+          <li><strong data-calc-an>…</strong> <span>par an</span></li>
+        </ul>
+        <p class="calc-seance small" data-calc-seance></p>
+        <p class="sr-only" aria-live="polite" data-calc-annonce></p>
+      </div>
+    </div>
+    <noscript><p class="note">Le calculateur a besoin de JavaScript. À titre d'exemple : à 10 cigarettes par jour et {{ '%.2f'|format(t.prix_paquet)|replace('.', ',') }} € le paquet, arrêter de fumer fait économiser environ {{ (10 * t.prix_paquet / 20 * 365.25)|round|int }} € par an.</p></noscript>
+
+    <div class="calc-sante">
+      <h3 data-calc-titre-sante data-arrete="Ce qui se passe déjà dans votre corps" data-projet="Ce qui vous attend après la dernière cigarette">Ce qui se passe dans votre corps après la dernière cigarette</h3>
+      <ol class="calc-etapes">
+        <li data-minutes="20"><span class="calc-quand">20 minutes</span><span>La pression sanguine et les pulsations du cœur redeviennent normales.</span></li>
+        <li data-minutes="480"><span class="calc-quand">8 heures</span><span>La quantité de monoxyde de carbone dans le sang diminue de moitié. L'oxygénation des cellules redevient normale.</span></li>
+        <li data-minutes="1440"><span class="calc-quand">24 heures</span><span>Le risque d'infarctus du myocarde diminue déjà. Les poumons commencent à éliminer le mucus et les résidus de fumée. Le corps ne contient plus de nicotine.</span></li>
+        <li data-minutes="2880"><span class="calc-quand">48 heures</span><span>Le goût et l'odorat s'améliorent. Les terminaisons nerveuses gustatives commencent à repousser.</span></li>
+        <li data-minutes="4320"><span class="calc-quand">72 heures</span><span>Respirer devient plus facile. Les bronches commencent à se relâcher et on se sent plus énergique.</span></li>
+        <li data-minutes="20160"><span class="calc-quand">2 semaines à 3 mois</span><span>La toux et la fatigue diminuent. On récupère du souffle. On marche plus facilement.</span></li>
+        <li data-minutes="43830"><span class="calc-quand">1 à 9 mois</span><span>Les cils bronchiques repoussent. On est de moins en moins essoufflé.</span></li>
+        <li data-minutes="525960"><span class="calc-quand">1 an</span><span>Le risque d'infarctus du myocarde diminue de moitié. Le risque d'accident vasculaire cérébral rejoint celui d'un non-fumeur.</span></li>
+        <li data-minutes="2629800"><span class="calc-quand">5 ans</span><span>Le risque de cancer du poumon diminue presque de moitié.</span></li>
+        <li data-minutes="5259600"><span class="calc-quand">10 à 15 ans</span><span>L'espérance de vie redevient identique à celle des personnes n'ayant jamais fumé.</span></li>
+      </ol>
+      <p class="small">Source : <a href="https://www.tabac-info-service.fr/questions-reponses/04_questions-mises-en-ligne/bienfaits-de-l-arret-de-fumer2" target="_blank" rel="noopener">Tabac info service<span class="sr-only"> (nouvel onglet)</span></a>. Besoin d'aide pendant votre sevrage ? Un tabacologue vous répond gratuitement au 39 89.</p>
+    </div>
+  </div>
+</section>

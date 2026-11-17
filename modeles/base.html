@@ -25,6 +25,8 @@
   <meta property="og:image:alt" content="Caroline Roulleau, hypnothérapeute à Paris 16e">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="theme-color" content="#F6F1EA">
+  <script>/* mode nuit : seulement si le visiteur l'a choisi (bouton lune en haut de page) ; sinon, version claire */
+    try { if (localStorage.getItem('cr-theme') === 'sombre') { document.documentElement.setAttribute('data-theme', 'sombre'); document.querySelector('meta[name="theme-color"]').content = '#191C1A'; } } catch (e) {}</script>
   <link rel="icon" href="{{ root }}{{ 'favicon.ico'|version }}" sizes="32x32">
   <link rel="icon" href="{{ root }}{{ 'favicon.svg'|version }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ root }}{{ 'apple-touch-icon.png'|version }}">
@@ -44,12 +46,13 @@
   <div class="wrap header-inner">
     <a class="brand" href="{{ root }}index.html"><img class="brand-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="46" height="46"><span class="brand-texte"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></span></a>
     <nav class="nav" id="menu" aria-label="Menu principal">
-      <a href="{{ root }}l-hypnose-c-est-quoi.html"{% if page == 'hypnose' %} aria-current="page"{% endif %}>L'hypnose</a>
-      <a href="{{ root }}indications.html"{% if page == 'indications' %} aria-current="page"{% endif %}>Indications</a>
-      <a href="{{ root }}deroulement-d-une-seance.html"{% if page == 'deroulement' %} aria-current="page"{% endif %}>Déroulement</a>
-      <a href="{{ root }}qui-suis-je.html"{% if page == 'qui' %} aria-current="page"{% endif %}>Qui suis-je ?</a>
-      <a href="{{ root }}contact.html"{% if page == 'contact' %} aria-current="page"{% endif %}>Tarifs &amp; contact</a>
+{%- for adresse, cle, nom in [("l-hypnose-c-est-quoi.html", "hypnose", "L'hypnose"), ("indications.html", "indications", "Indications"),
+                              ("deroulement-d-une-seance.html", "deroulement", "Déroulement"), ("qui-suis-je.html", "qui", "Qui suis-je ?"),
+                              ("contact.html", "contact", "Tarifs &amp; contact")] %}
+      <a href="{{ root }}{{ adresse }}"{% if page == cle %} aria-current="{{ 'page' if fichier == adresse else 'true' }}"{% endif %}>{{ nom }}{% if page == cle %}<span class="nav-trait" aria-hidden="true"></span>{% endif %}</a>
+{%- endfor %}
     </nav>
+    <button class="theme-btn" type="button" aria-pressed="false" title="Mode nuit">{{ icone('lune') }}{{ icone('soleil') }}<span class="sr-only">Mode nuit</span></button>
     <a class="btn btn-primary btn-sm header-cta" href="{{ root }}contact.html#rendez-vous">Prendre rendez-vous</a>
     <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
   </div>
@@ -62,9 +65,9 @@
 <!-- ============ PIED DE PAGE (identique sur toutes les pages) ============ -->
 <footer class="site-footer">
   <div class="wrap">
-    <div class="foot-grid">
+    <div class="foot-grid{{ ' foot-grid--4' if themes }}">
       <div>
-        <img class="foot-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="64" height="64" loading="lazy">
+        <img class="foot-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="64" height="64" loading="lazy"{% if surprise %} data-surprise{% endif %}>
         <p class="brand-name">Caroline Roulleau</p>
         <p class="brand-sub">Hypnose ericksonienne · Nouvelle Hypnose · PNL</p>
         <p class="foot-note">L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
@@ -90,6 +93,16 @@
           <a href="{{ root }}contact.html">Tarifs &amp; contact</a>
         </nav>
       </div>
+{%- if themes %}
+      <div>
+        <p class="foot-title">Accompagnements</p>
+        <nav class="foot-links" aria-label="Accompagnements">
+{%- for x in themes %}
+          <a href="{{ root }}{{ x.fichier }}">{{ x.nom|texte }}</a>
+{%- endfor %}
+        </nav>
+      </div>
+{%- endif %}
     </div>
     <div class="foot-bottom">
       <span>© <span data-annee>{{ annee }}</span> Caroline Roulleau</span><script>CR.dater(document.currentScript.previousElementSibling)</script>
@@ -103,6 +116,9 @@
   <a class="btn btn-ghost" href="{{ root }}contact.html#formulaire">Écrire</a>
 </nav>
 
+{%- if surprise %}
+<script type="application/json" id="surprise">{{ surprise }}</script>
+{%- endif %}
 <script src="{{ root }}{{ 'assets/js/main.js'|version }}" defer></script>
 {%- if decorations %}
 <script type="application/json" id="decorations">{{ decorations }}</script>

@@ -358,3 +358,4 @@ annonces:
       bouton: "Prendre rendez-vous"
       bouton_lien: "contact.html#rendez-vous"
       bouton_telephone: true
+      bouton_cadeau: true

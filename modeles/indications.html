@@ -27,4 +27,25 @@
     <p class="disclaimer">{{ icone('info') }}<span><strong>Attention :</strong> l'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</span></p>
   </div>
 </section>
+{%- if themes %}
+
+<section class="sec" id="zoom" aria-labelledby="t-zoom">
+  <div class="wrap">
+    <p class="eyebrow">Zoom sur…</p>
+    <h2 class="h2" id="t-zoom">Les accompagnements <em>en détail</em></h2>
+    <ul class="themes-cartes">
+{%- for x in themes %}
+      <li><a class="theme-carte" href="{{ x.fichier }}">
+{%- if x.illustration %}
+        <span class="dessin dessin-carte" aria-hidden="true">{% include "illustrations/" ~ x.illustration ~ ".svg" %}</span>
+{%- endif %}
+        <span class="theme-carte-titre">{{ x.nom|texte }}</span>
+        <span class="theme-carte-texte">{{ x.resume|texte }}</span>
+        <span class="theme-carte-plus">En savoir plus <span class="arr" aria-hidden="true">→</span></span>
+      </a></li>
+{%- endfor %}
+    </ul>
+  </div>
+</section>
+{%- endif %}
 {% include "morceaux/cta.html" %}

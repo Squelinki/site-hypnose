@@ -54,7 +54,10 @@ Pages CMS est gratuit et open source. Il n'héberge rien : il enregistre directe
 | **Annonces et décorations** | Les bandeaux, encarts et décorations de chaque période de l'année (section 3) |
 | **Coordonnées, horaires et tarifs** | Téléphone, e-mail, adresse, accès, horaires, tarifs, moyens de paiement, réseaux sociaux, fiche Google, adresse du formulaire. Repris automatiquement sur toutes les pages et transmis à Google |
 | **Avis** | Les témoignages de l'accueil (le plus récent en premier) et le nombre de recommandations |
-| **Questions fréquentes** | La FAQ de l'accueil |
+| **Vrai ou faux ?** | Le petit jeu de l'accueil, qui remplace la liste de questions : une affirmation, on répond « Vrai » ou « Faux », la carte se retourne et donne l'explication |
+| **Pages thématiques** | Les pages « Arrêt du tabac », « Sommeil », « Stress et anxiété », « Poids et alimentation », « Peurs et phobies » (section 3 bis) ; on peut en ajouter |
+| **Surprise cachée** | Les phrases du pendule caché (section 3 bis) |
+| **Bon cadeau** | La ligne discrète « Envie d'offrir une séance ? » sous les tarifs |
 | **Calendrier de l'Avent** | Les 24 petits conseils bien-être du calendrier de l'Avent (un par jour, du 1er au 24 décembre) |
 | **Lectures et émissions** | Les liens « Pour aller plus loin » de l'accueil |
 | **Textes des pages** | Tous les textes de chaque page, ainsi que leur **titre et description dans Google** |
@@ -104,7 +107,7 @@ Les encarts s'affichent sur la page d'accueil, **juste sous la photo** : faites 
 - **Début / Fin** au format JJ/MM (une période peut chevaucher deux années, ex. du 15/12 au 15/01), ou le nom d'une fête dont la date change chaque année (voir plus bas) ;
 - **Décorations** : guirlande, neige (en haut des pages) ou neige sur tout le site, paillettes, pétales, muguet, soleil, feuilles, cœurs, notes de musique, cloche de Pâques, lune et étoiles, galette des rois, crêpe, poisson d'avril, glace, feu d'artifice du 14 juillet, fanions bleu-blanc-rouge, ardoise de la rentrée, calendrier de l'Avent (plusieurs possibles, ou aucune) ;
 - **Bandeau** : une phrase courte en haut de toutes les pages, idéale pour vos **dates de fermeture** (« Le cabinet sera fermé du 24 au 26 décembre ») ;
-- **Encart** : un bloc sur la page d'accueil, avec titre, texte, points clés, image et boutons. L'image se retourne comme un badge (voir *Les petites surprises au clic*) ; la phrase gravée au dos se règle dans **Texte au dos de l'image** (vide = « Bravo, vous avez trouvé la face cachée ! »).
+- **Encart** : un bloc sur la page d'accueil, avec titre, texte, points clés, image et boutons. L'image se retourne comme un badge (voir *Les petites surprises au clic*) ; la phrase gravée au dos se règle dans **Texte au dos de l'image** (vide = la phrase prévue pour l'occasion, par exemple « Bravo, vous avez trouvé l'œuf caché ! » à Pâques ou « Un jour après l'autre, vous allez y arriver ! » pour le Mois sans tabac ; pour une annonce que vous créez vous-même : « Bravo, vous avez trouvé la face cachée ! »).
 Écrivez `{annee}` pour afficher l'année en cours. Pour ajouter une annonce : bouton **Add** en bas de la liste.
 
 **Fêtes dont la date change chaque année : tout est automatique.** Dans *Début* et *Fin*, écrivez simplement **Pâques**, **Journée du sommeil**, **Fête des mères** ou **Fête des pères**, suivi si besoin d'un nombre de jours avant (-) ou après (+) : `Pâques -6` = 6 jours avant Pâques, `Pâques +1` = le lundi de Pâques. Le site recalcule la date tout seul chaque année ; rien à modifier d'une année sur l'autre. Les dates calculées pour l'année en cours et la suivante s'affichent dans le journal de publication (onglet **Actions** → **Publier le site** → étape **Construire le site**). La fête des mères suit la règle française (dernier dimanche de mai, ou premier dimanche de juin si c'est la Pentecôte).
@@ -142,6 +145,25 @@ La **neige sur tout le site** (décembre) tombe légèrement devant toute la pag
 
 ---
 
+## 3 bis. Mode nuit, pages thématiques, jeux et plan d'accès
+
+**Tout est automatique** : rien à régler pour que ces nouveautés fonctionnent.
+
+- **Mode nuit** : le bouton lune, en haut de chaque page, fait passer le site en couleurs sombres (un cercle s'agrandit depuis le bouton). La version claire reste celle par défaut ; le choix du visiteur est retenu sur son appareil pour les pages suivantes (aucun cookie).
+- **Transitions entre les pages** : la page suivante monte en douceur, le trait du menu glisse jusqu'à la nouvelle rubrique et la photo de Caroline passe de l'accueil à la page « Qui suis-je ? » (Chrome, Edge et Safari récents ; les autres navigateurs changent de page normalement). Coupées si l'appareil demande moins d'animations.
+- **Pages thématiques** (`hypnose-arret-du-tabac.html`, `hypnose-sommeil.html`, `hypnose-stress-anxiete.html`, `hypnose-poids.html`, `hypnose-phobies.html`) : de vraies pages, utiles aux visiteurs et à Google, rangées sous « Indications » (le menu reste le même). Elles apparaissent toutes seules dans la page Indications (« Zoom sur… »), sur l'accueil (« En savoir plus »), dans le pied de page et dans le plan du site pour Google. Pour en **ajouter** une : CMS → *Pages thématiques* → *Ajouter*, remplissez le nom court, l'adresse (ex. `hypnose-confiance-en-soi`), les titres et les paragraphes. Pour en retirer une sans l'effacer : décochez « Publiée ». Les textes ont été rédigés à partir de ceux du site : **faites-les relire par Caroline**.
+- **Pas de pages « cachées »** : des pages invisibles pour les visiteurs mais faites pour Google sont considérées par Google comme du référencement abusif (« pages satellites ») et peuvent faire baisser tout le site.
+- **Calculateur « Combien vous coûte la cigarette ? »** (page Arrêt du tabac) : le visiteur indique depuis quand il a arrêté (ou sur quelle durée il compte arrêter) et combien il fumait ; le site affiche l'argent économisé, les étapes de santé déjà franchies (source : Tabac info service) et une médaille qui se retourne. Rien n'est enregistré. Le prix moyen du paquet se met à jour dans le CMS (page thématique, « Prix moyen d'un paquet »).
+- **Vrai ou faux ?** (accueil) : score à la fin, bouton « Voir toutes les réponses » pour ceux qui ne veulent pas jouer. Sans JavaScript, les réponses s'affichent directement. L'ancienne liste « Questions fréquentes » n'est plus affichée : le fichier `contenu/faq.yml` ne sert plus (vous pouvez le supprimer ; si l'on supprimait `vrai-ou-faux.yml`, la liste reviendrait).
+- **Exercice de respiration** : durée au choix (1, 3 ou 5 minutes), bruit des vagues facultatif (fabriqué dans le navigateur, aucun fichier à charger), vibrations sur les téléphones Android, l'écran reste allumé pendant l'exercice, médaille « Bravo ! » à la fin. Il se met en pause tout seul si l'on change d'onglet.
+- **Surprise cachée** : cinq clics rapides sur le logo du pied de page (ou taper « hypnose » au clavier d'un ordinateur) font apparaître un pendule qui se balance, avec les phrases réglées dans le CMS (*Surprise cachée*). « Se réveiller » ou la touche Échap referme. Pas de clignotement ; immobile si l'appareil demande moins d'animations.
+- **Bon cadeau** : une ligne discrète sous les tarifs ; le lien prépare le début du message dans le formulaire et met « Demande de bon cadeau » dans l'objet du mail. La même ligne peut s'ajouter dans l'encart d'une annonce : case « Proposer d'offrir une séance » (cochée pour les fêtes de fin d'année, donc visible tout le mois de décembre, chaque année) ; son lien ouvre le formulaire avec le message déjà préparé. Le bon à imprimer est un document à part (PDF), à remplir à la main.
+- **Plan d'accès** (page Tarifs & contact) : plan du quartier dessiné pour le site, avec le cabinet, l'église, les stations de métro, le RER C, le bus 32 et 92 et l'itinéraire depuis Alma – Marceau. Sur téléphone, il s'ouvre centré sur le cabinet et défile de côté. **Il disparaît tout seul si l'adresse du cabinet change** dans le CMS (il ne montrerait plus le bon endroit) : demandez-moi alors un nouveau plan.
+- **Visuels des occasions** : les encarts sans image (nouvelle année, Journée du sommeil, rentrée, fêtes de fin d'année) reçoivent automatiquement un visuel de la même famille que ceux de novembre et du 31 mai, qui se retourne comme un badge. Une image choisie dans le CMS reste prioritaire. Les fichiers (`assets/img/occasions/`) peuvent aussi servir sur Instagram ou Facebook.
+- **Petits dessins** (pages thématiques, étapes de la séance, page introuvable) : dessinés pour le site, leurs couleurs suivent le mode clair ou nuit.
+
+---
+
 ## 4. Si quelque chose ne va pas
 
 - **Le site ne change pas après un enregistrement** : onglet **Actions** du dépôt. Une croix rouge signifie que la construction a échoué ; cliquez dessus, puis sur l'étape **Construire le site** : le message commence par **ERREUR** et explique le problème en français (date mal écrite, image introuvable…). **Le site en ligne n'est pas modifié** tant que l'erreur n'est pas corrigée. Corrigez dans le CMS et enregistrez de nouveau.
@@ -165,12 +187,12 @@ La **neige sur tout le site** (décembre) tombe légèrement devant toute la pag
 **Déjà dans le site** : titre et description propres à chaque page (modifiables dans le CMS), données structurées (cabinet, adresse, téléphone, horaires, tarifs, Caroline, réseaux sociaux), plan du site `sitemap.xml` mis à jour automatiquement, `robots.txt`, image de partage, pages rapides et adaptées au téléphone.
 
 **À faire, gratuitement, dans cet ordre :**
-1. **Rediriger c-hypnose.net** (section 5).
+1. ~~**Rediriger c-hypnose.net**~~ : fait.
 2. **Google Search Console** (https://search.google.com/search-console) : *Ajouter une propriété* → *Domaine* → `hypnose-roulleau.fr`, validation par un enregistrement **TXT** chez le registraire. Puis **Sitemaps** → `sitemap.xml` → *Envoyer*, et **Inspection de l'URL** → `https://hypnose-roulleau.fr/` → *Demander l'indexation*.
 3. **Bing Webmaster Tools** (https://www.bing.com/webmasters) → *Importer depuis Google Search Console*. Bing alimente aussi Copilot et DuckDuckGo.
 4. **Revendiquer la fiche Google existante** (https://share.google/SU6ubBhQa9dX3cHF1) — idéalement par Caroline, avec son compte Google : ouvrez la fiche, cliquez sur le lien du type « Vous êtes le propriétaire de cet établissement ? », puis suivez la validation proposée par Google (vidéo du cabinet, appel, SMS, e-mail ou courrier). Une fois la fiche validée : vérifiez que nom, adresse et téléphone sont **écrits exactement comme sur le site**, choisissez la catégorie la plus proche de l'hypnothérapie, indiquez les horaires, le site `https://hypnose-roulleau.fr/`, une description et des photos. Caroline peut ensuite vous ajouter comme gestionnaire. Le site affiche déjà un lien « Laisser un avis Google » vers cette fiche ; après validation, remplacez-le dans le CMS (*Coordonnées* → *Fiche Google*) par le lien du bouton **Demander des avis**, qui ouvre directement le formulaire. Proposez ensuite aux personnes satisfaites de laisser un avis : la fiche n'en a encore aucun.
 5. **Mettre à jour l'adresse du site partout** : Facebook (champ *Site web*), Instagram (bio), LinkedIn, PagesJaunes (fiche à réclamer gratuitement via un compte Solocal), Infobel, annuaires de praticiens et de votre école de formation, signature e-mail, cartes de visite.
-6. **Le code postal** : la rue de Chaillot dépend du code **75116** pour La Poste. Le site affiche 75016, comme l'ancien. Choisissez-en un et utilisez-le partout (site, fiche Google, PagesJaunes, Facebook) : il se change en un clic dans le CMS.
+6. **Le code postal** : la rue de Chaillot dépend du code **75116** pour La Poste. Utilisez le même partout (site, fiche Google, PagesJaunes, Facebook) : sur le site, il se change en un clic dans le CMS.
 
 Comptez quelques jours à quelques semaines pour que Google affiche le nouveau site. La Search Console (*Performances*) montre ensuite les recherches qui vous amènent des visiteurs.
 
@@ -199,10 +221,11 @@ Pour changer de logo, demandez-moi : les icônes et l'image de partage doivent �
 | Dossier ou fichier | Rôle |
 |---|---|
 | `contenu/` | Tous les textes et réglages (ce que modifie le CMS) |
-| `modeles/` | La mise en page de chaque page (HTML), `base.html` pour l'en-tête et le pied de page communs, `morceaux/date.js` pour la date du jour et le calcul des fêtes mobiles |
+| `modeles/` | La mise en page de chaque page (HTML), `base.html` pour l'en-tête et le pied de page communs, `theme.html` pour les pages thématiques, `morceaux/date.js` pour la date du jour et le calcul des fêtes mobiles, `morceaux/plan.html` pour le plan d'accès dessiné, `illustrations/` pour les petits dessins |
 | `assets/css/style.css` | Couleurs, polices, mise en forme (section 1 « RÉGLAGES » pour les couleurs) ; section 20 bis pour les annonces et décorations |
 | `assets/js/` | `main.js` (menu, animations, formulaire), `decorations.js` (décorations saisonnières et leurs petites surprises au clic) |
 | `assets/img/medias/` | Les images envoyées depuis le CMS |
+| `assets/img/occasions/` | Les visuels fournis avec le site pour les encarts (nouvelle année, Journée du sommeil, rentrée, fêtes) |
 | `contenu/calendrier-avent.yml` | Les conseils du calendrier de l'Avent (rubrique du CMS) |
 | `construire.py` | Le programme qui fabrique le site à partir de `contenu/` et `modeles/` |
 | `.pages.yml` | La configuration du CMS (rubriques et champs) |

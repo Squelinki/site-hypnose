@@ -1,0 +1,67 @@
+{%- from "morceaux/icones.html" import icone -%}
+{%- set t = theme -%}
+<!-- ============ PAGE THÉMATIQUE : {{ t.nom|upper }} (texte : {{ t.source }}, modifiable dans le CMS « Pages thématiques ») ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap page-hero-grid{{ ' theme-hero' if t.illustration }}">
+    <div>
+      <nav class="fil" aria-label="Fil d'Ariane"><a href="index.html">Accueil</a><span aria-hidden="true">›</span><a href="indications.html">Indications</a><span aria-hidden="true">›</span><span aria-current="page">{{ t.nom|texte }}</span></nav>
+      <h1 id="titre"><span class="eyebrow">{{ t.surtitre|texte }}</span> {{ t.titre|titre }}</h1>
+      <p class="lead">{{ t.introduction|texte }}</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="contact.html#rendez-vous">Prendre rendez-vous</a>
+        <a class="btn btn-ghost" href="tel:{{ infos.tel }}">{{ icone('telephone') }}{{ infos.telephone }}</a>
+      </div>
+    </div>
+{%- if t.illustration %}
+    <div class="dessin dessin-theme" aria-hidden="true">{% include "illustrations/" ~ t.illustration ~ ".svg" %}</div>
+{%- endif %}
+  </div>
+</section>
+
+<section class="sec sec--creme" aria-label="{{ t.nom|attr }} : en savoir plus">
+  <div class="wrap theme-grid">
+    <div class="prose">
+{%- for s in t.sections %}
+{%- if s.titre %}
+      <h2>{{ s.titre|texte }}</h2>
+{%- endif %}
+{{ s.texte|paragraphes(indent=6) }}
+{%- endfor %}
+{%- if t.exercice_respiration %}
+      <p class="note theme-souffle">{{ icone('souffle') }}<span>Pour vous apaiser dès maintenant : essayez <a href="index.html#respiration">l'exercice de respiration</a> (cohérence cardiaque), quelques minutes suffisent.</span></p>
+{%- endif %}
+    </div>
+    <aside class="theme-infos" aria-labelledby="t-infos">
+      <h2 id="t-infos">Infos pratiques</h2>
+      <dl>
+{%- if t.tarif_choisi %}
+        <div><dt>Tarif</dt><dd>{{ t.tarif_choisi.intitule|texte }} : <strong class="nw">{{ t.tarif_choisi.prix_texte }}</strong></dd></div>
+{%- endif %}
+{%- if infos.duree_seance %}
+        <div><dt>Durée</dt><dd>{{ infos.duree_seance|texte }}</dd></div>
+{%- endif %}
+        <div><dt>Cabinet</dt><dd>{{ infos.adresse|texte }}, {{ infos.code_postal }} {{ infos.ville|texte }}<br><span class="small">{{ infos.acces|texte }}</span></dd></div>
+        <div><dt>Horaires</dt><dd>{{ infos.horaires_texte }}, sur rendez-vous</dd></div>
+        <div><dt>Paiement</dt><dd>{{ infos.paiement|texte }}{% if infos.paiement_precision %}<br><span class="small">{{ infos.paiement_precision|texte }}</span>{% endif %}</dd></div>
+      </dl>
+      <a class="btn btn-primary" href="contact.html#rendez-vous">Prendre rendez-vous</a>
+    </aside>
+  </div>
+</section>
+{%- if t.calculateur_tabac %}
+{% include "morceaux/calculateur-tabac.html" %}
+{%- endif %}
+
+<section class="sec theme-suite" aria-labelledby="t-autres">
+  <div class="wrap">
+    <p class="disclaimer">{{ icone('info') }}<span>L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</span></p>
+    <h2 class="h3-like" id="t-autres">Autres accompagnements</h2>
+    <ul class="pastilles">
+{%- for x in themes if x.fichier != t.fichier %}
+      <li><a href="{{ x.fichier }}">{{ x.nom|texte }}</a></li>
+{%- endfor %}
+      <li><a class="pastille-plus" href="indications.html">Toutes les indications <span class="arr" aria-hidden="true">→</span></a></li>
+    </ul>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

@@ -43,6 +43,16 @@
       <li class="card"><span class="ico">{{ icone(cat.icone) }}</span><h3>{{ cat.titre|texte }}</h3><p>{{ cat.resume|texte }}</p></li>
 {%- endfor %}
     </ul>
+{%- if themes %}
+    <div class="zoom">
+      <p class="zoom-titre">En savoir plus :</p>
+      <ul class="pastilles">
+{%- for x in themes %}
+        <li><a href="{{ x.fichier }}">{{ x.nom|texte }}</a></li>
+{%- endfor %}
+      </ul>
+    </div>
+{%- endif %}
     <p class="disclaimer">{{ icone('info') }}L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
     <a class="link-more" href="indications.html">Voir toutes les indications <span class="arr" aria-hidden="true">→</span></a>
   </div>
@@ -129,30 +139,47 @@
       <p class="eyebrow">Exercice · La cohérence cardiaque</p>
       <h2 class="h2" id="t-resp">Respirez avec le cercle</h2>
       <p class="lead2">Inspirez pendant que le cercle s'agrandit, expirez pendant qu'il se resserre : 5 secondes chacun. Vous sentirez en très peu de temps une relaxation intense et un bien-être général.</p>
+      <div class="breathe-options">
+        <fieldset class="breathe-durees">
+          <legend class="sr-only">Durée de l'exercice</legend>
+          <label><input type="radio" name="breathe-duree" value="1"><span>1 min</span></label>
+          <label><input type="radio" name="breathe-duree" value="3"><span>3 min</span></label>
+          <label><input type="radio" name="breathe-duree" value="5" checked><span>5 min</span></label>
+        </fieldset>
+        <button class="breathe-opt breathe-son" type="button" aria-pressed="false">{{ icone('son') }}<span>Bruit des vagues</span></button>
+        <button class="breathe-opt breathe-vibre" type="button" aria-pressed="false" hidden>{{ icone('vibre') }}<span>Vibrations</span></button>
+      </div>
       <div class="breathe-controls">
         <button class="btn btn-primary breathe-btn" type="button" aria-pressed="false">Commencer l'exercice</button>
-        <p class="breathe-timer" aria-live="polite">5 minutes, à interrompre quand vous voulez</p>
+        <p class="breathe-timer">5 minutes, à interrompre quand vous voulez</p>
+        <p class="sr-only" aria-live="polite" data-breathe-annonce></p>
       </div>
     </div>
     <div class="breathe-stage" aria-hidden="true">
-      <span class="ring"></span><span class="ring r2"></span>
+      <svg class="breathe-tour" viewBox="0 0 100 100"><circle class="breathe-tour-fond" cx="50" cy="50" r="49"/><circle class="breathe-tour-avance" cx="50" cy="50" r="49" pathLength="100"/></svg>
+      <span class="ring r2"></span>
       <span class="breathe-orb"></span>
       <span class="breathe-label"><span class="in">Inspirez</span><span class="out">Expirez</span></span>
+      <span class="breathe-bravo"><span class="breathe-bravo-int"><b>Bravo&nbsp;!</b><span data-breathe-bilan>5 min de calme</span></span></span>
     </div>
   </div>
 </section>
 
+{% if vrai_faux -%}
+{% include "morceaux/vrai-ou-faux.html" %}
+{%- else -%}
 <section class="sec sec--creme" id="faq" aria-labelledby="t-faq">
   <div class="wrap">
     <p class="eyebrow">Questions fréquentes</p>
     <h2 class="h2" id="t-faq">Vos questions</h2>
     <div class="faq-list">
-{%- for q in faq.questions %}
+{%- for q in faq.questions or [] %}
       <details{{ ' open' if loop.first }}><summary>{{ q.question|texte }}</summary><p>{{ q.reponse|texte }}</p></details>
 {%- endfor %}
     </div>
   </div>
 </section>
+{%- endif %}
 
 <section class="sec" id="plus-loin" aria-labelledby="t-pl">
   <div class="wrap">

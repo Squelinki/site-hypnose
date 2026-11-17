@@ -46,6 +46,9 @@
 {%- if infos.remboursement %}
         <p class="small">{{ infos.remboursement|texte }}</p>
 {%- endif %}
+{%- if bon_cadeau %}
+        <p class="cadeau">{{ icone('cadeau') }}<span>{{ bon_cadeau.texte|texte }} <a href="#formulaire" data-cadeau="{{ bon_cadeau.message|attr }}">{{ bon_cadeau.lien|texte }}</a></span></p>
+{%- endif %}
       </div>
     </div>
 
@@ -67,3 +70,7 @@
     </form>
   </div>
 </section>
+{%- if plan %}
+
+{% include "morceaux/plan.html" %}
+{%- endif %}

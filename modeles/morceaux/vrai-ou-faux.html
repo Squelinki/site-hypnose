@@ -1,0 +1,41 @@
+{#- Jeu « Vrai ou faux ? » de la page d'accueil (textes : contenu/vrai-ou-faux.yml, CMS « Vrai ou faux ? »).
+    Sans JavaScript, chaque carte montre directement l'affirmation et sa réponse. -#}
+<section class="sec sec--creme" id="faq" aria-labelledby="t-faq">
+  <div class="wrap">
+    <p class="eyebrow">Idées reçues</p>
+    <h2 class="h2" id="t-faq">{{ vrai_faux.titre|titre }}</h2>
+{%- if vrai_faux.introduction %}
+    <p class="lead2">{{ vrai_faux.introduction|texte }}</p>
+{%- endif %}
+    <ol class="vf-liste" data-vrai-faux>
+{%- for c in vrai_faux.affirmations %}
+      <li class="vf" data-reponse="{{ 'vrai' if c.vrai else 'faux' }}">
+        <div class="vf-carte">
+          <div class="vf-recto">
+            <p class="vf-num" aria-hidden="true">{{ '%02d'|format(loop.index) }}</p>
+            <h3 class="vf-affirmation">{{ c.affirmation|texte }}</h3>
+            <div class="vf-choix" role="group" aria-label="Votre réponse">
+              <button class="vf-btn" type="button" data-choix="vrai">Vrai</button>
+              <button class="vf-btn" type="button" data-choix="faux">Faux</button>
+            </div>
+          </div>
+          <div class="vf-verso">
+            <p class="vf-verdict"><span class="vf-resultat" data-vf-resultat></span><span class="vf-reponse vf-reponse--{{ 'vrai' if c.vrai else 'faux' }}">{{ "C'est vrai" if c.vrai else "C'est faux" }}</span></p>
+{%- if c.explication %}
+            <p class="vf-explication">{{ c.explication|texte }}</p>
+{%- endif %}
+            <button class="vf-retour" type="button">Revoir l'affirmation</button>
+          </div>
+        </div>
+      </li>
+{%- endfor %}
+    </ol>
+    <div class="vf-bilan">
+      <p class="vf-score" data-vf-score aria-live="polite"></p>
+      <div class="vf-actions">
+        <button class="link-more vf-tout" type="button">Voir toutes les réponses</button>
+        <button class="link-more vf-rejouer" type="button" hidden>Rejouer</button>
+      </div>
+    </div>
+  </div>
+</section>

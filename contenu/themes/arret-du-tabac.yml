@@ -1,0 +1,27 @@
+titre_court: "Arrêt du tabac"
+adresse: "hypnose-arret-du-tabac"
+ordre: 1
+illustration: tabac
+resume: "Franchir le pas, puis tenir : l'hypnose travaille sur l'envie de fumer, les habitudes et les émotions liées à la cigarette."
+seo_titre: "Hypnose arrêt du tabac à Paris 16e | Caroline Roulleau"
+seo_description: "Arrêter de fumer avec l'hypnose ericksonienne : déroulement de la séance « arrêt du tabac », tarif et calculateur d'économies. Cabinet à Paris 16e."
+surtitre: "Hypnose et arrêt du tabac"
+titre: "Arrêter de fumer, *avec l'hypnose*"
+introduction: "Vous avez décidé d'arrêter de fumer, ou vous y pensez sérieusement ? L'hypnose peut vous aider à franchir le pas, puis à tenir, en travaillant sur l'envie de fumer, sur les habitudes et sur les émotions qui accompagnent chaque cigarette."
+sections:
+  - titre: "Pourquoi l'hypnose pour arrêter de fumer ?"
+    texte: |
+      La cigarette n'est pas seulement une dépendance physique : c'est aussi une habitude, un geste devenu automatique, souvent associé à des moments précis (le café, la pause, la fin du repas, le stress…) et à des émotions.
+      Ces automatismes sont gérés par l'inconscient. C'est justement avec lui que l'hypnose permet de travailler : pour que l'envie de fumer perde de sa force, que ces moments ne soient plus liés à la cigarette, et que vous puissiez vous appuyer sur vos propres ressources pour tenir dans la durée.
+  - titre: "Comment se passe la séance « arrêt du tabac » ?"
+    texte: |
+      Nous commençons par un échange : votre histoire avec la cigarette, vos motivations, les situations où l'envie est la plus forte, vos éventuelles craintes.
+      Je vous guide ensuite dans un état hypnotique pour travailler sur votre motivation, sur les automatismes et sur la gestion des envies. Vous revenez à vous en pleine forme : le changement est en marche…
+  - titre: "Une décision qui vous appartient"
+    texte: |
+      L'hypnose ne décide pas à votre place : elle est d'autant plus efficace que la décision d'arrêter est vraiment la vôtre. Si vous venez surtout pour faire plaisir à un proche, parlons-en d'abord ensemble.
+      Pendant votre sevrage, vous pouvez aussi vous faire accompagner par votre médecin, votre pharmacien ou Tabac info service (39 89, appel gratuit) : ces aides sont complémentaires.
+tarif: "tabac"
+calculateur_tabac: true
+prix_paquet: 12.5
+exercice_respiration: false

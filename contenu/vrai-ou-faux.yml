@@ -1,0 +1,27 @@
+titre: "Vrai ou faux ?"
+introduction: "Idées reçues sur l'hypnose : testez-vous ! Pour chaque affirmation, choisissez « Vrai » ou « Faux » et découvrez la réponse."
+affirmations:
+  - affirmation: "Pendant une séance d'hypnose, on dort."
+    reponse: faux
+    explication: "L'hypnose n'est pas une forme de sommeil : c'est un état naturel, comparable à celui que l'on connaît lorsque l'on somnole dans un train en continuant à percevoir ce qui se passe autour. Vous pouvez même, dans certains cas, parler pour répondre à mes questions."
+  - affirmation: "Sous hypnose, on peut me faire faire n'importe quoi."
+    reponse: faux
+    explication: "Même en état modifié de conscience, vous restez « conscient » de ce qui se passe autour de vous, et je ne peux en aucun cas vous suggérer de faire quelque chose qui serait contraire à vos valeurs."
+  - affirmation: "Nous vivons tous, chaque jour, des moments proches de l'hypnose."
+    reponse: vrai
+    explication: "Plongé dans un livre, un film ou une réflexion, l'esprit « décroche » et l'activité cérébrale se transforme : c'est un état naturel et spontané, très proche de la transe hypnotique."
+  - affirmation: "Il faut des dizaines de séances pour obtenir un résultat."
+    reponse: faux
+    explication: "L'hypnose est une thérapie brève : comptez en moyenne de 2 à 10 séances, rarement plus. Nous déterminons ensemble le rythme et le nombre de séances."
+  - affirmation: "Une séance dure de 1 à 2 heures."
+    reponse: vrai
+    explication: "Tout dépend du type de séance. La première est souvent plus longue : elle permet d'analyser le problème et de faire une première intervention."
+  - affirmation: "En sortant, on a parfois l'impression qu'il ne s'est rien passé."
+    reponse: vrai
+    explication: "Vous revenez à vous en pleine forme, parfois avec la sensation d'avoir fait un long voyage, parfois avec l'impression qu'il ne s'est rien passé. Votre inconscient, lui, sait ce qui s'est passé : le changement est en marche…"
+  - affirmation: "Les séances sont remboursées par la Sécurité sociale."
+    reponse: faux
+    explication: "Elles ne sont pas remboursées par la Sécurité sociale. Néanmoins, certaines mutuelles prennent en charge une partie des séances sur facture : renseignez-vous !"
+  - affirmation: "On peut régler sa séance par carte bancaire."
+    reponse: faux
+    explication: "Le règlement se fait par chèque ou en espèces : les cartes bancaires ne sont pas acceptées."

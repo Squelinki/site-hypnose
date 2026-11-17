@@ -39,14 +39,20 @@ MOIS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août
 EFFETS = {"guirlande", "neige", "flocons", "paillettes", "petales", "muguet", "soleil", "feuilles", "coeurs", "cloches", "lune",
           "notes", "galette", "crepe", "poisson", "rentree", "avent", "glace", "feux", "fanions"}
 ICONES = {"soleil", "feuille", "fleches", "montagne", "etoile"}
+ILLUSTRATIONS = {"tabac", "sommeil", "stress", "poids", "phobies", "aucune"}
+# Pages du site qu'une page thématique ne doit pas remplacer
+RESERVEES = {"index", "l-hypnose-c-est-quoi", "indications", "deroulement-d-une-seance", "qui-suis-je", "contact",
+             "mentions-legales", "404", "sitemap", "robots", "favicon"}
 
 
 class Erreur(Exception):
     """Erreur de contenu, expliquée en français dans le journal de GitHub."""
 
 
-def lire(chemin):
+def lire(chemin, facultatif=False):
     fichier = ICI / "contenu" / chemin
+    if facultatif and not fichier.is_file():
+        return None
     try:
         return yaml.safe_load(fichier.read_text(encoding="utf-8")) or {}
     except yaml.YAMLError as e:
@@ -358,7 +364,45 @@ def date_reelle(code, an):
     return date_fete(m.group(1), an) + datetime.timedelta(days=int(m.group(2) or 0))
 
 
-DOS_PAR_DEFAUT = "Bravo, vous avez trouvé la face cachée !"
+DOS_PAR_DEFAUT = "Bravo, vous avez trouvé la face cachée !"   # pour une annonce créée dans le CMS sans phrase prévue
+
+# Phrase gravée au dos du badge, propre à chaque occasion (le champ « Texte au dos de l'image » du CMS reste prioritaire).
+# Clé : le nom de l'annonce, sans accents ni majuscules.
+DOS_PAR_OCCASION = {
+    "nouvelle-annee": "Que cette année vous ressemble !",
+    "galette-des-rois": "Bravo, vous avez trouvé la fève !",
+    "chandeleur": "Retournée comme une crêpe : faites un vœu !",
+    "saint-valentin": "Prenez soin de ceux que vous aimez… et de vous !",
+    "journee-du-sommeil": "Bonne nuit… et beaux rêves !",
+    "printemps": "Laissez fleurir le printemps en vous !",
+    "poisson-d-avril": "Pas de blague : c'est bien gagné !",
+    "paques": "Bravo, vous avez trouvé l'œuf caché !",
+    "1er-mai": "Un brin de muguet porte-bonheur pour vous !",
+    "journee-mondiale-sans-tabac": "Chaque jour sans tabac est une victoire !",
+    "fete-de-la-musique": "Que la musique vous fasse du bien !",
+    "ete": "Profitez de chaque rayon de soleil !",
+    "14-juillet": "Vive la liberté d'être soi-même !",
+    "rentree": "Belle rentrée, à votre rythme !",
+    "automne": "Laissez tomber ce qui vous pèse !",
+    "journee-mondiale-de-la-sante-mentale": "Prendre soin de soi, c'est essentiel !",
+    "mois-sans-tabac": "Un jour après l'autre, vous allez y arriver !",
+    "calendrier-de-l-avent": "Une douceur par jour jusqu'à Noël !",
+    "fetes-de-fin-d-annee": "De belles fêtes, tout en douceur !",
+}
+
+# Visuels prêts à l'emploi pour les encarts qui n'ont pas d'image (une image choisie dans le CMS reste prioritaire).
+# Clé : le nom de l'annonce, sans accents ni majuscules. Valeur : (image, description de l'image).
+SIGNATURE = "Caroline Roulleau, hypnothérapeute ericksonienne et praticienne PNL"
+VISUELS = {
+    "nouvelle-annee": ("assets/img/occasions/nouvelle-annee.jpg",
+                       f"Visuel « Et si cette année était celle du changement ? », avec des étoiles dorées : {SIGNATURE}"),
+    "journee-du-sommeil": ("assets/img/occasions/journee-du-sommeil.jpg",
+                           f"Visuel « Journée du sommeil : retrouver des nuits paisibles », avec une lune et des étoiles : {SIGNATURE}"),
+    "rentree": ("assets/img/occasions/rentree.jpg",
+                f"Visuel « Une rentrée plus sereine », avec un crayon et une feuille d'automne : {SIGNATURE}"),
+    "fetes-de-fin-d-annee": ("assets/img/occasions/fetes.jpg",
+                             f"Visuel « Des fêtes plus sereines », avec une couronne de Noël : {SIGNATURE}"),
+}
 
 
 def dos_du_badge(e, nom):
@@ -370,7 +414,8 @@ def dos_du_badge(e, nom):
     if not date_dos and "{annee}" not in nom_dos:
         date_dos = "{annee}"
     date_dos = date_dos[:1].upper() + date_dos[1:]
-    return nom_dos, date_dos, chaine(e.get("dos")).strip() or DOS_PAR_DEFAUT
+    defaut = DOS_PAR_OCCASION.get(slug(nom), DOS_PAR_DEFAUT)
+    return nom_dos, date_dos, chaine(e.get("dos")).strip() or defaut
 
 
 def preparer_annonces(donnees):
@@ -393,7 +438,11 @@ def preparer_annonces(donnees):
         a["bandeau"] = chaine(a.get("bandeau")).strip()
         e = a.get("encart") or {}
         e["afficher"] = bool(e.get("afficher") and chaine(e.get("titre")).strip())
+        if e["afficher"] and not chaine(e.get("image")).strip() and slug(nom) in VISUELS:
+            e["image"], alt = VISUELS[slug(nom)]          # visuel fourni avec le site
+            e["image_alt"] = chaine(e.get("image_alt")).strip() or alt
         e["points"] = [p for p in e.get("points") or [] if chaine(p).strip()]
+        e["bouton_cadeau"] = bool(e.get("bouton_cadeau"))   # ligne « Envie d'offrir une séance ? » (rubrique Bon cadeau)
         e["dos_nom"], e["dos_date"], e["dos_mot"] = dos_du_badge(e, nom)
         a["encart"] = e
         annonces.append(a)
@@ -420,9 +469,114 @@ def preparer_avent(annonces):
 
 
 # ---------------------------------------------------------------------------
+# Pages thématiques, « Vrai ou faux ? », surprise cachée, bon cadeau, plan d'accès
+# ---------------------------------------------------------------------------
+def nombre(v, defaut, ou):
+    if v in (None, ""):
+        return defaut
+    try:
+        return float(chaine(v).replace(",", ".").replace("€", "").strip())
+    except ValueError:
+        raise Erreur(f"Nombre non compris dans {ou} : « {v} ».")
+
+
+def preparer_themes(infos):
+    """Pages thématiques (dossier contenu/themes/, une page par fichier), rangées sous « Indications »."""
+    dossier = ICI / "contenu" / "themes"
+    if not dossier.is_dir():
+        return []
+    themes, adresses = [], set()
+    for f in sorted(list(dossier.glob("*.yml")) + list(dossier.glob("*.yaml"))):
+        t = lire(f"themes/{f.name}")
+        if not t or t.get("publier") is False:
+            continue
+        nom = chaine(t.get("titre_court")).strip()
+        if not nom:
+            raise Erreur(f"Page thématique contenu/themes/{f.name} : il manque le nom court.")
+        adresse = slug(re.sub(r"\.html?$", "", chaine(t.get("adresse")).strip())) if chaine(t.get("adresse")).strip() \
+            else "hypnose-" + slug(nom)
+        if adresse in RESERVEES or adresse in adresses:
+            raise Erreur(f"Page thématique « {nom} » : l'adresse {adresse}.html est déjà prise par une autre page. "
+                         "Choisissez une autre adresse.")
+        adresses.add(adresse)
+        for cle, libelle in (("seo_titre", "titre pour Google"), ("titre", "titre"), ("introduction", "introduction")):
+            if not chaine(t.get(cle)).strip():
+                raise Erreur(f"Page thématique « {nom} » : il manque le {libelle}.")
+        dessin = chaine(t.get("illustration")).strip() or "aucune"
+        if dessin not in ILLUSTRATIONS:
+            raise Erreur(f"Page thématique « {nom} » : illustration inconnue ({dessin}).")
+        mot = chaine(t.get("tarif")).strip().lower()
+        tarifs = infos.get("tarifs") or []
+        choix = [x for x in tarifs if mot and mot in chaine(x.get("intitule")).lower()] or tarifs[:1]
+        t.update(nom=nom, fichier=adresse + ".html", source=f"contenu/themes/{f.name}",
+                 illustration="" if dessin == "aucune" else dessin, tarif_choisi=choix[0] if choix else None,
+                 ordre=nombre(t.get("ordre"), 99, f"l'ordre de la page « {nom} »"),
+                 resume=chaine(t.get("resume")).strip() or chaine(t.get("introduction")).strip(),
+                 sections=[x for x in t.get("sections") or [] if chaine(x.get("titre")).strip() or chaine(x.get("texte")).strip()])
+        if t.get("calculateur_tabac"):
+            t["prix_paquet"] = nombre(t.get("prix_paquet"), 12.5, f"le prix du paquet (page « {nom} »)")
+            if not 1 <= t["prix_paquet"] <= 100:
+                raise Erreur(f"Page « {nom} » : le prix du paquet de cigarettes semble faux ({t['prix_paquet']} €).")
+        themes.append(t)
+    themes.sort(key=lambda t: (t["ordre"], slug(t["nom"])))
+    return themes
+
+
+def preparer_vrai_faux():
+    """Jeu « Vrai ou faux ? » de la page d'accueil (à la place de l'ancienne liste de questions)."""
+    d = lire("vrai-ou-faux.yml", facultatif=True)
+    if not d:
+        return None
+    cartes = []
+    for n, x in enumerate(d.get("affirmations") or [], 1):
+        a = chaine(x.get("affirmation")).strip()
+        if not a:
+            continue
+        r = slug(x.get("reponse"))
+        if r not in ("vrai", "faux"):
+            raise Erreur(f"Vrai ou faux ? (affirmation {n}) : la réponse doit être « vrai » ou « faux ».")
+        cartes.append({"affirmation": a, "vrai": r == "vrai", "explication": chaine(x.get("explication")).strip()})
+    if not cartes:
+        return None
+    d["affirmations"] = cartes
+    return d
+
+
+def preparer_surprise():
+    """Petite surprise cachée (pendule) : textes saisis dans le CMS, transmis à main.js."""
+    d = lire("surprise.yml", facultatif=True)
+    if not d or not d.get("active"):
+        return ""
+    lignes = [l.strip() for l in chaine(d.get("message")).splitlines() if l.strip()]
+    if not lignes:
+        return ""
+    donnees = {"titre": chaine(d.get("titre")).strip(), "lignes": lignes,
+               "bouton": chaine(d.get("bouton")).strip() or "Se réveiller",
+               "reveil": chaine(d.get("reveil")).strip() or "1… 2… 3… Vous êtes bien réveillé(e) !"}
+    return json.dumps(donnees, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
+def preparer_bon_cadeau():
+    d = lire("bon-cadeau.yml", facultatif=True)
+    if not d or not d.get("actif") or not chaine(d.get("texte")).strip():
+        return None
+    return {"texte": chaine(d.get("texte")).strip(), "lien": chaine(d.get("lien")).strip() or "Demander un bon cadeau",
+            "message": chaine(d.get("message")).strip()}
+
+
+def plan_disponible(infos):
+    """Le plan dessiné ne vaut que pour le cabinet du 30 rue de Chaillot : il disparaît tout seul si l'adresse change."""
+    adresse = re.sub(r"[^a-z0-9]+", " ", sans_accents(chaine(infos.get("adresse"))).lower()).strip()
+    ok = re.match(r"30 (bis |ter )?rue (de )?chaillot\b", adresse) is not None   # « 30, rue de Chaillot », « 30 rue Chaillot »…
+    if not ok:
+        print("  Plan d'accès masqué : l'adresse du cabinet a changé (le plan dessiné montre le 30 rue de Chaillot).")
+    return ok
+
+
+# ---------------------------------------------------------------------------
 # Données structurées pour Google (JSON-LD)
 # ---------------------------------------------------------------------------
-def donnees_google(infos, qui):
+def donnees_google(infos, qui, themes=()):
     biz, pers, web = SITE_URL + "/#cabinet", SITE_URL + "/#caroline-roulleau", SITE_URL + "/#site"
     photo = SITE_URL + "/assets/img/caroline-roulleau.jpg"
     reseaux = [infos.get(k) for k in ("instagram", "facebook") if infos.get(k)]
@@ -469,6 +623,18 @@ def donnees_google(infos, qui):
         "contact.html": [cabinet, caroline, fil("contact.html", "Tarifs & contact")],
         "mentions-legales.html": [fil("mentions-legales.html", "Mentions légales")],
     }
+    for t in themes:   # pages thématiques : fil d'Ariane Accueil › Indications › page, et le service proposé
+        adresse = f"{SITE_URL}/{t['fichier']}"
+        service = {"@type": "Service", "name": chaine(t.get("surtitre")).strip() or t["nom"], "serviceType": "Hypnothérapie",
+                   "url": adresse, "provider": {"@id": biz}, "areaServed": {"@type": "City", "name": "Paris"}}
+        if t.get("tarif_choisi"):
+            service["offers"] = {"@type": "Offer", "price": f"{t['tarif_choisi']['prix_nombre']:.2f}", "priceCurrency": "EUR"}
+        graphes[t["fichier"]] = [
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "Accueil", "item": SITE_URL + "/"},
+                {"@type": "ListItem", "position": 2, "name": "Indications", "item": SITE_URL + "/indications.html"},
+                {"@type": "ListItem", "position": 3, "name": t["nom"], "item": adresse}]},
+            service, dict(cabinet)]
     return {f: json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False, separators=(",", ":"))
             for f, g in graphes.items()}
 
@@ -530,12 +696,16 @@ def construire():
     infos = preparer_infos(lire("infos-pratiques.yml"))
     pages = {cle: lire(f"pages/{fichier}.yml") for _, _, cle, fichier in PAGES if fichier}
     annonces, decorations = preparer_annonces(lire("annonces.yml"))
+    themes = preparer_themes(infos)
+    vrai_faux = preparer_vrai_faux()
     commun = {
         "infos": infos, "pages": pages, "annonces": annonces, "decorations": decorations, "conseils_avent": preparer_avent(annonces),
-        "avis": preparer_avis(lire("avis.yml")), "faq": lire("faq.yml"), "lectures": preparer_lectures(lire("lectures.yml")),
+        "avis": preparer_avis(lire("avis.yml")), "faq": (lire("faq.yml", facultatif=True) or {}) if not vrai_faux else {},
+        "vrai_faux": vrai_faux, "lectures": preparer_lectures(lire("lectures.yml")),
+        "themes": themes, "surprise": preparer_surprise(), "bon_cadeau": preparer_bon_cadeau(), "plan": plan_disponible(infos),
         "site_url": SITE_URL, "annee": ANNEE,
     }
-    ld = donnees_google(infos, pages["qui"])
+    ld = donnees_google(infos, pages["qui"], themes)
 
     # --strict (pour les tests) : toute variable inconnue dans un modèle arrête la construction
     options = {"undefined": StrictUndefined} if "--strict" in sys.argv else {}
@@ -546,9 +716,11 @@ def construire():
                            "{telephone}", f'<a href="tel:{infos["tel"]}" class="nw">{esc(infos["telephone"])}</a>'))
 
     plan = []
-    for fichier, modele, cle, source in PAGES:
+    a_construire = [(f, m, cle, src, None) for f, m, cle, src in PAGES]
+    a_construire[-1:-1] = [(t["fichier"], "theme.html", "indications", None, t) for t in themes]   # avant la page 404
+    for fichier, modele, cle, source, theme in a_construire:
         root = "/" if fichier == "404.html" else ""
-        c = pages.get(cle, {})
+        c = theme or pages.get(cle, {})
         if fichier == "404.html":
             seo_t, seo_d = "Page introuvable | Caroline Roulleau, hypnothérapeute", "Cette page n'existe pas ou a changé d'adresse."
         else:
@@ -560,7 +732,7 @@ def construire():
                      f"{infos['horaires_texte']}, sur rendez-vous : {infos['telephone']}.")
         if not seo_t:
             raise Erreur(f"Il manque le titre pour Google de la page {fichier}.")
-        ctx = dict(commun, root=root, page=cle, fichier=fichier, seo_titre=seo_t, seo_description=seo_d,
+        ctx = dict(commun, root=root, page=cle, fichier=fichier, seo_titre=seo_t, seo_description=seo_d, theme=theme,
                    noindex=(fichier == "404.html"), jsonld=ld.get(fichier),
                    adresse_page=f"{SITE_URL}/{'' if fichier == 'index.html' else fichier}")
         contenu = env.get_template(modele).render(**ctx)
@@ -569,6 +741,7 @@ def construire():
         if fichier != "404.html":
             sources = ["modeles/base.html", f"modeles/{modele}", "contenu/infos-pratiques.yml"]
             sources += [f"contenu/pages/{source}.yml"] if source else []
+            sources += [theme["source"]] if theme else []
             sources += ["contenu", "modeles"] if fichier == "index.html" else []
             plan.append((fichier, derniere_modif(sources)))
 
@@ -576,7 +749,8 @@ def construire():
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         "".join(f"  <url><loc>{SITE_URL}/{'' if f == 'index.html' else f}</loc><lastmod>{d}</lastmod></url>\n"
                 for f, d in plan) + "</urlset>\n", encoding="utf-8")
-    print(f"Site construit dans {SORTIE.name}/ : {len(PAGES)} pages, {len(annonces)} annonces actives.")
+    print(f"Site construit dans {SORTIE.name}/ : {len(PAGES) + len(themes)} pages (dont {len(themes)} pages thématiques), "
+          f"{len(annonces)} annonces actives.")
 
 
 if __name__ == "__main__":

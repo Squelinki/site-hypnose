@@ -18,6 +18,9 @@
           <h2>{{ e.titre|texte }}</h2>
 {{ e.texte|paragraphes(indent=10) }}
         </div>
+{%- if loop.index <= 4 %}
+        <span class="dessin dessin-etape" aria-hidden="true">{% include "illustrations/etape-" ~ loop.index ~ ".svg" %}</span>
+{%- endif %}
       </li>
 {%- endfor %}
     </ol>

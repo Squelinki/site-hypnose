@@ -59,6 +59,9 @@
 {%- endif %}
       </div>
 {%- endif %}
+{%- if e.bouton_cadeau and bon_cadeau %}
+      <p class="cadeau">{{ icone('cadeau') }}<span>{{ bon_cadeau.texte|texte }} <a href="{{ root }}contact.html?objet=bon-cadeau#formulaire">{{ bon_cadeau.lien|texte }}&nbsp;<span class="arr" aria-hidden="true">→</span></a></span></p>
+{%- endif %}
     </div>
   </div>
 </section>

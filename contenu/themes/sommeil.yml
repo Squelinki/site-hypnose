@@ -1,0 +1,24 @@
+titre_court: "Sommeil"
+adresse: "hypnose-sommeil"
+ordre: 2
+illustration: sommeil
+resume: "Endormissement difficile, réveils nocturnes, pensées qui tournent en boucle : retrouver des nuits plus sereines."
+seo_titre: "Hypnose et troubles du sommeil à Paris 16e | C. Roulleau"
+seo_description: "Difficultés d'endormissement, réveils nocturnes, ruminations : comment l'hypnose peut vous aider à retrouver un sommeil apaisé. Cabinet à Paris 16e."
+surtitre: "Hypnose et sommeil"
+titre: "Retrouver un sommeil *apaisé*"
+introduction: "Difficultés à vous endormir, réveils au milieu de la nuit, pensées qui tournent en boucle, fatigue au réveil… Quand les nuits deviennent difficiles, c'est toute la journée qui s'en ressent. L'hypnose peut vous aider à relâcher les tensions et à retrouver des nuits plus sereines, à votre rythme."
+sections:
+  - titre: "Quand le mental ne veut pas s'éteindre"
+    texte: |
+      Le sommeil ne se commande pas : plus on cherche à s'endormir, plus il semble s'éloigner. Stress, soucis du quotidien, émotions mal digérées, habitudes installées au fil du temps : les causes d'un sommeil perturbé sont souvent multiples, et elles s'entretiennent les unes les autres.
+  - titre: "Ce que l'hypnose peut vous apporter"
+    texte: |
+      L'état hypnotique ressemble à ce moment de douce torpeur qui précède l'endormissement. En séance, nous travaillons à apaiser le mental, à relâcher les tensions du corps et à défaire les associations qui se sont installées entre le moment du coucher et l'agitation.
+      Nous cherchons aussi ensemble ce qui, dans votre quotidien, entretient ces nuits difficiles, pour que votre inconscient retrouve le chemin d'un sommeil naturel.
+  - titre: "Bon à savoir"
+    texte: |
+      Si vos troubles du sommeil sont récents, importants ou accompagnés d'autres signes (ronflements, pauses respiratoires, somnolence dans la journée…), parlez-en d'abord à votre médecin. L'hypnose vient en complément, jamais à la place d'un avis médical.
+tarif: ""
+calculateur_tabac: false
+exercice_respiration: true
