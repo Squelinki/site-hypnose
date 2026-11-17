@@ -330,6 +330,11 @@ content:
     type: file
     path: contenu/vrai-ou-faux.yml
     fields:
+      - name: actif
+        label: "Afficher « Vrai ou faux ? » sur la page d'accueil"
+        type: boolean
+        default: true
+        description: "Désactivé : la FAQ classique « Vos questions » s'affiche à la place, exactement comme avant. Ses questions se modifient dans la rubrique « Questions fréquentes (FAQ) », juste en dessous. Rien n'est effacé : réactivez quand vous voulez."
       - name: titre
         component: titre
         required: true
@@ -363,6 +368,29 @@ content:
             label: Explication (au dos de la carte)
             type: text
             description: "Deux ou trois phrases au plus. Pensez à la mettre à jour si les tarifs, le paiement ou le remboursement changent."
+
+  - name: faq
+    label: Questions fréquentes (FAQ)
+    type: file
+    path: contenu/faq.yml
+    fields:
+      - name: questions
+        label: Questions (la première est ouverte par défaut)
+        description: "Affichées sur la page d'accueil seulement quand « Vrai ou faux ? » est désactivé (interrupteur en haut de la rubrique « Vrai ou faux ? »)."
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{question}"
+        fields:
+          - name: question
+            label: Question
+            type: string
+            required: true
+          - name: reponse
+            label: Réponse
+            type: text
+            required: true
 
   - name: themes
     label: "Pages thématiques (arrêt du tabac, sommeil, stress…)"
@@ -558,6 +586,99 @@ content:
             label: Adresse de la page
             type: string
             required: true
+
+  - name: menu
+    label: Menu et pied de page
+    type: file
+    path: contenu/menu.yml
+    fields:
+      - name: menu
+        label: "Menu (en haut de chaque page)"
+        type: object
+        description: "Les noms des pages dans le menu. Une case vide reprend le nom d'origine. Si les noms deviennent trop longs pour tenir sur une ligne, le menu se resserre, puis le bouton se masque, puis le menu passe dans le bouton à trois traits : rien ne déborde."
+        fields:
+          - name: hypnose
+            label: "Page « L'hypnose, c'est quoi ? »"
+            type: string
+            options:
+              maxlength: 30
+          - name: indications
+            label: "Page « Indications »"
+            type: string
+            options:
+              maxlength: 30
+          - name: deroulement
+            label: "Page « Déroulement d'une séance »"
+            type: string
+            options:
+              maxlength: 30
+          - name: qui
+            label: "Page « Qui suis-je ? »"
+            type: string
+            options:
+              maxlength: 30
+          - name: contact
+            label: "Page « Tarifs & contact »"
+            type: string
+            options:
+              maxlength: 30
+          - name: bouton
+            label: "Bouton vert à droite du menu"
+            type: string
+            description: "Il ouvre le formulaire de rendez-vous (page Tarifs & contact)."
+            options:
+              maxlength: 30
+      - name: pied
+        label: "Pied de page (en bas de chaque page)"
+        type: object
+        description: "Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
+        fields:
+          - name: titre_cabinet
+            label: "Titre de la colonne « Cabinet » (adresse, téléphone, horaires)"
+            type: string
+            options:
+              maxlength: 40
+          - name: titre_site
+            label: "Titre de la colonne « Le site »"
+            type: string
+            options:
+              maxlength: 40
+          - name: hypnose
+            label: "Lien vers la page « L'hypnose, c'est quoi ? »"
+            type: string
+            options:
+              maxlength: 50
+          - name: indications
+            label: "Lien vers la page « Indications »"
+            type: string
+            options:
+              maxlength: 50
+          - name: deroulement
+            label: "Lien vers la page « Déroulement d'une séance »"
+            type: string
+            options:
+              maxlength: 50
+          - name: qui
+            label: "Lien vers la page « Qui suis-je ? »"
+            type: string
+            options:
+              maxlength: 50
+          - name: contact
+            label: "Lien vers la page « Tarifs & contact »"
+            type: string
+            options:
+              maxlength: 50
+          - name: titre_accompagnements
+            label: "Titre de la colonne « Accompagnements »"
+            type: string
+            description: "Les noms de cette colonne sont ceux des pages thématiques (rubrique « Pages thématiques », champ « Nom court »)."
+            options:
+              maxlength: 40
+          - name: mentions
+            label: "Lien « Mentions légales et confidentialité » (tout en bas)"
+            type: string
+            options:
+              maxlength: 50
 
   - name: pages
     label: Textes des pages
