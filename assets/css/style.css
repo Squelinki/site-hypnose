@@ -416,11 +416,28 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
   .burger { display: flex; margin-left: 2px; }
   .theme-btn { margin-left: auto; }
   .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; margin: 0; padding: 6px 22px 16px; background: var(--creme); box-shadow: 0 18px 30px -18px rgba(0,0,0,.35); font-size: 16px; }
-  .nav a { padding: 13px 0; border-bottom: 1px solid var(--menu-trait); }
+  .nav a { padding: 13px 0; border-bottom: 1px solid var(--menu-trait); white-space: normal; }
   .nav a:last-child { border-bottom: 0; }
   .nav a[aria-current] { border-bottom-color: var(--menu-trait); font-weight: 700; }
   .nav-trait { display: none; }
   .nav-open .nav { display: flex; }
+}
+/* Noms du menu changés dans le CMS et trop longs pour tenir sur une ligne (écrans de plus de 1000 px ; en dessous,
+   le menu est déjà dans le bouton à trois traits) : modeles/morceaux/menu.js ajoute ces classes l'une après l'autre,
+   seulement si besoin (menu resserré, puis sans le bouton « Prendre rendez-vous », puis menu à trois traits) */
+@media (min-width: 1001px) {
+  .menu-serre .header-inner { gap: 20px; }
+  .menu-serre .nav { gap: 18px; font-size: 14.5px; }
+  .menu-sans-bouton .header-cta { display: none; }
+  .menu-replie .burger { display: flex; margin-left: 2px; }
+  .menu-replie .theme-btn { margin-left: auto; }
+  .menu-replie .nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; margin: 0;
+    padding: 6px max(40px, calc((100% - var(--largeur)) / 2 + 40px)) 16px; background: var(--creme); box-shadow: 0 18px 30px -18px rgba(0,0,0,.35); font-size: 16px; }
+  .menu-replie .nav a { padding: 13px 0; border-bottom: 1px solid var(--menu-trait); white-space: normal; }
+  .menu-replie .nav a:last-child { border-bottom: 0; }
+  .menu-replie .nav a[aria-current] { border-bottom-color: var(--menu-trait); font-weight: 700; }
+  .menu-replie .nav-trait { display: none; }
+  .menu-replie .nav-open .nav { display: flex; }
 }
 
 @media (max-width: 1120px) {

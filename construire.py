@@ -523,9 +523,10 @@ def preparer_themes(infos):
 
 
 def preparer_vrai_faux():
-    """Jeu « Vrai ou faux ? » de la page d'accueil (à la place de l'ancienne liste de questions)."""
+    """Jeu « Vrai ou faux ? » de la page d'accueil, à la place de la liste de questions (FAQ).
+    Interrupteur « actif » du CMS : décoché, la FAQ classique (faq.yml) revient, comme avant."""
     d = lire("vrai-ou-faux.yml", facultatif=True)
-    if not d:
+    if not d or d.get("actif") is False:
         return None
     cartes = []
     for n, x in enumerate(d.get("affirmations") or [], 1):
@@ -542,6 +543,14 @@ def preparer_vrai_faux():
     return d
 
 
+def preparer_faq():
+    """FAQ classique « Vos questions » (faq.yml) : affichée quand « Vrai ou faux ? » est désactivé."""
+    d = lire("faq.yml", facultatif=True) or {}
+    d["questions"] = [{**q, "reponse": q.get("reponse")} for q in d.get("questions") or []
+                      if isinstance(q, dict) and chaine(q.get("question")).strip()]
+    return d
+
+
 def preparer_surprise():
     """Petite surprise cachée (pendule) : textes saisis dans le CMS, transmis à main.js."""
     d = lire("surprise.yml", facultatif=True)
@@ -554,6 +563,26 @@ def preparer_surprise():
                "bouton": chaine(d.get("bouton")).strip() or "Se réveiller",
                "reveil": chaine(d.get("reveil")).strip() or "1… 2… 3… Vous êtes bien réveillé(e) !"}
     return json.dumps(donnees, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+
+
+NAVIGATION = {   # noms d'origine du menu et du pied de page (rubrique « Menu et pied de page » du CMS ; case vide = ce nom)
+    "menu": {"hypnose": "L'hypnose", "indications": "Indications", "deroulement": "Déroulement",
+             "qui": "Qui suis-je ?", "contact": "Tarifs & contact", "bouton": "Prendre rendez-vous"},
+    "pied": {"titre_cabinet": "Cabinet", "titre_site": "Le site",
+             "hypnose": "L'hypnose, c'est quoi ?", "indications": "Indications", "deroulement": "Déroulement d'une séance",
+             "qui": "Qui suis-je ?", "contact": "Tarifs & contact",
+             "titre_accompagnements": "Accompagnements", "mentions": "Mentions légales et confidentialité"},
+}
+
+
+def preparer_navigation():
+    """Noms du menu (en haut) et du pied de page, modifiables dans le CMS."""
+    d = lire("menu.yml", facultatif=True) or {}
+    sortie = {}
+    for groupe, defauts in NAVIGATION.items():
+        saisi = d.get(groupe) if isinstance(d.get(groupe), dict) else {}
+        sortie[groupe] = {cle: " ".join(chaine(saisi.get(cle)).split()) or defaut for cle, defaut in defauts.items()}
+    return sortie
 
 
 def preparer_bon_cadeau():
@@ -576,7 +605,7 @@ def plan_disponible(infos):
 # ---------------------------------------------------------------------------
 # Données structurées pour Google (JSON-LD)
 # ---------------------------------------------------------------------------
-def donnees_google(infos, qui, themes=()):
+def donnees_google(infos, qui, themes=(), noms=None):
     biz, pers, web = SITE_URL + "/#cabinet", SITE_URL + "/#caroline-roulleau", SITE_URL + "/#site"
     photo = SITE_URL + "/assets/img/caroline-roulleau.jpg"
     reseaux = [infos.get(k) for k in ("instagram", "facebook") if infos.get(k)]
@@ -609,6 +638,9 @@ def donnees_google(infos, qui, themes=()):
     site = {"@type": "WebSite", "@id": web, "url": SITE_URL + "/", "name": "Caroline Roulleau – Hypnothérapeute",
             "alternateName": "Caroline Roulleau Hypnose", "inLanguage": "fr-FR", "publisher": {"@id": biz}}
 
+    noms = noms or {g: dict(v) for g, v in NAVIGATION.items()}
+    pied = noms["pied"]   # fil d'Ariane pour Google : noms des pages du pied de page (rubrique « Menu et pied de page »)
+
     def fil(fichier, nom):
         return {"@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "Accueil", "item": SITE_URL + "/"},
@@ -616,11 +648,11 @@ def donnees_google(infos, qui, themes=()):
 
     graphes = {
         "index.html": [site, cabinet, caroline],
-        "l-hypnose-c-est-quoi.html": [fil("l-hypnose-c-est-quoi.html", "L'hypnose, c'est quoi ?")],
-        "indications.html": [fil("indications.html", "Indications")],
-        "deroulement-d-une-seance.html": [fil("deroulement-d-une-seance.html", "Déroulement d'une séance")],
-        "qui-suis-je.html": [caroline, fil("qui-suis-je.html", "Qui suis-je ?")],
-        "contact.html": [cabinet, caroline, fil("contact.html", "Tarifs & contact")],
+        "l-hypnose-c-est-quoi.html": [fil("l-hypnose-c-est-quoi.html", pied["hypnose"])],
+        "indications.html": [fil("indications.html", pied["indications"])],
+        "deroulement-d-une-seance.html": [fil("deroulement-d-une-seance.html", pied["deroulement"])],
+        "qui-suis-je.html": [caroline, fil("qui-suis-je.html", pied["qui"])],
+        "contact.html": [cabinet, caroline, fil("contact.html", pied["contact"])],
         "mentions-legales.html": [fil("mentions-legales.html", "Mentions légales")],
     }
     for t in themes:   # pages thématiques : fil d'Ariane Accueil › Indications › page, et le service proposé
@@ -632,7 +664,7 @@ def donnees_google(infos, qui, themes=()):
         graphes[t["fichier"]] = [
             {"@type": "BreadcrumbList", "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": "Accueil", "item": SITE_URL + "/"},
-                {"@type": "ListItem", "position": 2, "name": "Indications", "item": SITE_URL + "/indications.html"},
+                {"@type": "ListItem", "position": 2, "name": noms["menu"]["indications"], "item": SITE_URL + "/indications.html"},
                 {"@type": "ListItem", "position": 3, "name": t["nom"], "item": adresse}]},
             service, dict(cabinet)]
     return {f: json.dumps({"@context": "https://schema.org", "@graph": g}, ensure_ascii=False, separators=(",", ":"))
@@ -698,14 +730,15 @@ def construire():
     annonces, decorations = preparer_annonces(lire("annonces.yml"))
     themes = preparer_themes(infos)
     vrai_faux = preparer_vrai_faux()
+    navigation = preparer_navigation()
     commun = {
         "infos": infos, "pages": pages, "annonces": annonces, "decorations": decorations, "conseils_avent": preparer_avent(annonces),
-        "avis": preparer_avis(lire("avis.yml")), "faq": (lire("faq.yml", facultatif=True) or {}) if not vrai_faux else {},
+        "avis": preparer_avis(lire("avis.yml")), "faq": preparer_faq() if not vrai_faux else {"questions": []},
         "vrai_faux": vrai_faux, "lectures": preparer_lectures(lire("lectures.yml")),
         "themes": themes, "surprise": preparer_surprise(), "bon_cadeau": preparer_bon_cadeau(), "plan": plan_disponible(infos),
-        "site_url": SITE_URL, "annee": ANNEE,
+        "navigation": navigation, "site_url": SITE_URL, "annee": ANNEE,
     }
-    ld = donnees_google(infos, pages["qui"], themes)
+    ld = donnees_google(infos, pages["qui"], themes, navigation)
 
     # --strict (pour les tests) : toute variable inconnue dans un modèle arrête la construction
     options = {"undefined": StrictUndefined} if "--strict" in sys.argv else {}

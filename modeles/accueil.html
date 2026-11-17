@@ -167,13 +167,13 @@
 
 {% if vrai_faux -%}
 {% include "morceaux/vrai-ou-faux.html" %}
-{%- else -%}
+{%- elif faq.questions -%}
 <section class="sec sec--creme" id="faq" aria-labelledby="t-faq">
   <div class="wrap">
     <p class="eyebrow">Questions fréquentes</p>
     <h2 class="h2" id="t-faq">Vos questions</h2>
     <div class="faq-list">
-{%- for q in faq.questions or [] %}
+{%- for q in faq.questions %}
       <details{{ ' open' if loop.first }}><summary>{{ q.question|texte }}</summary><p>{{ q.reponse|texte }}</p></details>
 {%- endfor %}
     </div>

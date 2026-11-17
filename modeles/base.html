@@ -46,17 +46,18 @@
   <div class="wrap header-inner">
     <a class="brand" href="{{ root }}index.html"><img class="brand-logo" src="{{ root }}{{ 'assets/img/logo.svg'|version }}" alt="" width="46" height="46"><span class="brand-texte"><span class="brand-name">Caroline Roulleau</span><span class="brand-sub">Hypnothérapeute · {{ infos.quartier|texte }}</span></span></a>
     <nav class="nav" id="menu" aria-label="Menu principal">
-{%- for adresse, cle, nom in [("l-hypnose-c-est-quoi.html", "hypnose", "L'hypnose"), ("indications.html", "indications", "Indications"),
-                              ("deroulement-d-une-seance.html", "deroulement", "Déroulement"), ("qui-suis-je.html", "qui", "Qui suis-je ?"),
-                              ("contact.html", "contact", "Tarifs &amp; contact")] %}
-      <a href="{{ root }}{{ adresse }}"{% if page == cle %} aria-current="{{ 'page' if fichier == adresse else 'true' }}"{% endif %}>{{ nom }}{% if page == cle %}<span class="nav-trait" aria-hidden="true"></span>{% endif %}</a>
+{#- noms modifiables dans le CMS : rubrique « Menu et pied de page » (contenu/menu.yml) #}
+{%- for adresse, cle in [("l-hypnose-c-est-quoi.html", "hypnose"), ("indications.html", "indications"),
+                         ("deroulement-d-une-seance.html", "deroulement"), ("qui-suis-je.html", "qui"), ("contact.html", "contact")] %}
+      <a href="{{ root }}{{ adresse }}"{% if page == cle %} aria-current="{{ 'page' if fichier == adresse else 'true' }}"{% endif %}>{{ navigation.menu[cle]|brut }}{% if page == cle %}<span class="nav-trait" aria-hidden="true"></span>{% endif %}</a>
 {%- endfor %}
     </nav>
     <button class="theme-btn" type="button" aria-pressed="false" title="Mode nuit">{{ icone('lune') }}{{ icone('soleil') }}<span class="sr-only">Mode nuit</span></button>
-    <a class="btn btn-primary btn-sm header-cta" href="{{ root }}contact.html#rendez-vous">Prendre rendez-vous</a>
+    <a class="btn btn-primary btn-sm header-cta" href="{{ root }}contact.html#rendez-vous">{{ navigation.menu.bouton|brut }}</a>
     <button class="burger" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
   </div>
 </header>
+<script>{% include "morceaux/menu.js" %}</script>
 
 <main id="contenu">
 {{ content }}
@@ -78,25 +79,25 @@
         </div>
       </div>
       <div>
-        <p class="foot-title">Cabinet</p>
+        <p class="foot-title">{{ navigation.pied.titre_cabinet|brut }}</p>
         <p>{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p>
         <p><a href="tel:{{ infos.tel }}">{{ infos.telephone }}</a><br><a href="mailto:{{ infos.email }}">{{ infos.email }}</a></p>
         <p>{{ infos.horaires_texte }}, sur rendez-vous</p>
       </div>
       <div>
-        <p class="foot-title">Le site</p>
+        <p class="foot-title">{{ navigation.pied.titre_site|brut }}</p>
         <nav class="foot-links" aria-label="Liens du pied de page">
-          <a href="{{ root }}l-hypnose-c-est-quoi.html">L'hypnose, c'est quoi ?</a>
-          <a href="{{ root }}indications.html">Indications</a>
-          <a href="{{ root }}deroulement-d-une-seance.html">Déroulement d'une séance</a>
-          <a href="{{ root }}qui-suis-je.html">Qui suis-je ?</a>
-          <a href="{{ root }}contact.html">Tarifs &amp; contact</a>
+          <a href="{{ root }}l-hypnose-c-est-quoi.html">{{ navigation.pied.hypnose|brut }}</a>
+          <a href="{{ root }}indications.html">{{ navigation.pied.indications|brut }}</a>
+          <a href="{{ root }}deroulement-d-une-seance.html">{{ navigation.pied.deroulement|brut }}</a>
+          <a href="{{ root }}qui-suis-je.html">{{ navigation.pied.qui|brut }}</a>
+          <a href="{{ root }}contact.html">{{ navigation.pied.contact|brut }}</a>
         </nav>
       </div>
 {%- if themes %}
       <div>
-        <p class="foot-title">Accompagnements</p>
-        <nav class="foot-links" aria-label="Accompagnements">
+        <p class="foot-title">{{ navigation.pied.titre_accompagnements|brut }}</p>
+        <nav class="foot-links" aria-label="{{ navigation.pied.titre_accompagnements|attr }}">
 {%- for x in themes %}
           <a href="{{ root }}{{ x.fichier }}">{{ x.nom|texte }}</a>
 {%- endfor %}
@@ -106,7 +107,7 @@
     </div>
     <div class="foot-bottom">
       <span>© <span data-annee>{{ annee }}</span> Caroline Roulleau</span><script>CR.dater(document.currentScript.previousElementSibling)</script>
-      <a href="{{ root }}mentions-legales.html">Mentions légales et confidentialité</a>
+      <a href="{{ root }}mentions-legales.html">{{ navigation.pied.mentions|brut }}</a>
     </div>
   </div>
 </footer>
