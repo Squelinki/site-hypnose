@@ -186,6 +186,7 @@ content:
         label: Adresse du cabinet
         type: string
         required: true
+        description: "Si le cabinet change d'adresse, le plan dessiné de la page « Plan et accès » disparaît tout seul (il montre le 30 rue de Chaillot) ; la page reste, avec l'adresse et les boutons d'itinéraire."
       - name: code_postal
         label: Code postal
         type: string
@@ -632,7 +633,7 @@ content:
       - name: pied
         label: "Pied de page (en bas de chaque page)"
         type: object
-        description: "À côté du logo, le pied de page a trois colonnes : « Cabinet » (adresse, téléphone, horaires), « Le site » (liens vers les autres pages du menu, avec des noms un peu plus longs) et « Accompagnements » (arrêt du tabac, stress, sommeil…, puis « Tous les accompagnements → », le lien vers la page qui les présente tous). Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
+        description: "À côté du logo, le pied de page a trois colonnes : « Cabinet » (adresse, téléphone, horaires), « Le site » (liens vers les autres pages du menu, avec des noms un peu plus longs, puis la page « Plan et accès ») et « Accompagnements » (arrêt du tabac, stress, sommeil…, puis « Tous les accompagnements → », le lien vers la page qui les présente tous). Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
         fields:
           - name: titre_cabinet
             label: "Titre de la colonne « Cabinet » (adresse, téléphone, horaires)"
@@ -662,6 +663,12 @@ content:
           - name: contact
             label: "Colonne « Le site », 4e lien : page « Tarifs & contact »"
             type: string
+            options:
+              maxlength: 50
+          - name: acces
+            label: "Colonne « Le site », 5e lien : page « Plan et accès »"
+            type: string
+            description: "Ce nom sert aussi de lien vers la page sous l'adresse du cabinet, sur l'accueil et sur la page Tarifs & contact. Les textes de la page se changent dans Textes des pages › Plan et accès."
             options:
               maxlength: 50
           - name: titre_accompagnements
@@ -1000,6 +1007,30 @@ content:
             label: Introduction
             type: text
             description: "{telephone} est remplacé par votre numéro, cliquable."
+
+      - name: acces
+        label: Plan et accès
+        type: file
+        path: contenu/pages/acces.yml
+        fields:
+          - name: seo_titre
+            component: seo_titre
+            default: "Plan et accès au cabinet | Hypnose à Paris 16e"
+          - name: seo_description
+            component: seo_description
+            description: "Laissez vide : la description est composée automatiquement avec l'adresse et l'accès (métro)."
+          - name: surtitre
+            label: Surtitre
+            type: string
+            default: "Venir au cabinet"
+          - name: titre
+            component: titre
+            default: "Plan *et accès*"
+          - name: introduction
+            label: Introduction
+            type: text
+            default: "Le cabinet se trouve au coin de l'avenue Marceau, juste à côté de l'église Saint-Pierre-de-Chaillot."
+            description: "La phrase sous le titre. En dessous, tout s'affiche seul : l'adresse et les horaires (rubrique Coordonnées, horaires et tarifs), les boutons d'itinéraire, le plan du quartier et les stations. Une case vide reprend le texte d'origine."
 
       - name: mentions
         label: Mentions légales (référencement)
