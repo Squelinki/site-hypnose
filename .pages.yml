@@ -406,7 +406,7 @@ content:
         label: Nom court
         type: string
         required: true
-        description: "Ex. : Sommeil. Il apparaît dans les cartes de la page Indications, le pied de page et le fil d'Ariane."
+        description: "Ex. : Sommeil. Il apparaît dans les cartes de la page Accompagnements, le pied de page et le fil d'Ariane."
       - name: adresse
         label: Adresse de la page (sans .html)
         type: string
@@ -442,7 +442,7 @@ content:
             - name: aucune
               label: Pas de dessin
       - name: resume
-        label: Résumé (cartes de la page Indications)
+        label: Résumé (cartes de la page Accompagnements)
         type: text
       - name: seo_titre
         component: seo_titre
@@ -603,9 +603,9 @@ content:
             options:
               maxlength: 30
           - name: indications
-            label: "2e lien : page « Indications » (stress, tabac, sommeil…)"
+            label: "2e lien : page « Accompagnements » (stress, tabac, sommeil…)"
             type: string
-            description: "Pour la renommer partout (ex. « Accompagnements »), changez aussi : le 2e lien de la colonne « Le site » du pied de page (plus bas) ; Textes des pages › Accueil › Bloc « Indications » (Surtitre et Lien en bas du bloc) ; Textes des pages › Indications (Surtitre, Titre dans Google, Lien vers cette page en bas de chaque page thématique)."
+            description: "Le nom de la page qui présente tous les accompagnements (son adresse reste indications.html). Il apparaît aussi dans le fil d'Ariane en haut des pages thématiques. Les autres textes de cette page se changent dans Textes des pages › Accompagnements, ceux de l'accueil dans Textes des pages › Accueil › Bloc « Accompagnements »."
             options:
               maxlength: 30
           - name: deroulement
@@ -632,7 +632,7 @@ content:
       - name: pied
         label: "Pied de page (en bas de chaque page)"
         type: object
-        description: "À côté du logo, le pied de page a trois colonnes : « Cabinet » (adresse, téléphone, horaires), « Le site » (liens vers les 5 pages du menu, avec des noms un peu plus longs) et « Accompagnements » (liste des pages thématiques : arrêt du tabac, stress, sommeil…). Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
+        description: "À côté du logo, le pied de page a trois colonnes : « Cabinet » (adresse, téléphone, horaires), « Le site » (liens vers les autres pages du menu, avec des noms un peu plus longs) et « Accompagnements » (arrêt du tabac, stress, sommeil…, puis « Tous les accompagnements → », le lien vers la page qui les présente tous). Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
         fields:
           - name: titre_cabinet
             label: "Titre de la colonne « Cabinet » (adresse, téléphone, horaires)"
@@ -640,7 +640,7 @@ content:
             options:
               maxlength: 40
           - name: titre_site
-            label: "Titre de la colonne « Le site » (liens vers les 5 pages du menu)"
+            label: "Titre de la colonne « Le site » (liens vers les autres pages du menu)"
             type: string
             options:
               maxlength: 40
@@ -649,31 +649,25 @@ content:
             type: string
             options:
               maxlength: 50
-          - name: indications
-            label: "Colonne « Le site », 2e lien : page « Indications » (stress, tabac, sommeil…)"
-            type: string
-            description: "Le même lien que le 2e du menu du haut, mais en bas de page. Si vous l'avez renommé dans le menu, mettez le même nom ici."
-            options:
-              maxlength: 50
           - name: deroulement
-            label: "Colonne « Le site », 3e lien : page « Déroulement d'une séance »"
+            label: "Colonne « Le site », 2e lien : page « Déroulement d'une séance »"
             type: string
             options:
               maxlength: 50
           - name: qui
-            label: "Colonne « Le site », 4e lien : page « Qui suis-je ? »"
+            label: "Colonne « Le site », 3e lien : page « Qui suis-je ? »"
             type: string
             options:
               maxlength: 50
           - name: contact
-            label: "Colonne « Le site », 5e lien : page « Tarifs & contact »"
+            label: "Colonne « Le site », 4e lien : page « Tarifs & contact »"
             type: string
             options:
               maxlength: 50
           - name: titre_accompagnements
-            label: "Titre de la dernière colonne (liste des pages thématiques)"
+            label: "Titre de la colonne « Accompagnements »"
             type: string
-            description: "Par défaut « Accompagnements ». Ce n'est pas un lien vers la page Indications : c'est le titre de la liste « Arrêter de fumer, Stress, Sommeil… », dont les noms viennent des pages thématiques (rubrique « Pages thématiques », champ « Nom court »). Si la page Indications s'appelle elle aussi « Accompagnements », vous pouvez donner un autre titre à cette colonne (ex. « Thèmes » ou « En savoir plus »)."
+            description: "Par défaut « Accompagnements ». La colonne liste les pages thématiques (leurs noms se changent dans Pages thématiques › Nom court), puis le lien « Tous les accompagnements → » vers la page qui les présente tous (son texte se change dans Textes des pages › Accompagnements › Lien vers cette page)."
             options:
               maxlength: 40
           - name: mentions
@@ -724,9 +718,9 @@ content:
               - name: texte
                 component: paragraphes
           - name: indications
-            label: Bloc « Indications »
+            label: Bloc « Accompagnements »
             type: object
-            description: "Les cinq cartes reprennent les « résumés » de la page Indications."
+            description: "Les cinq cartes reprennent les « résumés » de la page Accompagnements."
             fields:
               - name: surtitre
                 label: Surtitre
@@ -737,10 +731,10 @@ content:
                 label: Texte
                 type: text
               - name: lien
-                label: "Lien en bas du bloc (vers la page Indications)"
+                label: "Lien en bas du bloc (vers la page Accompagnements)"
                 type: string
-                default: "Voir toutes les indications"
-                description: "Case vide = « Voir toutes les indications »."
+                default: "Voir tous les accompagnements"
+                description: "Case vide = « Voir tous les accompagnements »."
                 options:
                   maxlength: 50
           - name: hypnose
@@ -840,7 +834,7 @@ content:
                 type: text
 
       - name: indications
-        label: Indications
+        label: Accompagnements
         type: file
         path: contenu/pages/indications.yml
         fields:
@@ -887,7 +881,7 @@ content:
                 label: Résumé (carte de la page d'accueil)
                 type: text
               - name: liste
-                label: Liste (page Indications)
+                label: Liste (page Accompagnements)
                 type: string
                 list: true
           - name: encadre_titre
@@ -897,10 +891,10 @@ content:
             label: Dernière carte (texte)
             type: text
           - name: lien_themes
-            label: "Lien vers cette page, en bas de chaque page thématique"
+            label: "Lien vers cette page (bas des pages thématiques et pied de page)"
             type: string
-            default: "Toutes les indications"
-            description: "Dernière pastille de « Autres accompagnements », en bas des pages Arrêt du tabac, Stress, Sommeil… Case vide = « Toutes les indications »."
+            default: "Tous les accompagnements"
+            description: "Dernière pastille de « Autres accompagnements », en bas des pages Arrêt du tabac, Stress, Sommeil…, et dernier lien de la colonne « Accompagnements » du pied de page. Case vide = « Tous les accompagnements »."
             options:
               maxlength: 50
 
