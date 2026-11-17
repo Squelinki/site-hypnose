@@ -1,17 +1,17 @@
 menu:
-  hypnose: "L'hypnose"
-  indications: "Indications"
-  deroulement: "Déroulement"
-  qui: "Qui suis-je ?"
-  contact: "Tarifs & contact"
-  bouton: "Prendre rendez-vous"
+  hypnose: L'hypnose
+  indications: Accompagnements
+  deroulement: Déroulement
+  qui: Qui suis-je ?
+  contact: Tarifs & contact
+  bouton: Prendre rendez-vous
 pied:
-  titre_cabinet: "Cabinet"
-  titre_site: "Le site"
-  hypnose: "L'hypnose, c'est quoi ?"
-  indications: "Indications"
-  deroulement: "Déroulement d'une séance"
-  qui: "Qui suis-je ?"
-  contact: "Tarifs & contact"
-  titre_accompagnements: "Accompagnements"
-  mentions: "Mentions légales et confidentialité"
+  titre_cabinet: Cabinet
+  titre_site: Le site
+  hypnose: L'hypnose, c'est quoi ?
+  indications: Indications
+  deroulement: Déroulement d'une séance
+  qui: Qui suis-je ?
+  contact: Tarifs & contact
+  titre_accompagnements: Accompagnements
+  mentions: Mentions légales et confidentialité
