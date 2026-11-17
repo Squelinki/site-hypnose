@@ -1,0 +1,38 @@
+{%- set c = pages.acces -%}
+<!-- ============ PLAN ET ACCÈS (textes : CMS « Textes des pages › Plan et accès » ; plan dessiné : morceaux/plan.html) ============ -->
+<section class="page-hero" aria-labelledby="titre">
+  <div class="wrap">
+    <h1 id="titre"><span class="eyebrow">{{ c.surtitre|texte }}</span> {{ c.titre|titre }}</h1>
+    <p class="lead">{{ c.introduction|texte }}</p>
+  </div>
+</section>
+
+<section class="sec sec--creme plan" id="plan" aria-label="Adresse, plan du quartier et transports">
+  <div class="wrap">
+    <div class="plan-grid{{ ' plan-grid--sans-carte' if not plan }}">
+      <div class="plan-adresse">
+        <p class="info-k">Adresse du cabinet</p>
+        <p class="plan-adresse-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p>
+        <p class="small">{{ infos.horaires_texte }}, sur rendez-vous uniquement</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="{{ infos.plan_google }}" target="_blank" rel="noopener">Itinéraire (Google Maps)<span class="sr-only"> (nouvel onglet)</span></a>
+          <a class="btn btn-ghost" href="https://maps.apple.com/?q={{ (infos.adresse ~ ', ' ~ infos.code_postal ~ ' ' ~ infos.ville)|urlencode }}" target="_blank" rel="noopener">Plans (iPhone)<span class="sr-only"> (nouvel onglet)</span></a>
+        </div>
+      </div>
+{%- if plan %}
+{% include "morceaux/plan.html" %}
+{%- elif infos.acces or infos.acces_detail %}
+      <div class="plan-texte">
+        <h2 class="plan-titre">Transports</h2>
+{%- if infos.acces %}
+        <p>{{ infos.acces|texte }}</p>
+{%- endif %}
+{%- if infos.acces_detail %}
+        <p class="small">{{ infos.acces_detail|texte }}</p>
+{%- endif %}
+      </div>
+{%- endif %}
+    </div>
+  </div>
+</section>
+{% include "morceaux/cta.html" %}

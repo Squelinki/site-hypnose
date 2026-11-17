@@ -42,7 +42,7 @@ ICONES = {"soleil", "feuille", "fleches", "montagne", "etoile"}
 ILLUSTRATIONS = {"tabac", "sommeil", "stress", "poids", "phobies", "aucune"}
 # Pages du site qu'une page thématique ne doit pas remplacer
 RESERVEES = {"index", "l-hypnose-c-est-quoi", "indications", "deroulement-d-une-seance", "qui-suis-je", "contact",
-             "mentions-legales", "404", "sitemap", "robots", "favicon"}
+             "plan-et-acces", "mentions-legales", "404", "sitemap", "robots", "favicon"}
 
 
 class Erreur(Exception):
@@ -577,7 +577,7 @@ NAVIGATION = {   # noms d'origine du menu et du pied de page (rubrique « Menu e
              "qui": "Qui suis-je ?", "contact": "Tarifs & contact", "bouton": "Prendre rendez-vous"},
     "pied": {"titre_cabinet": "Cabinet", "titre_site": "Le site",
              "hypnose": "L'hypnose, c'est quoi ?", "deroulement": "Déroulement d'une séance",
-             "qui": "Qui suis-je ?", "contact": "Tarifs & contact",
+             "qui": "Qui suis-je ?", "contact": "Tarifs & contact", "acces": "Plan et accès",
              "titre_accompagnements": "Accompagnements", "mentions": "Mentions légales et confidentialité"},
 }
 
@@ -605,14 +605,39 @@ def plan_disponible(infos):
     adresse = re.sub(r"[^a-z0-9]+", " ", sans_accents(chaine(infos.get("adresse"))).lower()).strip()
     ok = re.match(r"30 (bis |ter )?rue (de )?chaillot\b", adresse) is not None   # « 30, rue de Chaillot », « 30 rue Chaillot »…
     if not ok:
-        print("  Plan d'accès masqué : l'adresse du cabinet a changé (le plan dessiné montre le 30 rue de Chaillot).")
+        print("  Plan dessiné masqué sur la page « Plan et accès » : l'adresse du cabinet a changé "
+              "(le plan montre le 30 rue de Chaillot). La page garde l'adresse, l'accès et les boutons d'itinéraire.")
     return ok
+
+
+ACCES = {   # textes d'origine de la page « Plan et accès » (CMS : Textes des pages › Plan et accès ; case vide = ce texte)
+    "seo_titre": "Plan et accès au cabinet | Hypnose à Paris 16e",
+    "surtitre": "Venir au cabinet",
+    "titre": "Plan *et accès*",
+    "introduction": "Le cabinet se trouve au coin de l'avenue Marceau, juste à côté de l'église Saint-Pierre-de-Chaillot.",
+}
+
+
+def preparer_acces(d, infos, plan):
+    """Page « Plan et accès ». Son fichier (contenu/pages/acces.yml) n'existe qu'après un premier enregistrement
+    dans le CMS : en attendant, la page prend les textes d'origine ci-dessus."""
+    d = d if isinstance(d, dict) else {}
+    page = {cle: chaine(d.get(cle)).strip() or defaut for cle, defaut in ACCES.items()}
+    if not plan and not chaine(d.get("introduction")).strip():   # le cabinet a déménagé : pas de « coin de l'avenue Marceau »
+        page["introduction"] = "L'adresse du cabinet, les transports et l'itinéraire pour venir."
+    adresse = " ".join(f"{chaine(infos.get('adresse')).strip()}, {chaine(infos.get('code_postal')).strip()} "
+                       f"{chaine(infos.get('ville')).strip()}".split())
+    acces = chaine(infos.get("acces")).strip().rstrip(".")
+    page["seo_description"] = chaine(d.get("seo_description")).strip() or (
+        f"Venir au cabinet d'hypnose de Caroline Roulleau : {adresse}." + (f" {acces}." if acces else "")
+        + (" Plan et itinéraire." if plan else " Itinéraire."))
+    return page
 
 
 # ---------------------------------------------------------------------------
 # Données structurées pour Google (JSON-LD)
 # ---------------------------------------------------------------------------
-def donnees_google(infos, qui, themes=(), noms=None):
+def donnees_google(infos, qui, themes=(), noms=None, plan=False):
     biz, pers, web = SITE_URL + "/#cabinet", SITE_URL + "/#caroline-roulleau", SITE_URL + "/#site"
     photo = SITE_URL + "/assets/img/caroline-roulleau.jpg"
     reseaux = [infos.get(k) for k in ("instagram", "facebook") if infos.get(k)]
@@ -634,6 +659,8 @@ def donnees_google(infos, qui, themes=(), noms=None):
         "founder": {"@id": pers},
         "sameAs": reseaux + ([chaine(infos["fiche_google"]).strip()] if infos.get("fiche_google") else []),
     }
+    if plan:   # le plan dessiné du quartier (page « Plan et accès »)
+        cabinet["hasMap"] = SITE_URL + "/plan-et-acces.html"
     caroline = {
         "@type": "Person", "@id": pers, "name": "Caroline Roulleau",
         "jobTitle": chaine(qui.get("metier")).strip(),
@@ -660,6 +687,7 @@ def donnees_google(infos, qui, themes=(), noms=None):
         "deroulement-d-une-seance.html": [fil("deroulement-d-une-seance.html", pied["deroulement"])],
         "qui-suis-je.html": [caroline, fil("qui-suis-je.html", pied["qui"])],
         "contact.html": [cabinet, caroline, fil("contact.html", pied["contact"])],
+        "plan-et-acces.html": [cabinet, fil("plan-et-acces.html", pied["acces"])],
         "mentions-legales.html": [fil("mentions-legales.html", "Mentions légales")],
     }
     for t in themes:   # pages thématiques : fil d'Ariane Accueil › Accompagnements › page, et le service proposé
@@ -688,6 +716,7 @@ PAGES = [  # (fichier publié, modèle, clé de menu, fichier de contenu)
     ("deroulement-d-une-seance.html", "deroulement.html", "deroulement", "deroulement"),
     ("qui-suis-je.html", "qui-suis-je.html", "qui", "qui-suis-je"),
     ("contact.html", "contact.html", "contact", "contact"),
+    ("plan-et-acces.html", "acces.html", "acces", "acces"),
     ("mentions-legales.html", "mentions-legales.html", "mentions", "mentions-legales"),
     ("404.html", "404.html", "404", None),
 ]
@@ -733,7 +762,9 @@ def construire():
     optimiser_medias()
 
     infos = preparer_infos(lire("infos-pratiques.yml"))
-    pages = {cle: lire(f"pages/{fichier}.yml") for _, _, cle, fichier in PAGES if fichier}
+    carte = plan_disponible(infos)   # plan dessiné du quartier (page « Plan et accès »)
+    pages = {cle: lire(f"pages/{fichier}.yml", facultatif=(cle == "acces")) for _, _, cle, fichier in PAGES if fichier}
+    pages["acces"] = preparer_acces(pages["acces"], infos, carte)
     annonces, decorations = preparer_annonces(lire("annonces.yml"))
     themes = preparer_themes(infos)
     vrai_faux = preparer_vrai_faux()
@@ -742,10 +773,10 @@ def construire():
         "infos": infos, "pages": pages, "annonces": annonces, "decorations": decorations, "conseils_avent": preparer_avent(annonces),
         "avis": preparer_avis(lire("avis.yml")), "faq": preparer_faq() if not vrai_faux else {"questions": []},
         "vrai_faux": vrai_faux, "lectures": preparer_lectures(lire("lectures.yml")),
-        "themes": themes, "surprise": preparer_surprise(), "bon_cadeau": preparer_bon_cadeau(), "plan": plan_disponible(infos),
+        "themes": themes, "surprise": preparer_surprise(), "bon_cadeau": preparer_bon_cadeau(), "plan": carte,
         "navigation": navigation, "site_url": SITE_URL, "annee": ANNEE,
     }
-    ld = donnees_google(infos, pages["qui"], themes, navigation)
+    ld = donnees_google(infos, pages["qui"], themes, navigation, carte)
 
     # --strict (pour les tests) : toute variable inconnue dans un modèle arrête la construction
     options = {"undefined": StrictUndefined} if "--strict" in sys.argv else {}
@@ -782,6 +813,7 @@ def construire():
             sources = ["modeles/base.html", f"modeles/{modele}", "contenu/infos-pratiques.yml"]
             sources += [f"contenu/pages/{source}.yml"] if source else []
             sources += [theme["source"]] if theme else []
+            sources += ["modeles/morceaux/plan.html"] if cle == "acces" else []
             sources += ["contenu", "modeles"] if fichier == "index.html" else []
             plan.append((fichier, derniere_modif(sources)))
 

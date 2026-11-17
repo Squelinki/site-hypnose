@@ -15,9 +15,9 @@
         <div>
           <p class="info-k">Adresse</p>
           <p class="info-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p>
-          <p class="small"><a href="{{ infos.plan_osm }}" target="_blank" rel="noopener">Voir sur le plan</a> · <a href="{{ infos.plan_google }}" target="_blank" rel="noopener">Itinéraire</a></p>
+          <p class="small"><a href="plan-et-acces.html">{{ navigation.pied.acces|brut }}</a> · <a href="{{ infos.plan_google }}" target="_blank" rel="noopener">Itinéraire</a></p>
         </div>
-        <div>
+        <div id="acces">
           <p class="info-k">Accès</p>
           <p class="info-v">{{ infos.acces|texte }}</p>
 {%- if infos.acces_detail %}
@@ -70,7 +70,3 @@
     </form>
   </div>
 </section>
-{%- if plan %}
-
-{% include "morceaux/plan.html" %}
-{%- endif %}

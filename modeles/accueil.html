@@ -208,7 +208,7 @@
     <p class="lead2">{{ c.contact.texte|texte }}</p>
     <div class="contact-grid">
       <div class="infos">
-        <div><p class="info-k">Adresse</p><p class="info-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p><p class="small">{{ infos.acces|texte }}</p></div>
+        <div><p class="info-k">Adresse</p><p class="info-v">{{ infos.adresse|texte }}<br>{{ infos.code_postal }} {{ infos.ville|texte }}</p><p class="small">{{ infos.acces|texte }}</p><p class="small"><a href="plan-et-acces.html">{{ navigation.pied.acces|brut }}</a></p></div>
         <div><p class="info-k">Horaires</p><p class="info-v">{{ infos.horaires_texte }}<br>Sur rendez-vous uniquement</p></div>
         <div><p class="info-k">Tarifs</p><p class="info-v">{% for t in infos.tarifs %}{{ t.intitule_court|texte }} : {{ t.prix_texte }}{{ '<br>' if not loop.last }}{% endfor %}</p>{% if infos.duree_seance %}<p class="small">{{ infos.duree_seance|texte }}</p>{% endif %}</div>
         <div><p class="info-k">Paiement</p><p class="info-v">{{ infos.paiement|texte }}</p>{% if infos.paiement_precision %}<p class="small">{{ infos.paiement_precision|texte }}</p>{% endif %}</div>

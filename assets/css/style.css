@@ -1180,9 +1180,22 @@ html:not(.js) :is(.vf-choix, .vf-retour, .vf-bilan) { display: none; }
   .theme-carte-plus { padding-top: 8px; }
 }
 
-/* Plan d'accès dessiné (page Tarifs & contact) : couleurs dans la section 1, survol de la liste = station mise en avant */
-.plan-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); gap: 48px; align-items: center; margin-top: 36px; }
-.plan-cadre { border-radius: var(--arrondi); overflow: hidden; background: var(--plan-fond); box-shadow: 0 30px 50px -34px rgba(47,43,38,.5); }
+/* Page « Plan et accès » : adresse, plan dessiné du quartier (couleurs dans la section 1) et transports à proximité ;
+   survol de la liste = station mise en avant. Ordinateur : le plan à gauche ; l'adresse puis les transports à droite,
+   centrés en hauteur. Tablette et téléphone : l'adresse, puis le plan, puis les transports. */
+.plan-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr); grid-template-rows: 1fr auto auto 1fr;
+  grid-template-areas: "carte ." "carte adresse" "carte transports" "carte ."; column-gap: 48px; }
+.plan-cadre { grid-area: carte; align-self: center; border-radius: var(--arrondi); overflow: hidden; background: var(--plan-fond); box-shadow: 0 30px 50px -34px rgba(47,43,38,.5); }
+.plan-adresse { grid-area: adresse; margin-bottom: 30px; padding: 26px 28px; border-radius: var(--arrondi); background: var(--lin); }
+.plan-texte { grid-area: transports; }
+.plan-adresse .info-k { margin-bottom: 8px; }
+.plan-adresse-v { font-family: var(--police-titres); font-size: 25px; line-height: 1.3; margin-bottom: 6px; }
+.plan-adresse .small { margin-top: 0; }
+.plan-adresse .actions { margin-top: 20px; gap: 10px; }
+.plan-adresse .btn { flex: 1 1 auto; }
+.plan-titre { font-size: 24px; margin-bottom: 14px; }
+.plan-grid--sans-carte { grid-template-rows: auto; grid-template-areas: "adresse transports"; align-items: start; }
+.plan-grid--sans-carte .plan-adresse { margin-bottom: 0; }
 .plan-svg { display: block; width: 100%; height: auto; font-family: var(--police-texte); }
 .p-fond { fill: var(--plan-fond); }
 .p-vert { fill: var(--plan-vert); }
@@ -1231,7 +1244,7 @@ html:not(.js) :is(.vf-choix, .vf-retour, .vf-bilan) { display: none; }
 .p-echelle path { fill: none; stroke: var(--plan-texte); stroke-width: 1.5; }
 .p-echelle text { font-size: 9px; fill: var(--plan-texte); }
 .plan-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.plan-liste li { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; background: var(--creme); border: 1px solid transparent; transition: border-color .2s ease; }
+.plan-liste li { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; background: var(--lin); border: 1px solid transparent; transition: border-color .2s ease; }
 .plan-liste li:hover, .plan-liste li.actif { border-color: var(--sauge); }
 .pl-pictos { display: flex; align-items: center; gap: 4px; }
 .pl-mode, .pl-ligne { display: inline-grid; place-items: center; height: 22px; min-width: 22px; border-radius: 11px; font-size: 12px; font-weight: 700; line-height: 1; }
@@ -1244,18 +1257,23 @@ html:not(.js) :is(.vf-choix, .vf-retour, .vf-bilan) { display: none; }
 .pl-temps { font-family: var(--police-titres); font-size: 18px; color: var(--sauge-profonde); white-space: nowrap; }
 .plan-note { display: flex; align-items: center; gap: 8px; margin-top: 14px; }
 .plan-note svg { width: 18px; height: 18px; flex: none; }
-.plan-actions { margin-top: 24px; }
 @media (prefers-reduced-motion: no-preference) {
   .p-onde { transform-box: fill-box; transform-origin: center; animation: onde 2.6s ease-out infinite; }
   @keyframes onde { from { transform: scale(.6); opacity: .5; } to { transform: scale(3.4); opacity: 0; } }
 }
 @media (max-width: 1120px) {
-  .plan-grid { gap: 36px; }
+  .plan-grid { column-gap: 36px; }
   .plan-liste li { gap: 10px; }
 }
 @media (max-width: 900px) {
-  .plan-grid { grid-template-columns: 1fr; gap: 24px; margin-top: 26px; }
-  .plan-cadre { margin: 0 -22px; border-radius: 0; box-shadow: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .plan-grid, .plan-grid--sans-carte { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: "adresse" "carte" "transports"; row-gap: 26px; }
+  .plan-grid--sans-carte { grid-template-areas: "adresse" "transports"; }
+  .plan-adresse { margin-bottom: 0; padding: 22px 22px 24px; }
+  .plan-adresse-v { font-size: 23px; }
+  .plan-cadre { justify-self: center; width: 100%; max-width: 560px; }   /* tablette : le plan entier, centré */
+}
+@media (max-width: 560px) {   /* téléphone : le plan d'un bord à l'autre, qui défile de côté */
+  .plan-cadre { justify-self: stretch; width: auto; max-width: none; margin: 0 -22px; border-radius: 0; box-shadow: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
   .plan-cadre::-webkit-scrollbar { display: none; }
   .plan-svg { width: 560px; max-width: none; }
 }
