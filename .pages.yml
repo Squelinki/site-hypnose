@@ -152,7 +152,7 @@ content:
               - name: dos
                 label: Texte au dos de l'image (petit jeu)
                 type: string
-                description: "L'image se retourne comme un badge de récompense (clic, ou glissé du doigt). Au dos : « Badge débloqué », le nom et la date pris dans le surtitre, puis ce texte. Laissez vide pour « Bravo, vous avez trouvé la face cachée ! ». {annee} = l'année en cours."
+                description: "L'image se retourne comme un badge de récompense (clic, ou glissé du doigt). Au dos : « Badge débloqué », le nom et la date pris dans le surtitre, puis ce texte. Laissez vide pour la phrase prévue pour chaque occasion (ex. Pâques : « Bravo, vous avez trouvé l'œuf caché ! » ; Mois sans tabac : « Un jour après l'autre, vous allez y arriver ! »). Pour une annonce que vous créez vous-même : « Bravo, vous avez trouvé la face cachée ! ». {annee} = l'année en cours."
               - name: bouton
                 label: Texte du bouton
                 type: string
@@ -163,6 +163,10 @@ content:
               - name: bouton_telephone
                 label: Ajouter un bouton « téléphone »
                 type: boolean
+              - name: bouton_cadeau
+                label: Proposer d'offrir une séance (bon cadeau)
+                type: boolean
+                description: "Ajoute sous les boutons la ligne « Envie d'offrir une séance ? » (texte réglé dans la rubrique Bon cadeau). Son lien ouvre le formulaire de contact avec le message déjà préparé. Idéal pour les fêtes, la Saint-Valentin ou la fête des mères."
 
   - name: infos
     label: Coordonnées, horaires et tarifs
@@ -321,27 +325,179 @@ content:
             options:
               format: yyyy-MM-dd
 
-  - name: faq
-    label: Questions fréquentes
+  - name: vrai_faux
+    label: "Vrai ou faux ? (page d'accueil)"
     type: file
-    path: contenu/faq.yml
+    path: contenu/vrai-ou-faux.yml
     fields:
-      - name: questions
-        label: Questions (la première est ouverte par défaut)
+      - name: titre
+        component: titre
+        required: true
+      - name: introduction
+        label: Introduction
+        type: text
+      - name: affirmations
+        label: "Affirmations (une carte chacune : on choisit Vrai ou Faux, la carte se retourne)"
         type: object
         list:
           collapsible:
             collapsed: true
-            summary: "{question}"
+            summary: "{affirmation} → {reponse}"
         fields:
-          - name: question
-            label: Question
+          - name: affirmation
+            label: Affirmation
             type: string
             required: true
+            description: "Une phrase courte, à laquelle on répond par vrai ou faux. Ex. : Pendant une séance d'hypnose, on dort."
           - name: reponse
-            label: Réponse
-            type: text
+            label: Bonne réponse
+            type: select
             required: true
+            options:
+              values:
+                - name: vrai
+                  label: Vrai
+                - name: faux
+                  label: Faux
+          - name: explication
+            label: Explication (au dos de la carte)
+            type: text
+            description: "Deux ou trois phrases au plus. Pensez à la mettre à jour si les tarifs, le paiement ou le remboursement changent."
+
+  - name: themes
+    label: "Pages thématiques (arrêt du tabac, sommeil, stress…)"
+    type: collection
+    path: contenu/themes
+    format: yaml
+    filename: "{primary}.yml"
+    view:
+      primary: titre_court
+      fields: [titre_court, adresse, ordre]
+    fields:
+      - name: titre_court
+        label: Nom court
+        type: string
+        required: true
+        description: "Ex. : Sommeil. Il apparaît dans les cartes de la page Indications, le pied de page et le fil d'Ariane."
+      - name: adresse
+        label: Adresse de la page (sans .html)
+        type: string
+        required: true
+        pattern:
+          regex: '^[a-z0-9]+(-[a-z0-9]+)*$'
+          message: "Lettres minuscules sans accents, chiffres et tirets seulement (ex. hypnose-sommeil)"
+        description: "Ex. : hypnose-sommeil donne hypnose-roulleau.fr/hypnose-sommeil.html. Ne la changez plus une fois la page publiée (Google la connaît)."
+      - name: publier
+        label: Publiée
+        type: boolean
+        default: true
+        description: "Décochez pour retirer la page du site sans l'effacer."
+      - name: ordre
+        label: Ordre d'affichage
+        type: number
+        description: "1 = en premier."
+      - name: illustration
+        label: Dessin
+        type: select
+        options:
+          values:
+            - name: tabac
+              label: Cigarette cassée d'où sort une pousse
+            - name: sommeil
+              label: Lune, étoiles et nuage
+            - name: stress
+              label: Galets en équilibre au bord de l'eau
+            - name: poids
+              label: Pomme
+            - name: phobies
+              label: Oiseau qui sort de sa cage
+            - name: aucune
+              label: Pas de dessin
+      - name: resume
+        label: Résumé (cartes de la page Indications)
+        type: text
+      - name: seo_titre
+        component: seo_titre
+      - name: seo_description
+        component: seo_description
+      - name: surtitre
+        label: Surtitre
+        type: string
+      - name: titre
+        component: titre
+        required: true
+      - name: introduction
+        label: Introduction
+        type: text
+        required: true
+      - name: sections
+        label: Paragraphes
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: "{titre}"
+        fields:
+          - name: titre
+            label: Intertitre
+            type: string
+          - name: texte
+            component: paragraphes
+      - name: tarif
+        label: Tarif affiché (mot-clé)
+        type: string
+        description: "Un mot de l'intitulé du tarif à afficher dans « Infos pratiques » (ex. tabac). Vide = le premier tarif."
+      - name: exercice_respiration
+        label: Lien vers l'exercice de respiration
+        type: boolean
+      - name: calculateur_tabac
+        label: Calculateur « Combien vous coûte la cigarette ? »
+        type: boolean
+      - name: prix_paquet
+        label: Prix moyen d'un paquet de 20 (calculateur)
+        type: number
+        description: "En euros, ex. 12.5. À mettre à jour de temps en temps (le visiteur peut aussi le changer)."
+
+  - name: surprise
+    label: Surprise cachée (pendule)
+    type: file
+    path: contenu/surprise.yml
+    fields:
+      - name: active
+        label: Activée
+        type: boolean
+        description: "Le pendule apparaît quand on clique 5 fois de suite sur le logo du pied de page, ou quand on tape « hypnose » au clavier."
+      - name: titre
+        label: Titre
+        type: string
+      - name: message
+        label: Phrases (une par ligne, elles apparaissent l'une après l'autre)
+        type: text
+      - name: bouton
+        label: Texte du bouton
+        type: string
+      - name: reveil
+        label: Phrase du réveil
+        type: string
+
+  - name: bon_cadeau
+    label: Bon cadeau
+    type: file
+    path: contenu/bon-cadeau.yml
+    fields:
+      - name: actif
+        label: Afficher la mention « bon cadeau »
+        type: boolean
+        description: "Une ligne discrète sous les tarifs (page Tarifs & contact)."
+      - name: texte
+        label: Phrase
+        type: text
+      - name: lien
+        label: Texte du lien
+        type: string
+      - name: message
+        label: Début de message proposé dans le formulaire
+        type: text
 
   - name: avent
     label: Calendrier de l'Avent
