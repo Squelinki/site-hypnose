@@ -488,7 +488,7 @@ def nombre(v, defaut, ou):
 
 
 def preparer_themes(infos):
-    """Pages thématiques (dossier contenu/themes/, une page par fichier), rangées sous « Indications »."""
+    """Pages thématiques (dossier contenu/themes/, une page par fichier), rangées sous la page Accompagnements (indications.html)."""
     dossier = ICI / "contenu" / "themes"
     if not dossier.is_dir():
         return []
@@ -573,10 +573,10 @@ def preparer_surprise():
 
 
 NAVIGATION = {   # noms d'origine du menu et du pied de page (rubrique « Menu et pied de page » du CMS ; case vide = ce nom)
-    "menu": {"hypnose": "L'hypnose", "indications": "Indications", "deroulement": "Déroulement",
+    "menu": {"hypnose": "L'hypnose", "indications": "Accompagnements", "deroulement": "Déroulement",
              "qui": "Qui suis-je ?", "contact": "Tarifs & contact", "bouton": "Prendre rendez-vous"},
     "pied": {"titre_cabinet": "Cabinet", "titre_site": "Le site",
-             "hypnose": "L'hypnose, c'est quoi ?", "indications": "Indications", "deroulement": "Déroulement d'une séance",
+             "hypnose": "L'hypnose, c'est quoi ?", "deroulement": "Déroulement d'une séance",
              "qui": "Qui suis-je ?", "contact": "Tarifs & contact",
              "titre_accompagnements": "Accompagnements", "mentions": "Mentions légales et confidentialité"},
 }
@@ -656,13 +656,13 @@ def donnees_google(infos, qui, themes=(), noms=None):
     graphes = {
         "index.html": [site, cabinet, caroline],
         "l-hypnose-c-est-quoi.html": [fil("l-hypnose-c-est-quoi.html", pied["hypnose"])],
-        "indications.html": [fil("indications.html", pied["indications"])],
+        "indications.html": [fil("indications.html", noms["menu"]["indications"])],
         "deroulement-d-une-seance.html": [fil("deroulement-d-une-seance.html", pied["deroulement"])],
         "qui-suis-je.html": [caroline, fil("qui-suis-je.html", pied["qui"])],
         "contact.html": [cabinet, caroline, fil("contact.html", pied["contact"])],
         "mentions-legales.html": [fil("mentions-legales.html", "Mentions légales")],
     }
-    for t in themes:   # pages thématiques : fil d'Ariane Accueil › Indications › page, et le service proposé
+    for t in themes:   # pages thématiques : fil d'Ariane Accueil › Accompagnements › page, et le service proposé
         adresse = f"{SITE_URL}/{t['fichier']}"
         service = {"@type": "Service", "name": chaine(t.get("surtitre")).strip() or t["nom"], "serviceType": "Hypnothérapie",
                    "url": adresse, "provider": {"@id": biz}, "areaServed": {"@type": "City", "name": "Paris"}}

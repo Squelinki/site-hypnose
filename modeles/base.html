@@ -88,7 +88,9 @@
         <p class="foot-title">{{ navigation.pied.titre_site|brut }}</p>
         <nav class="foot-links" aria-label="Liens du pied de page">
           <a href="{{ root }}l-hypnose-c-est-quoi.html">{{ navigation.pied.hypnose|brut }}</a>
-          <a href="{{ root }}indications.html">{{ navigation.pied.indications|brut }}</a>
+{%- if not themes %}
+          <a href="{{ root }}indications.html">{{ navigation.menu.indications|brut }}</a>
+{%- endif %}
           <a href="{{ root }}deroulement-d-une-seance.html">{{ navigation.pied.deroulement|brut }}</a>
           <a href="{{ root }}qui-suis-je.html">{{ navigation.pied.qui|brut }}</a>
           <a href="{{ root }}contact.html">{{ navigation.pied.contact|brut }}</a>
@@ -101,6 +103,8 @@
 {%- for x in themes %}
           <a href="{{ root }}{{ x.fichier }}">{{ x.nom|texte }}</a>
 {%- endfor %}
+{%- set debut, espace, fin = (pages.indications.lien_themes|ou("Tous les accompagnements")).rpartition(" ") %}
+          <a class="foot-tous" href="{{ root }}indications.html">{{ debut|texte }}{{ espace }}<span class="nw">{{ fin|texte }} <span class="arr" aria-hidden="true">→</span></span></a>
         </nav>
       </div>
 {%- endif %}

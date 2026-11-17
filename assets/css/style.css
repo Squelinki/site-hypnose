@@ -391,6 +391,7 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
 .site-footer p + p { margin-top: 12px; }
 .foot-title { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #D9C3AE; margin-bottom: 12px; }
 .foot-links { display: grid; gap: 8px; }
+.foot-links .foot-tous { margin-top: 4px; color: #D9C3AE; }   /* dernier lien de la colonne Accompagnements : la page qui les présente tous */
 .foot-note { max-width: 30em; opacity: .85; }
 .foot-social { display: flex; gap: 10px; margin-top: 22px; }
 .site-footer .foot-social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; border: 1px solid rgba(237,230,218,.3); transition: background-color .2s ease, border-color .2s ease; }
