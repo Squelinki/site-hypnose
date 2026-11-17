@@ -25,7 +25,7 @@ tarifs:
     intitule_court: Arrêt du tabac
     prix: 200
 duree_seance: Séance de 1 à 2 heures selon son type
-paiement: Chèque ou espèces
+paiement: Chèque, espèces ou Wero
 paiement_precision: Cartes bancaires non acceptées
 remboursement: "Les séances ne sont pas remboursées par la Sécurité sociale.
   Néanmoins, certaines mutuelles prennent en charge une partie des séances par
