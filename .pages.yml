@@ -595,30 +595,31 @@ content:
       - name: menu
         label: "Menu (en haut de chaque page)"
         type: object
-        description: "Les noms des pages dans le menu. Une case vide reprend le nom d'origine. Si les noms deviennent trop longs pour tenir sur une ligne, le menu se resserre, puis le bouton se masque, puis le menu passe dans le bouton à trois traits : rien ne déborde."
+        description: "Les noms des pages dans le menu du haut. Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas. Si les noms deviennent trop longs pour tenir sur une ligne, le menu se resserre, puis le bouton se masque, puis le menu passe dans le bouton à trois traits : rien ne déborde."
         fields:
           - name: hypnose
-            label: "Page « L'hypnose, c'est quoi ? »"
+            label: "1er lien : page « L'hypnose, c'est quoi ? »"
             type: string
             options:
               maxlength: 30
           - name: indications
-            label: "Page « Indications »"
+            label: "2e lien : page « Indications » (stress, tabac, sommeil…)"
             type: string
+            description: "Pour la renommer partout (ex. « Accompagnements »), changez aussi : le 2e lien de la colonne « Le site » du pied de page (plus bas) ; Textes des pages › Accueil › Bloc « Indications » (Surtitre et Lien en bas du bloc) ; Textes des pages › Indications (Surtitre, Titre dans Google, Lien vers cette page en bas de chaque page thématique)."
             options:
               maxlength: 30
           - name: deroulement
-            label: "Page « Déroulement d'une séance »"
+            label: "3e lien : page « Déroulement d'une séance »"
             type: string
             options:
               maxlength: 30
           - name: qui
-            label: "Page « Qui suis-je ? »"
+            label: "4e lien : page « Qui suis-je ? »"
             type: string
             options:
               maxlength: 30
           - name: contact
-            label: "Page « Tarifs & contact »"
+            label: "5e lien : page « Tarifs & contact »"
             type: string
             options:
               maxlength: 30
@@ -631,7 +632,7 @@ content:
       - name: pied
         label: "Pied de page (en bas de chaque page)"
         type: object
-        description: "Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
+        description: "À côté du logo, le pied de page a trois colonnes : « Cabinet » (adresse, téléphone, horaires), « Le site » (liens vers les 5 pages du menu, avec des noms un peu plus longs) et « Accompagnements » (liste des pages thématiques : arrêt du tabac, stress, sommeil…). Une case vide reprend le nom d'origine. Les adresses des pages ne changent pas : Google et les liens existants continuent de fonctionner."
         fields:
           - name: titre_cabinet
             label: "Titre de la colonne « Cabinet » (adresse, téléphone, horaires)"
@@ -639,39 +640,40 @@ content:
             options:
               maxlength: 40
           - name: titre_site
-            label: "Titre de la colonne « Le site »"
+            label: "Titre de la colonne « Le site » (liens vers les 5 pages du menu)"
             type: string
             options:
               maxlength: 40
           - name: hypnose
-            label: "Lien vers la page « L'hypnose, c'est quoi ? »"
+            label: "Colonne « Le site », 1er lien : page « L'hypnose, c'est quoi ? »"
             type: string
             options:
               maxlength: 50
           - name: indications
-            label: "Lien vers la page « Indications »"
+            label: "Colonne « Le site », 2e lien : page « Indications » (stress, tabac, sommeil…)"
             type: string
+            description: "Le même lien que le 2e du menu du haut, mais en bas de page. Si vous l'avez renommé dans le menu, mettez le même nom ici."
             options:
               maxlength: 50
           - name: deroulement
-            label: "Lien vers la page « Déroulement d'une séance »"
+            label: "Colonne « Le site », 3e lien : page « Déroulement d'une séance »"
             type: string
             options:
               maxlength: 50
           - name: qui
-            label: "Lien vers la page « Qui suis-je ? »"
+            label: "Colonne « Le site », 4e lien : page « Qui suis-je ? »"
             type: string
             options:
               maxlength: 50
           - name: contact
-            label: "Lien vers la page « Tarifs & contact »"
+            label: "Colonne « Le site », 5e lien : page « Tarifs & contact »"
             type: string
             options:
               maxlength: 50
           - name: titre_accompagnements
-            label: "Titre de la colonne « Accompagnements »"
+            label: "Titre de la dernière colonne (liste des pages thématiques)"
             type: string
-            description: "Les noms de cette colonne sont ceux des pages thématiques (rubrique « Pages thématiques », champ « Nom court »)."
+            description: "Par défaut « Accompagnements ». Ce n'est pas un lien vers la page Indications : c'est le titre de la liste « Arrêter de fumer, Stress, Sommeil… », dont les noms viennent des pages thématiques (rubrique « Pages thématiques », champ « Nom court »). Si la page Indications s'appelle elle aussi « Accompagnements », vous pouvez donner un autre titre à cette colonne (ex. « Thèmes » ou « En savoir plus »)."
             options:
               maxlength: 40
           - name: mentions
@@ -734,6 +736,13 @@ content:
               - name: texte
                 label: Texte
                 type: text
+              - name: lien
+                label: "Lien en bas du bloc (vers la page Indications)"
+                type: string
+                default: "Voir toutes les indications"
+                description: "Case vide = « Voir toutes les indications »."
+                options:
+                  maxlength: 50
           - name: hypnose
             label: Bloc « L'hypnose, c'est quoi ? »
             type: object
@@ -887,6 +896,13 @@ content:
           - name: encadre_texte
             label: Dernière carte (texte)
             type: text
+          - name: lien_themes
+            label: "Lien vers cette page, en bas de chaque page thématique"
+            type: string
+            default: "Toutes les indications"
+            description: "Dernière pastille de « Autres accompagnements », en bas des pages Arrêt du tabac, Stress, Sommeil… Case vide = « Toutes les indications »."
+            options:
+              maxlength: 50
 
       - name: deroulement
         label: Déroulement d'une séance
