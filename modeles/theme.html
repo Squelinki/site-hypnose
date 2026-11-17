@@ -60,7 +60,7 @@
 {%- for x in themes if x.fichier != t.fichier %}
       <li><a href="{{ x.fichier }}">{{ x.nom|texte }}</a></li>
 {%- endfor %}
-      <li><a class="pastille-plus" href="indications.html">Toutes les indications <span class="arr" aria-hidden="true">→</span></a></li>
+      <li><a class="pastille-plus" href="indications.html">{{ pages.indications.lien_themes|ou("Toutes les indications")|texte }} <span class="arr" aria-hidden="true">→</span></a></li>
     </ul>
   </div>
 </section>

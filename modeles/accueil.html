@@ -54,7 +54,7 @@
     </div>
 {%- endif %}
     <p class="disclaimer">{{ icone('info') }}L'hypnose accompagne mais ne se substitue à aucun avis ou traitement médical.</p>
-    <a class="link-more" href="indications.html">Voir toutes les indications <span class="arr" aria-hidden="true">→</span></a>
+    <a class="link-more" href="indications.html">{{ c.indications.lien|ou("Voir toutes les indications")|texte }} <span class="arr" aria-hidden="true">→</span></a>
   </div>
 </section>
 

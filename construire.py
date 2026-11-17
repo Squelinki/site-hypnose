@@ -19,7 +19,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import yaml
-from jinja2 import Environment, FileSystemLoader, StrictUndefined, pass_context
+from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined, pass_context
 
 try:
     from PIL import Image, ImageOps
@@ -84,6 +84,13 @@ def texte(v, annonce=False):
     if annonce:
         t = re.sub(r"\b1er\b", "1<sup>er</sup>", t)
     return t
+
+
+def ou(v, defaut):
+    """Texte saisi dans le CMS, ou le texte d'origine si la case est vide (ou pas encore dans le fichier)."""
+    if isinstance(v, Undefined):
+        return defaut
+    return " ".join(chaine(v).split()) or defaut
 
 
 def titre(v, insecable=False):
@@ -744,7 +751,7 @@ def construire():
     options = {"undefined": StrictUndefined} if "--strict" in sys.argv else {}
     env = Environment(loader=FileSystemLoader(ICI / "modeles"), autoescape=False, keep_trailing_newline=True, **options)
     env.filters.update(texte=texte, titre=titre, paragraphes=paragraphes, annee=annee, lien=lien, attr=attr,
-                       dimensions=dimensions, brut=esc, version=version,
+                       dimensions=dimensions, brut=esc, version=version, ou=ou,
                        lien_telephone=lambda t: t.replace(
                            "{telephone}", f'<a href="tel:{infos["tel"]}" class="nw">{esc(infos["telephone"])}</a>'))
 

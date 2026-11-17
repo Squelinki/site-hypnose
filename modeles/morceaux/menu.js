@@ -1,17 +1,32 @@
 /* Menu : ses noms se changent dans le CMS (rubrique « Menu et pied de page »). S'ils ne tiennent pas sur une ligne,
    le site essaie dans l'ordre : menu un peu resserré, puis sans le bouton « Prendre rendez-vous », puis menu dans le
-   bouton à trois traits (comme sur les petits écrans). Il garde la première solution où rien ne dépasse.
+   bouton à trois traits (comme sur les petits écrans). Il garde la première solution où rien ne dépasse et où aucun
+   texte ne touche son voisin (y compris la petite ligne « Hypnothérapeute · Paris 16e » sous le nom).
    Quand tout tient, rien ne change. */
 (function () {
-  var w = window, h = document.querySelector('.header-inner'), c = document.documentElement.classList, attente = 0;
+  var w = window, d = document, h = d.querySelector('.header-inner'), c = d.documentElement.classList, attente = 0;
   var toutes = ['menu-serre', 'menu-sans-bouton', 'menu-replie'];
   var essais = [[], ['menu-serre'], ['menu-sans-bouton'], ['menu-serre', 'menu-sans-bouton'], ['menu-replie'], ['menu-replie', 'menu-sans-bouton']];
+  var ECART = 12;   /* espace minimal, en pixels, entre deux éléments de l'en-tête */
   if (!h || !c || !w.getComputedStyle || !w.matchMedia) { return; }
-  function deborde() {   /* un élément de l'en-tête dépasse-t-il la largeur du contenu (marges de la page comprises) ? */
-    var s = w.getComputedStyle(h), limite = h.getBoundingClientRect().right - parseFloat(s.borderRightWidth) - parseFloat(s.paddingRight) + 1;
+  function bords(e) {   /* bords visibles d'un élément : sa boîte, élargie à son texte si le texte en sort (selon le navigateur) */
+    var q = e.getBoundingClientRect(), b = { g: q.left, d: q.right };
+    if (d.createRange && !(e.querySelector && e.querySelector('.sr-only'))) {   /* texte réservé aux lecteurs d'écran : ignoré */
+      var r = d.createRange(); r.selectNodeContents(e);
+      var t = r.getBoundingClientRect();
+      if (t.width) { b.g = Math.min(b.g, t.left); b.d = Math.max(b.d, t.right); }
+    }
+    return b;
+  }
+  function deborde() {   /* un élément de l'en-tête dépasse-t-il la largeur du contenu, ou touche-t-il le précédent ? */
+    var s = w.getComputedStyle(h), limite = h.getBoundingClientRect().right - parseFloat(s.borderRightWidth) - parseFloat(s.paddingRight) + 1, avant = null;
     for (var i = 0; i < h.children.length; i++) {
       var e = h.children[i], t = w.getComputedStyle(e);
-      if (t.display !== 'none' && t.position !== 'absolute' && e.getBoundingClientRect().right + (parseFloat(t.marginRight) || 0) > limite) { return true; }
+      if (t.display === 'none' || t.position === 'absolute') { continue; }
+      var b = bords(e);
+      if (b.d + (parseFloat(t.marginRight) || 0) > limite) { return true; }
+      if (avant !== null && b.g < avant + ECART) { return true; }
+      avant = b.d;
     }
     return false;
   }

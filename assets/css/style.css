@@ -426,8 +426,9 @@ h1 > .eyebrow { display: block; font-family: var(--police-texte); font-style: no
    le menu est déjà dans le bouton à trois traits) : modeles/morceaux/menu.js ajoute ces classes l'une après l'autre,
    seulement si besoin (menu resserré, puis sans le bouton « Prendre rendez-vous », puis menu à trois traits) */
 @media (min-width: 1001px) {
-  .menu-serre .header-inner { gap: 20px; }
-  .menu-serre .nav { gap: 18px; font-size: 14.5px; }
+  .header-inner > * { flex-shrink: 0; }   /* rien ne se tasse (certains navigateurs tassaient le nom sous le menu) : si la place manque, menu.js choisit */
+  .menu-serre .header-inner { gap: 18px; }
+  .menu-serre .nav { gap: 16px; font-size: 14.5px; }
   .menu-sans-bouton .header-cta { display: none; }
   .menu-replie .burger { display: flex; margin-left: 2px; }
   .menu-replie .theme-btn { margin-left: auto; }
