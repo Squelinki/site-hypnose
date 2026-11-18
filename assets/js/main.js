@@ -862,16 +862,8 @@
     if (nom) { setTimeout(function () { try { nom.focus({ preventScroll: true }); } catch (e) { nom.focus(); } }, 450); }
   }
 
-  /* 12. Plan d'accès : la ligne survolée (ou touchée) met sa station en avant sur le plan ;
-         sur téléphone, le plan défile de côté et s'ouvre centré sur le cabinet */
+  /* 12. Plan d'accès : la ligne survolée (ou touchée) met sa station en avant sur le plan */
   function planAcces(plan) {
-    var cadre = plan.querySelector('.plan-cadre');
-    function centrer(el, doux) {
-      if (!cadre || !el || cadre.scrollWidth <= cadre.clientWidth + 2) { return; }
-      var r = el.getBoundingClientRect(), c = cadre.getBoundingClientRect();
-      var gauche = cadre.scrollLeft + (r.left + r.width / 2) - (c.left + c.width / 2);
-      if (doux && cadre.scrollTo && !reduceMotion()) { cadre.scrollTo({ left: gauche, behavior: 'smooth' }); } else { cadre.scrollLeft = gauche; }
-    }
     [].forEach.call(plan.querySelectorAll('.plan-liste li[data-plan]'), function (li) {
       var st = plan.querySelector('.p-station[data-plan="' + li.getAttribute('data-plan') + '"]');
       if (!st) { return; }
@@ -882,10 +874,9 @@
       li.addEventListener('click', function () {
         var deja = st.classList.contains('actif');
         [].forEach.call(plan.querySelectorAll('.actif'), function (x) { x.classList.remove('actif'); });
-        if (!deja) { allumer(); centrer(st, true); }
+        if (!deja) { allumer(); }
       });
     });
-    centrer(plan.querySelector('.p-cabinet'), false);
   }
 
   window.initSite = initSite;

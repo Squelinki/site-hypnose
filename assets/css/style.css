@@ -1270,12 +1270,11 @@ html:not(.js) :is(.vf-choix, .vf-retour, .vf-bilan) { display: none; }
   .plan-grid--sans-carte { grid-template-areas: "adresse" "transports"; }
   .plan-adresse { margin-bottom: 0; padding: 22px 22px 24px; }
   .plan-adresse-v { font-size: 23px; }
-  .plan-cadre { justify-self: center; width: 100%; max-width: 560px; }   /* tablette : le plan entier, centré */
+  .plan-cadre { justify-self: center; width: 100%; max-width: 560px; }   /* tablette et téléphone : le plan entier, à la largeur du contenu */
 }
-@media (max-width: 560px) {   /* téléphone : le plan d'un bord à l'autre, qui défile de côté */
-  .plan-cadre { justify-self: stretch; width: auto; max-width: none; margin: 0 -22px; border-radius: 0; box-shadow: none; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
-  .plan-cadre::-webkit-scrollbar { display: none; }
-  .plan-svg { width: 560px; max-width: none; }
+@media (max-width: 560px) {   /* téléphone : le plan est plus petit, l'adresse du cabinet grossit un peu pour rester lisible */
+  .p-bulle-t { font-size: 15.5px; }
+  .p-bulle-s { font-size: 11px; }
 }
 
 /* 21. ANIMATIONS --------------------------------------------------------------
